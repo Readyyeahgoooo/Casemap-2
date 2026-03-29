@@ -20,6 +20,7 @@ from .graphrag import (
     tokenize,
     top_keywords,
 )
+from .lineage_data import CURATED_LINEAGES
 from .source_parser import Passage, SourceDocument, load_source_document
 from .viewer import render_relationship_family_tree, render_relationship_map, render_relationship_tree
 
@@ -322,6 +323,336 @@ def _build_public_case_profile(node: dict) -> dict:
     }
 
 
+def _lineage_authority_type(label: str) -> str:
+    lowered = label.lower()
+    if "ordinance" in lowered or "(cap." in lowered:
+        return "statute"
+    return "case"
+
+
+def _lineage_node_id(label: str, authority_type: str | None = None) -> str:
+    node_type = authority_type or _lineage_authority_type(label)
+    return f"{node_type}:{slugify(label)[:64]}"
+
+
+def _match_lineage_topics(lineage: dict, topics: list[dict], domain_lookup: dict[str, dict]) -> list[dict]:
+    scored: list[tuple[float, dict]] = []
+    title_tokens = set(tokenize(lineage.get("title", "")))
+    for topic in topics:
+        haystack = f"{topic['label']} {topic.get('summary', '')}".lower()
+        topic_tokens = set(tokenize(f"{topic['label']} {topic.get('summary', '')}"))
+        domain_label = domain_lookup.get(topic.get("domain_id", ""), {}).get("label", "")
+        domain_tokens = set(tokenize(domain_label))
+        score = 0.0
+        for hint in lineage.get("topic_hints", []):
+            hint_tokens = set(tokenize(hint))
+            if not hint_tokens:
+                continue
+            if hint.lower() in haystack:
+                score += 2.4
+            score += len(topic_tokens & hint_tokens) / max(len(hint_tokens), 1)
+        if title_tokens:
+            score += 0.15 * len(topic_tokens & title_tokens)
+            score += 0.28 * len(domain_tokens & title_tokens)
+        if score >= 1.0:
+            scored.append((score, topic))
+
+    if not scored:
+        return []
+    scored.sort(key=lambda item: (-item[0], item[1]["label"]))
+    return [scored[0][1]]
+
+
+def _append_unique_reference(references: list[dict], reference: dict) -> None:
+    key = (
+        reference["source_id"],
+        reference["location"],
+        reference.get("snippet", ""),
+    )
+    existing_keys = {
+        (item["source_id"], item["location"], item.get("snippet", ""))
+        for item in references
+    }
+    if key not in existing_keys:
+        references.append(reference)
+
+
+def _recompute_public_connectivity(public_payload: dict) -> None:
+    node_lookup = {node["id"]: node for node in public_payload["nodes"]}
+    adjacency: defaultdict[str, set[str]] = defaultdict(set)
+    valid_edges: list[dict] = []
+    edge_keys: set[tuple[str, str, str, str, str]] = set()
+
+    for edge in public_payload["edges"]:
+        source = edge["source"]
+        target = edge["target"]
+        if source not in node_lookup or target not in node_lookup:
+            continue
+        key = (
+            source,
+            target,
+            edge["type"],
+            edge.get("lineage_id", ""),
+            edge.get("code", ""),
+        )
+        if key in edge_keys:
+            continue
+        edge_keys.add(key)
+        valid_edges.append(edge)
+        adjacency[source].add(target)
+        adjacency[target].add(source)
+
+    public_payload["edges"] = valid_edges
+
+    for node in public_payload["nodes"]:
+        node["neighbors"] = sorted(adjacency.get(node["id"], set()))
+        node["degree"] = len(node["neighbors"])
+
+    meta = public_payload["meta"]
+    meta["node_count"] = len(public_payload["nodes"])
+    meta["edge_count"] = len(public_payload["edges"])
+    meta["retained_case_count"] = sum(1 for node in public_payload["nodes"] if node["type"] == "case")
+    meta["retained_statute_count"] = sum(1 for node in public_payload["nodes"] if node["type"] == "statute")
+    meta["source_count"] = len(meta.get("source_documents", []))
+
+
+def _augment_public_payload_with_lineages(public_payload: dict) -> None:
+    node_lookup = {node["id"]: node for node in public_payload["nodes"]}
+    topic_nodes = [node for node in public_payload["nodes"] if node["type"] == "topic"]
+    domain_lookup = {
+        node["id"]: node
+        for node in public_payload["nodes"]
+        if node["type"] == "domain"
+    }
+    source_node_id = "source:curated_authority_lineages"
+    source_label = "Curated Authority Lineages"
+    source_reference_label = "Curated lineage note"
+
+    if source_node_id not in node_lookup:
+        source_node = {
+            "id": source_node_id,
+            "label": source_label,
+            "type": "source",
+            "summary": "Curated Hong Kong and UK authority lineages used to structure stare decisis paths in the public tree.",
+            "references": [],
+            "links": [],
+            "metrics": {"kind": "note"},
+        }
+        public_payload["nodes"].append(source_node)
+        node_lookup[source_node_id] = source_node
+
+    source_documents = public_payload["meta"].setdefault("source_documents", [])
+    if not any(source.get("label") == source_label for source in source_documents):
+        source_documents.append({"label": source_label, "kind": "note"})
+
+    edge_keys = {
+        (
+            edge["source"],
+            edge["target"],
+            edge["type"],
+            edge.get("lineage_id", ""),
+            edge.get("code", ""),
+        )
+        for edge in public_payload["edges"]
+    }
+
+    def add_edge(source: str, target: str, edge_type: str, **extra: object) -> None:
+        key = (source, target, edge_type, str(extra.get("lineage_id", "")), str(extra.get("code", "")))
+        if source not in node_lookup or target not in node_lookup or key in edge_keys:
+            return
+        edge_keys.add(key)
+        edge = {
+            "source": source,
+            "target": target,
+            "type": edge_type,
+            "weight": float(extra.pop("weight", 1.0)),
+            "mentions": int(extra.pop("mentions", 1)),
+        }
+        edge.update(extra)
+        public_payload["edges"].append(edge)
+
+    meta_lineages: list[dict] = []
+    for lineage in CURATED_LINEAGES:
+        matched_topics = _match_lineage_topics(lineage, topic_nodes, domain_lookup)
+        matched_topic_ids = [topic["id"] for topic in matched_topics]
+        matched_topic_labels = [topic["label"] for topic in matched_topics]
+        members: list[dict] = []
+
+        for position, authority in enumerate(lineage["cases"], start=1):
+            authority_type = _lineage_authority_type(authority["label"])
+            node_id = _lineage_node_id(authority["label"], authority_type)
+            node = node_lookup.get(node_id)
+            default_summary = (
+                f"Curated authority in the lineage '{lineage['title']}'. {authority.get('note', '')}".strip()
+            )
+            if authority_type == "statute":
+                default_summary = (
+                    f"Curated statutory authority in the lineage '{lineage['title']}'. {authority.get('note', '')}".strip()
+                )
+
+            if node is None:
+                node = {
+                    "id": node_id,
+                    "label": authority["label"],
+                    "type": authority_type,
+                    "summary": default_summary,
+                    "references": [],
+                    "links": _statute_links(authority["label"]) if authority_type == "statute" else _case_links(authority["label"]),
+                    "metrics": {"mentions": 0, "sources": 1},
+                }
+                if authority_type == "case":
+                    node["case_profile"] = {
+                        "treatment": authority.get("treatment", "relevant authority"),
+                        "code": authority.get("code", ""),
+                        "quote": authority.get("note", ""),
+                        "note": authority.get("note", ""),
+                    }
+                public_payload["nodes"].append(node)
+                node_lookup[node_id] = node
+            else:
+                if authority.get("note") and (
+                    not node.get("summary")
+                    or node["summary"].startswith("Case linked to")
+                    or node["summary"].startswith("Statute linked to")
+                ):
+                    node["summary"] = default_summary
+                if authority_type == "case":
+                    profile = dict(node.get("case_profile", {}))
+                    if authority.get("treatment") and (
+                        profile.get("treatment") in {"", None, "relevant authority"}
+                        or authority["treatment"] not in {"", "relevant authority"}
+                    ):
+                        profile["treatment"] = authority["treatment"]
+                    if authority.get("code"):
+                        profile["code"] = authority["code"]
+                    if authority.get("note"):
+                        profile.setdefault("note", authority["note"])
+                        profile.setdefault("quote", authority["note"])
+                    node["case_profile"] = profile
+                if authority_type == "statute" and authority.get("note") and not node.get("references"):
+                    node["summary"] = default_summary
+                metrics = dict(node.get("metrics", {}))
+                metrics["sources"] = max(int(metrics.get("sources", 0)), 1)
+                node["metrics"] = metrics
+                if authority_type == "case" and not node.get("links"):
+                    node["links"] = _case_links(authority["label"])
+                if authority_type == "statute" and not node.get("links"):
+                    node["links"] = _statute_links(authority["label"])
+
+            reference = {
+                "source_id": source_node_id,
+                "source_label": source_label,
+                "source_kind": "note",
+                "location": lineage["title"],
+                "snippet": authority.get("note", source_reference_label),
+            }
+            _append_unique_reference(node.setdefault("references", []), reference)
+
+            memberships = node.setdefault("lineage_memberships", [])
+            if not any(item["lineage_id"] == lineage["id"] for item in memberships):
+                memberships.append(
+                    {
+                        "lineage_id": lineage["id"],
+                        "lineage_title": lineage["title"],
+                        "position": position,
+                        "code": authority.get("code", ""),
+                        "treatment": authority.get("treatment", ""),
+                        "note": authority.get("note", ""),
+                        "topic_ids": matched_topic_ids,
+                        "topic_labels": matched_topic_labels,
+                    }
+                )
+
+            members.append(
+                {
+                    "node_id": node_id,
+                    "label": authority["label"],
+                    "type": authority_type,
+                    "position": position,
+                    "code": authority.get("code", ""),
+                    "treatment": authority.get("treatment", ""),
+                    "note": authority.get("note", ""),
+                }
+            )
+
+            source_edge_type = "discusses_case" if authority_type == "case" else "discusses_statute"
+            add_edge(
+                source_node_id,
+                node_id,
+                source_edge_type,
+                lineage_id=lineage["id"],
+                code=authority.get("code", ""),
+                label="curated lineage note",
+            )
+            for topic in matched_topics:
+                add_edge(
+                    topic["id"],
+                    node_id,
+                    "lineage_case" if authority_type == "case" else "lineage_statute",
+                    lineage_id=lineage["id"],
+                    lineage_title=lineage["title"],
+                    code=authority.get("code", ""),
+                    label=authority.get("treatment", "") or lineage["title"],
+                )
+                if topic.get("domain_id"):
+                    add_edge(
+                        topic["domain_id"],
+                        node_id,
+                        "domain_case" if authority_type == "case" else "domain_statute",
+                        lineage_id=lineage["id"],
+                        code=authority.get("code", ""),
+                        label="curated lineage branch",
+                    )
+
+        for edge in lineage.get("edges", []):
+            from_id = _lineage_node_id(edge["from"])
+            to_id = _lineage_node_id(edge["to"])
+            add_edge(
+                from_id,
+                to_id,
+                "lineage_step",
+                lineage_id=lineage["id"],
+                lineage_title=lineage["title"],
+                code=edge.get("code", ""),
+                label=edge.get("label", ""),
+            )
+
+        meta_lineages.append(
+            {
+                "id": lineage["id"],
+                "title": lineage["title"],
+                "topic_ids": matched_topic_ids,
+                "topic_labels": matched_topic_labels,
+                "members": members,
+                "codes": sorted({member["code"] for member in members if member.get("code")}),
+            }
+        )
+
+    for node in public_payload["nodes"]:
+        memberships = node.get("lineage_memberships", [])
+        if memberships:
+            memberships.sort(key=lambda item: (item["lineage_title"], item["position"], item["lineage_id"]))
+            metrics = dict(node.get("metrics", {}))
+            metrics["lineages"] = len({item["lineage_id"] for item in memberships})
+            node["metrics"] = metrics
+
+    notes = public_payload["meta"].setdefault("notes", [])
+    lineage_note = "Curated lineage paths add Hong Kong and UK authority sequences with FLLW, APPD, DIST, and CODI edges."
+    if lineage_note not in notes:
+        notes.append(lineage_note)
+    public_payload["meta"]["lineages"] = meta_lineages
+    public_payload["meta"]["curated_lineage_count"] = len(meta_lineages)
+    public_payload["meta"]["lineage_codes"] = {
+        "CODI": "Codified by Hong Kong ordinance",
+        "APPD": "Applied on the same principle",
+        "FLLW": "Followed or adopted in Hong Kong",
+        "DIST": "Distinguished or qualified",
+        "DPRT": "Departed from prior authority",
+        "ORIG": "Originating authority in the lineage",
+    }
+    _recompute_public_connectivity(public_payload)
+
+
 def export_public_relationship_payload(payload: dict, title: str | None = None) -> dict:
     public_payload = {
         "meta": {
@@ -345,7 +676,7 @@ def export_public_relationship_payload(payload: dict, title: str | None = None) 
             ],
         },
         "nodes": [],
-        "edges": payload["edges"],
+        "edges": [dict(edge) for edge in payload["edges"]],
     }
 
     node_lookup = {node["id"]: node for node in payload["nodes"]}
@@ -395,6 +726,7 @@ def export_public_relationship_payload(payload: dict, title: str | None = None) 
 
         public_payload["nodes"].append(public_node)
 
+    _augment_public_payload_with_lineages(public_payload)
     return public_payload
 
 

@@ -18,20 +18,344 @@
       {
         "label": "Ho  Halls Hong Kong Contract Law, Sixth Edition (Stephen Hall) (Z-Library)",
         "kind": "pdf"
+      },
+      {
+        "label": "Curated Authority Lineages",
+        "kind": "note"
       }
     ],
-    "source_count": 4,
+    "source_count": 5,
     "passage_count": 5530,
-    "node_count": 445,
-    "edge_count": 2833,
-    "retained_case_count": 311,
+    "node_count": 464,
+    "edge_count": 2916,
+    "retained_case_count": 329,
     "retained_statute_count": 20,
     "public_mode": true,
     "notes": [
       "This public export preserves graph structure and authority links.",
       "Third-party source snippets are replaced with bibliographic references.",
-      "Follow HKLII-oriented links for public primary materials."
-    ]
+      "Follow HKLII-oriented links for public primary materials.",
+      "Curated lineage paths add Hong Kong and UK authority sequences with FLLW, APPD, DIST, and CODI edges."
+    ],
+    "lineages": [
+      {
+        "id": "interpretation_context_text",
+        "title": "Contractual Interpretation: \"Context vs. Text\"",
+        "topic_ids": [
+          "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+        ],
+        "topic_labels": [
+          "Express Terms and the Parol Evidence Rule"
+        ],
+        "members": [
+          {
+            "node_id": "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
+            "label": "Investors Compensation Scheme Ltd v West Bromwich Building Society",
+            "type": "case",
+            "position": 1,
+            "code": "ORIG",
+            "treatment": "originating authority",
+            "note": "Originating UK authority for Lord Hoffmann's contextual principles."
+          },
+          {
+            "node_id": "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+            "label": "Sinoearn International Ltd v Hyundai-CCECC Joint Venture",
+            "type": "case",
+            "position": 2,
+            "code": "FLLW",
+            "treatment": "adopted",
+            "note": "Hong Kong CFA endorsement of the contextual approach."
+          },
+          {
+            "node_id": "case:rainy_sky_sa_v_kookmin_bank",
+            "label": "Rainy Sky SA v Kookmin Bank",
+            "type": "case",
+            "position": 3,
+            "code": "APPD",
+            "treatment": "relevant authority",
+            "note": "Commercial common-sense peak in the UK line."
+          },
+          {
+            "node_id": "case:fully_profit_asia_ltd_v_secretary_for_justice",
+            "label": "Fully Profit (Asia) Ltd v Secretary for Justice",
+            "type": "case",
+            "position": 4,
+            "code": "FLLW",
+            "treatment": "followed",
+            "note": "Hong Kong treatment following Rainy Sky."
+          },
+          {
+            "node_id": "case:arnold_v_britton",
+            "label": "Arnold v Britton",
+            "type": "case",
+            "position": 5,
+            "code": "DIST",
+            "treatment": "qualified",
+            "note": "Textualist correction emphasizing contractual language."
+          },
+          {
+            "node_id": "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
+            "label": "Sany Heavy Industry (HK) Ltd v Sany-Kenton (HK) Ltd",
+            "type": "case",
+            "position": 6,
+            "code": "APPD",
+            "treatment": "applied",
+            "note": "Recent Hong Kong application of the textualist correction."
+          },
+          {
+            "node_id": "case:wood_v_capita",
+            "label": "Wood v Capita",
+            "type": "case",
+            "position": 7,
+            "code": "APPD",
+            "treatment": "qualified",
+            "note": "Modern unitary synthesis balancing text and context."
+          }
+        ],
+        "codes": [
+          "APPD",
+          "DIST",
+          "FLLW",
+          "ORIG"
+        ]
+      },
+      {
+        "id": "consideration_practical_benefit",
+        "title": "Consideration and Variations: \"Practical Benefit\"",
+        "topic_ids": [
+          "topic:formation_of_contract:04:consideration"
+        ],
+        "topic_labels": [
+          "Consideration"
+        ],
+        "members": [
+          {
+            "node_id": "case:stilk_v_myrick",
+            "label": "Stilk v Myrick",
+            "type": "case",
+            "position": 1,
+            "code": "ORIG",
+            "treatment": "originating authority",
+            "note": "Traditional existing-duty rule."
+          },
+          {
+            "node_id": "case:williams_v_roffey_bros_nicholls",
+            "label": "Williams v Roffey Bros & Nicholls",
+            "type": "case",
+            "position": 2,
+            "code": "APPD",
+            "treatment": "qualified",
+            "note": "UK practical-benefit exception to the traditional rule."
+          },
+          {
+            "node_id": "case:ubc_construction_ltd_v_sung_foo_kee_ltd",
+            "label": "UBC (Construction) Ltd v Sung Foo Kee Ltd",
+            "type": "case",
+            "position": 3,
+            "code": "FLLW",
+            "treatment": "adopted",
+            "note": "Hong Kong adoption of Williams v Roffey."
+          },
+          {
+            "node_id": "case:re_selectmove",
+            "label": "Re Selectmove",
+            "type": "case",
+            "position": 4,
+            "code": "DIST",
+            "treatment": "qualified",
+            "note": "Refused to extend practical benefit to part-payment of debt."
+          },
+          {
+            "node_id": "case:chong_cheng_lin_courtney_v_cathay_pacific_airways_ltd",
+            "label": "Chong Cheng Lin Courtney v Cathay Pacific Airways Ltd",
+            "type": "case",
+            "position": 5,
+            "code": "FLLW",
+            "treatment": "followed",
+            "note": "Hong Kong follow-on treatment of the Selectmove limitation."
+          },
+          {
+            "node_id": "case:mwb_business_exchange_centres_ltd_v_rock_advertising_ltd",
+            "label": "MWB Business Exchange Centres Ltd v Rock Advertising Ltd",
+            "type": "case",
+            "position": 6,
+            "code": "DIST",
+            "treatment": "relevant authority",
+            "note": "Illustrates continuing caution in this area."
+          }
+        ],
+        "codes": [
+          "APPD",
+          "DIST",
+          "FLLW",
+          "ORIG"
+        ]
+      },
+      {
+        "id": "penalty_clauses_modern_test",
+        "title": "Penalty Clauses: \"Modern Test\"",
+        "topic_ids": [
+          "topic:remedies_for_breach:03:liquidated_damages_vs_penalties"
+        ],
+        "topic_labels": [
+          "Liquidated Damages vs. Penalties"
+        ],
+        "members": [
+          {
+            "node_id": "case:dunlop_pneumatic_tyre_co_ltd_v_new_garage_motor_co_ltd",
+            "label": "Dunlop Pneumatic Tyre Co Ltd v New Garage & Motor Co Ltd",
+            "type": "case",
+            "position": 1,
+            "code": "ORIG",
+            "treatment": "originating authority",
+            "note": "Classic genuine pre-estimate versus deterrent framing."
+          },
+          {
+            "node_id": "case:cavendish_square_holding_bv_v_el_makdessi",
+            "label": "Cavendish Square Holding BV v El Makdessi",
+            "type": "case",
+            "position": 2,
+            "code": "APPD",
+            "treatment": "qualified",
+            "note": "Modern legitimate-interest and proportionality test."
+          },
+          {
+            "node_id": "case:law_ting_pong_secondary_school_v_chen_wai_mick",
+            "label": "Law Ting Pong Secondary School v Chen Wai-mick",
+            "type": "case",
+            "position": 3,
+            "code": "FLLW",
+            "treatment": "adopted",
+            "note": "Hong Kong adoption of the Makdessi test."
+          },
+          {
+            "node_id": "case:china_great_wall_amc_international_holdings_co_ltd_v_royal_inves",
+            "label": "China Great Wall AMC (International) Holdings Co Ltd v Royal-Investment Group Corp",
+            "type": "case",
+            "position": 4,
+            "code": "APPD",
+            "treatment": "applied",
+            "note": "Hong Kong application refining the Law Ting Pong line."
+          }
+        ],
+        "codes": [
+          "APPD",
+          "FLLW",
+          "ORIG"
+        ]
+      },
+      {
+        "id": "undue_influence_etridge",
+        "title": "Undue Influence: \"Etridge\"",
+        "topic_ids": [
+          "topic:vitiating_factors:04:undue_influence"
+        ],
+        "topic_labels": [
+          "Undue Influence"
+        ],
+        "members": [
+          {
+            "node_id": "case:royal_bank_of_scotland_v_etridge_no_2",
+            "label": "Royal Bank of Scotland v Etridge (No 2)",
+            "type": "case",
+            "position": 1,
+            "code": "ORIG",
+            "treatment": "originating authority",
+            "note": "Set the modern bank-procedure approach to constructive notice."
+          },
+          {
+            "node_id": "case:li_sau_keung_v_bank_of_china_hong_kong_ltd",
+            "label": "Li Sau Keung v Bank of China (Hong Kong) Ltd",
+            "type": "case",
+            "position": 2,
+            "code": "FLLW",
+            "treatment": "followed",
+            "note": "Hong Kong follow-on application."
+          }
+        ],
+        "codes": [
+          "FLLW",
+          "ORIG"
+        ]
+      },
+      {
+        "id": "unconscionability_statutory",
+        "title": "Unconscionability: \"Statutory\"",
+        "topic_ids": [
+          "topic:vitiating_factors:05:unconscionability"
+        ],
+        "topic_labels": [
+          "Unconscionability"
+        ],
+        "members": [
+          {
+            "node_id": "statute:unconscionable_contracts_ordinance_cap_458",
+            "label": "Unconscionable Contracts Ordinance (Cap. 458)",
+            "type": "statute",
+            "position": 1,
+            "code": "CODI",
+            "treatment": "codified",
+            "note": "Statutory foundation of the Hong Kong doctrine."
+          },
+          {
+            "node_id": "case:shum_kong_v_chan_man_fai",
+            "label": "Shum Kong v Chan Man-fai",
+            "type": "case",
+            "position": 2,
+            "code": "APPD",
+            "treatment": "applied",
+            "note": "Seminal Hong Kong interpretation of the Ordinance."
+          }
+        ],
+        "codes": [
+          "APPD",
+          "CODI"
+        ]
+      },
+      {
+        "id": "intermediate_terms_hongkong_fir",
+        "title": "Breach and Termination: \"Intermediate Terms\"",
+        "topic_ids": [
+          "topic:contractual_terms:07:innominate_intermediate_terms"
+        ],
+        "topic_labels": [
+          "Innominate (Intermediate) Terms"
+        ],
+        "members": [
+          {
+            "node_id": "case:hongkong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+            "label": "Hongkong Fir Shipping Co Ltd v Kawasaki Kisen Kaisha Ltd",
+            "type": "case",
+            "position": 1,
+            "code": "ORIG",
+            "treatment": "originating authority",
+            "note": "Foundational innominate-term authority with Hong Kong facts."
+          },
+          {
+            "node_id": "case:billion_star_development_ltd_v_wong_tak_fai",
+            "label": "Billion Star Development Ltd v Wong Tak-fai",
+            "type": "case",
+            "position": 2,
+            "code": "APPD",
+            "treatment": "applied",
+            "note": "Modern Hong Kong application on termination rights."
+          }
+        ],
+        "codes": [
+          "APPD",
+          "ORIG"
+        ]
+      }
+    ],
+    "curated_lineage_count": 6,
+    "lineage_codes": {
+      "CODI": "Codified by Hong Kong ordinance",
+      "APPD": "Applied on the same principle",
+      "FLLW": "Followed or adopted in Hong Kong",
+      "DIST": "Distinguished or qualified",
+      "DPRT": "Departed from prior authority",
+      "ORIG": "Originating authority in the lineage"
+    }
   },
   "nodes": [
     {
@@ -1161,6 +1485,7 @@
         "case:chappel_co_ltd_v_nestle_co_ltd",
         "case:chartbrook_ltd_v_persimmon_homes_ltd",
         "case:china_pride_investment_ltd_v_silverpole_ltd",
+        "case:chong_cheng_lin_courtney_v_cathay_pacific_airways_ltd",
         "case:chwee_kin_keong_v_digilandmall_com_pte_ltd",
         "case:city_polytechnic_of_hong_kong_v_blue_cross",
         "case:city_university_of_hong_kong_v_blue_cross",
@@ -1207,6 +1532,7 @@
         "case:ma_ip_hung_v_lai_chuen",
         "case:matthews_v_baxter",
         "case:merritt_v_merritt",
+        "case:mwb_business_exchange_centres_ltd_v_rock_advertising_ltd",
         "case:nash_v_inman",
         "case:new_world_development_co_ltd_v_sun_hung_kai_securities_ltd",
         "case:new_zealand_shipping_co_ltd_v_a_m_satterthwaite_co_ltd",
@@ -1220,6 +1546,7 @@
         "case:pitt_v_phh_asset_management_ltd",
         "case:powell_v_lee",
         "case:r_b_customs_brokers_co_ltd_v_united_dominions_trust_ltd",
+        "case:re_selectmove",
         "case:redgrave_v_hurd",
         "case:ritchie_v_atkinson",
         "case:roberts_v_gray",
@@ -1245,6 +1572,7 @@
         "case:trident_general_insurance_co_ltd_v_mcniece_bros_pty_ltd",
         "case:tweddle_v_atkinson",
         "case:tweddle_v_atkinson_dunlop_pneumatic_tyre_co_ltd",
+        "case:ubc_construction_ltd_v_sung_foo_kee_ltd",
         "case:union_bank_of_hong_kong_ltd_v_ng_yiu_hing",
         "case:union_eagle_ltd_v_golden_achievement_ltd",
         "case:wade_v_simeon",
@@ -1272,7 +1600,7 @@
         "topic:formation_of_contract:06:capacity",
         "topic:formation_of_contract:07:formality"
       ],
-      "degree": 135
+      "degree": 139
     },
     {
       "id": "domain:contractual_terms",
@@ -1336,10 +1664,12 @@
       "neighbors": [
         "case:aktieselskabet_dansk_skibsfinansiering_v_brothers",
         "case:always_win_ltd_v_autofit_ltd",
+        "case:arnold_v_britton",
         "case:ask_re_ltd_v_grain_mineral_resources_pte_ltd",
         "case:balfour_v_balfour",
         "case:bettini_v_gye",
         "case:bewise_motors_co_ltd_v_hoi_kong_container_services_ltd",
+        "case:billion_star_development_ltd_v_wong_tak_fai",
         "case:building_authority_v_appeal_tribunal",
         "case:bunge_corp_v_tradax_sa",
         "case:canada_steamship_lines_ltd_v_r",
@@ -1354,6 +1684,7 @@
         "case:estrange_v_graucob",
         "case:foley_v_classique_coaches_ltd",
         "case:fong_yau_hei_v_gammon_construction_ltd",
+        "case:fully_profit_asia_ltd_v_secretary_for_justice",
         "case:fung_hing_chiu_cyril_v_henry_wai_co",
         "case:green_park_properties_ltd_v_dorku_ltd",
         "case:hang_seng_finance_ltd_v_lin_kwok_man",
@@ -1361,10 +1692,12 @@
         "case:hillas_co_ltd_v_arcos_ltd",
         "case:ho_lai_king_v_kwok_fung_ying",
         "case:hong_kong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+        "case:hongkong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
         "case:howe_v_smith",
         "case:in_liverpool_city_council_v_irwin",
         "case:in_mccutcheon_v_david_macbrayne_ltd",
         "case:in_reigate_v_union_manufacturing_co",
+        "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
         "case:jones_v_padavatton",
         "case:l_schuler_ag_v_wickman_machine_tool_sales_ltd",
         "case:lampleigh_v_brathwait",
@@ -1387,10 +1720,13 @@
         "case:pilkington_v_wood",
         "case:polyset_ltd_v_panhandat_ltd",
         "case:pty_ltd_v_shire_of_hastings",
+        "case:rainy_sky_sa_v_kookmin_bank",
         "case:ritchie_v_atkinson",
         "case:routledge_v_mckay",
+        "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
         "case:saunders_v_anglia_building_society",
         "case:scally_v_southern_health_and_social_services_board",
+        "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
         "case:son_wells_v_pratt_and_haynes",
         "case:stilk_v_myrick",
         "case:sumpter_v_hedges",
@@ -1405,6 +1741,7 @@
         "case:wing_hang_bank_ltd_v_kwok_lai_sim",
         "case:wong_ng_kai_fung_patsy_v_yau_lai_chu",
         "case:wong_wai_chun_v_the_china_navigation_co_ltd",
+        "case:wood_v_capita",
         "case:workers_trust_merchant_bank_ltd_v_dojap_investments_ltd",
         "case:yau_chin_kwan_v_tin_shui_wai_development_ltd",
         "case:yifung_developments_ltd_v_liu_chi_keung_ricky",
@@ -1427,7 +1764,7 @@
         "topic:contractual_terms:08:exemption_clauses",
         "topic:contractual_terms:09:statutory_control_of_exemption_claus"
       ],
-      "degree": 92
+      "degree": 101
     },
     {
       "id": "domain:vitiating_factors",
@@ -1541,6 +1878,7 @@
         "case:kowloon_development_finance_ltd_v_pendex_industries_ltd",
         "case:leaf_v_international_galleries",
         "case:lewis_v_averay",
+        "case:li_sau_keung_v_bank_of_china_hong_kong_ltd",
         "case:li_sau_ying_v_bank_of_china",
         "case:lo_wo_v_cheung_chan_ka",
         "case:long_year_development_ltd_v_tse_fuk_man_norman",
@@ -1570,10 +1908,12 @@
         "case:rookes_v_barnard",
         "case:royal_bank_of_scotland_plc_v_etridge",
         "case:royal_bank_of_scotland_v_etridge",
+        "case:royal_bank_of_scotland_v_etridge_no_2",
         "case:saunders_v_anglia_building_society",
         "case:shanklin_pier_ltd_v_detel_products_ltd",
         "case:shogun_finance_ltd_v_hudson",
         "case:shogun_finance_v_hudson",
+        "case:shum_kong_v_chan_man_fai",
         "case:smith_v_eric_s_bush",
         "case:smith_v_hughes",
         "case:solle_v_butcher",
@@ -1606,7 +1946,7 @@
         "topic:vitiating_factors:05:unconscionability",
         "topic:vitiating_factors:06:illegality"
       ],
-      "degree": 116
+      "degree": 119
     },
     {
       "id": "domain:termination_and_discharge",
@@ -1773,7 +2113,9 @@
         "case:bewise_motors_co_ltd_v_hoi_kong_container_services_ltd",
         "case:burnard_v_haggis",
         "case:cathay_pacific_airways_ltd_v_hong_kong_air_cargo_terminals_ltd",
+        "case:cavendish_square_holding_bv_v_el_makdessi",
         "case:cavendish_square_holding_bv_v_talal_el_makdessi",
+        "case:china_great_wall_amc_international_holdings_co_ltd_v_royal_inves",
         "case:china_pride_investment_ltd_v_silverpole_ltd",
         "case:co_ltd_v_nominee",
         "case:cooper_v_phibbs",
@@ -1789,6 +2131,7 @@
         "case:hang_seng_finance_ltd_v_lin_kwok_man",
         "case:hedley_byrne_co_ltd_v_heller_partners_ltd",
         "case:jennings_v_rundall",
+        "case:law_ting_pong_secondary_school_v_chen_wai_mick",
         "case:leaf_v_international_galleries",
         "case:ltd_v_mcgregor",
         "case:ltd_v_newman_industries_ltd",
@@ -1814,7 +2157,7 @@
         "topic:remedies_for_breach:04:equitable_remedies",
         "topic:remedies_for_breach:05:restitution_unjust_enrichment"
       ],
-      "degree": 45
+      "degree": 48
     },
     {
       "id": "domain:privity_of_contract",
@@ -3017,6 +3360,7 @@
         "case:central_london_property_trust_ltd_v_high_trees_house_ltd",
         "case:chan_man_tin_v_cheng_leeky",
         "case:chappel_co_ltd_v_nestle_co_ltd",
+        "case:chong_cheng_lin_courtney_v_cathay_pacific_airways_ltd",
         "case:city_polytechnic_of_hong_kong_v_blue_cross",
         "case:city_university_of_hong_kong_v_blue_cross",
         "case:combe_v_combe",
@@ -3044,10 +3388,12 @@
         "case:ltd_v_cooper",
         "case:ltd_v_gold_king_consolidator_ltd",
         "case:ltd_v_sung_foo_kee_ltd",
+        "case:mwb_business_exchange_centres_ltd_v_rock_advertising_ltd",
         "case:new_zealand_shipping_co_ltd_v_a_m_satterthwaite_co_ltd",
         "case:north_ocean_shipping_co_ltd_v_hyundai_construction_co_ltd",
         "case:pao_on_v_lau_yiu_long",
         "case:pitt_v_phh_asset_management_ltd",
+        "case:re_selectmove",
         "case:roscorla_v_thomas",
         "case:rowland_v_divall",
         "case:saunders_v_anglia_building_society",
@@ -3064,6 +3410,7 @@
         "case:trident_general_insurance_co_ltd_v_mcniece_bros_pty_ltd",
         "case:tweddle_v_atkinson",
         "case:tweddle_v_atkinson_dunlop_pneumatic_tyre_co_ltd",
+        "case:ubc_construction_ltd_v_sung_foo_kee_ltd",
         "case:union_eagle_ltd_v_golden_achievement_ltd",
         "case:wade_v_simeon",
         "case:ward_v_byham",
@@ -3077,7 +3424,7 @@
         "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood_z_library",
         "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library"
       ],
-      "degree": 71
+      "degree": 75
     },
     {
       "id": "topic:formation_of_contract:05:intention_to_create_legal_relations",
@@ -3393,20 +3740,27 @@
         "agreement"
       ],
       "neighbors": [
+        "case:arnold_v_britton",
         "case:balfour_v_balfour",
         "case:cheng_kwei_sheng_v_li_shek_tong",
         "case:estrange_v_graucob",
+        "case:fully_profit_asia_ltd_v_secretary_for_justice",
         "case:ho_lai_king_v_kwok_fung_ying",
+        "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
         "case:jones_v_padavatton",
         "case:ltd_v_mudd",
+        "case:rainy_sky_sa_v_kookmin_bank",
         "case:routledge_v_mckay",
+        "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
+        "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+        "case:wood_v_capita",
         "domain:contractual_terms",
         "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc_z_library",
         "source:contract_big",
         "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood_z_library",
         "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library"
       ],
-      "degree": 12
+      "degree": 19
     },
     {
       "id": "topic:contractual_terms:02:implied_terms",
@@ -3910,8 +4264,10 @@
         "depends"
       ],
       "neighbors": [
+        "case:billion_star_development_ltd_v_wong_tak_fai",
         "case:co_ltd_v_nominee",
         "case:hong_kong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+        "case:hongkong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
         "case:l_schuler_ag_v_wickman_machine_tool_sales_ltd",
         "case:ltd_v_mcgregor",
         "case:son_wells_v_pratt_and_haynes",
@@ -3921,7 +4277,7 @@
         "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood_z_library",
         "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library"
       ],
-      "degree": 10
+      "degree": 12
     },
     {
       "id": "topic:contractual_terms:08:exemption_clauses",
@@ -4463,11 +4819,13 @@
         "case:bank_ltd_v_bundy",
         "case:commercial_bank_of_australia_ltd_v_amadio",
         "case:estinah_v_golden_hand_indonesian_employment_agency",
+        "case:li_sau_keung_v_bank_of_china_hong_kong_ltd",
         "case:li_sau_ying_v_bank_of_china",
         "case:ltd_v_wah_tong_paper_products_group_ltd",
         "case:national_westminster_bank_plc_v_morgan",
         "case:royal_bank_of_scotland_plc_v_etridge",
         "case:royal_bank_of_scotland_v_etridge",
+        "case:royal_bank_of_scotland_v_etridge_no_2",
         "case:williams_v_bayley",
         "domain:vitiating_factors",
         "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc_z_library",
@@ -4475,7 +4833,7 @@
         "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood_z_library",
         "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library"
       ],
-      "degree": 14
+      "degree": 16
     },
     {
       "id": "topic:vitiating_factors:05:unconscionability",
@@ -4546,6 +4904,7 @@
         "case:lo_wo_v_cheung_chan_ka",
         "case:matthews_v_baxter",
         "case:royal_bank_of_scotland_v_etridge",
+        "case:shum_kong_v_chan_man_fai",
         "case:trident_general_insurance_co_ltd_v_mcniece_bros_pty_ltd",
         "domain:vitiating_factors",
         "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc_z_library",
@@ -4554,7 +4913,7 @@
         "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library",
         "statute:unconscionable_contracts_ordinance_cap_458"
       ],
-      "degree": 15
+      "degree": 16
     },
     {
       "id": "topic:vitiating_factors:06:illegality",
@@ -5109,8 +5468,11 @@
         "sum"
       ],
       "neighbors": [
+        "case:cavendish_square_holding_bv_v_el_makdessi",
         "case:cavendish_square_holding_bv_v_talal_el_makdessi",
+        "case:china_great_wall_amc_international_holdings_co_ltd_v_royal_inves",
         "case:dunlop_pneumatic_tyre_co_ltd_v_new_garage_motor_co_ltd",
+        "case:law_ting_pong_secondary_school_v_chen_wai_mick",
         "case:luen_yick_co_v_tang_man_kee_machinery_workshop",
         "case:shum_kit_ching_v_caesar_beauty_centre_ltd",
         "domain:remedies_for_breach",
@@ -5119,7 +5481,7 @@
         "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood_z_library",
         "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library"
       ],
-      "degree": 9
+      "degree": 12
     },
     {
       "id": "topic:remedies_for_breach:04:equitable_remedies",
@@ -14098,7 +14460,7 @@
       "id": "case:dunlop_pneumatic_tyre_co_ltd_v_new_garage_motor_co_ltd",
       "label": "Dunlop Pneumatic Tyre Co Ltd v New Garage & Motor Co Ltd",
       "type": "case",
-      "summary": "Case linked to 4 topic node(s), 2 domain node(s), and 3 source node(s). Use the public authority links for primary text.",
+      "summary": "Curated authority in the lineage 'Penalty Clauses: \"Modern Test\"'. Classic genuine pre-estimate versus deterrent framing.",
       "references": [
         {
           "source_id": "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood_z_library",
@@ -14120,6 +14482,13 @@
           "source_kind": "docx",
           "location": "paragraph 79",
           "snippet": "Dunlop Pneumatic Tyre Co Ltd v New Garage & Motor Co Ltd: Liquidated damages are enforceable only if they are a genuine pre-estimate of loss, distinguishing them from unenforceable penalties,."
+        },
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Penalty Clauses: \"Modern Test\"",
+          "snippet": "Classic genuine pre-estimate versus deterrent framing."
         }
       ],
       "links": [
@@ -14130,24 +14499,45 @@
       ],
       "metrics": {
         "mentions": 3,
-        "sources": 3
+        "sources": 3,
+        "lineages": 1
       },
       "neighbors": [
+        "case:cavendish_square_holding_bv_v_el_makdessi",
         "domain:remedies_for_breach",
         "domain:restitution_and_unjust_enrichment",
         "source:contract_big",
         "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood_z_library",
+        "source:curated_authority_lineages",
         "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library",
         "topic:remedies_for_breach:01:unliquidated_damages",
         "topic:remedies_for_breach:02:remoteness_of_damage",
         "topic:remedies_for_breach:03:liquidated_damages_vs_penalties",
         "topic:restitution_and_unjust_enrichment:71:liquidated_damages_penalties"
       ],
-      "degree": 9,
+      "degree": 11,
       "case_profile": {
-        "treatment": "relevant authority",
-        "quote": "Dunlop Pneumatic Tyre Co Ltd v New Garage & Motor Co Ltd: Liquidated damages are enforceable only if they are a genuine pre-estimate of loss, distinguishing them from unenforceable penalties,."
-      }
+        "treatment": "originating authority",
+        "quote": "Dunlop Pneumatic Tyre Co Ltd v New Garage & Motor Co Ltd: Liquidated damages are enforceable only if they are a genuine pre-estimate of loss, distinguishing them from unenforceable penalties,.",
+        "code": "ORIG",
+        "note": "Classic genuine pre-estimate versus deterrent framing."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "penalty_clauses_modern_test",
+          "lineage_title": "Penalty Clauses: \"Modern Test\"",
+          "position": 1,
+          "code": "ORIG",
+          "treatment": "originating authority",
+          "note": "Classic genuine pre-estimate versus deterrent framing.",
+          "topic_ids": [
+            "topic:remedies_for_breach:03:liquidated_damages_vs_penalties"
+          ],
+          "topic_labels": [
+            "Liquidated Damages vs. Penalties"
+          ]
+        }
+      ]
     },
     {
       "id": "case:dunlop_pneumatic_tyre_co_ltd_v_selfridge_co_ltd",
@@ -17203,7 +17593,7 @@
       "id": "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
       "label": "Investors Compensation Scheme Ltd v West Bromwich Building Society",
       "type": "case",
-      "summary": "Case linked to 0 topic node(s), 0 domain node(s), and 2 source node(s). Use the public authority links for primary text.",
+      "summary": "Curated authority in the lineage 'Contractual Interpretation: \"Context vs. Text\"'. Originating UK authority for Lord Hoffmann's contextual principles.",
       "references": [
         {
           "source_id": "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library",
@@ -17218,6 +17608,13 @@
           "source_kind": "docx",
           "location": "paragraph 65",
           "snippet": "Investors Compensation Scheme Ltd v West Bromwich Building Society: Objective interpretation of contracts; courts must ascertain the meaning conveyed to a reasonable person possessing all background knowledge reasonably available to the parties,."
+        },
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Contractual Interpretation: \"Context vs. Text\"",
+          "snippet": "Originating UK authority for Lord Hoffmann's contextual principles."
         }
       ],
       "links": [
@@ -17228,17 +17625,40 @@
       ],
       "metrics": {
         "mentions": 2,
-        "sources": 2
+        "sources": 2,
+        "lineages": 1
       },
       "neighbors": [
+        "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+        "domain:contractual_terms",
         "source:contract_big",
-        "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library"
+        "source:curated_authority_lineages",
+        "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library",
+        "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
       ],
-      "degree": 2,
+      "degree": 6,
       "case_profile": {
-        "treatment": "relevant authority",
-        "quote": "Investors Compensation Scheme Ltd v West Bromwich Building Society: Objective interpretation of contracts; courts must ascertain the meaning conveyed to a reasonable person possessing all background knowledge reasonably available to the parties,."
-      }
+        "treatment": "originating authority",
+        "quote": "Investors Compensation Scheme Ltd v West Bromwich Building Society: Objective interpretation of contracts; courts must ascertain the meaning conveyed to a reasonable person possessing all background knowledge reasonably available to the parties,.",
+        "code": "ORIG",
+        "note": "Originating UK authority for Lord Hoffmann's contextual principles."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "interpretation_context_text",
+          "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+          "position": 1,
+          "code": "ORIG",
+          "treatment": "originating authority",
+          "note": "Originating UK authority for Lord Hoffmann's contextual principles.",
+          "topic_ids": [
+            "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+          ],
+          "topic_labels": [
+            "Express Terms and the Parol Evidence Rule"
+          ]
+        }
+      ]
     },
     {
       "id": "case:j_lauritzen_as_v_wijsmuller_bv",
@@ -23558,7 +23978,7 @@
       "id": "case:stilk_v_myrick",
       "label": "Stilk v Myrick",
       "type": "case",
-      "summary": "Case linked to 11 topic node(s), 4 domain node(s), and 3 source node(s). Use the public authority links for primary text.",
+      "summary": "Curated authority in the lineage 'Consideration and Variations: \"Practical Benefit\"'. Traditional existing-duty rule.",
       "references": [
         {
           "source_id": "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood_z_library",
@@ -23601,6 +24021,13 @@
           "source_kind": "docx",
           "location": "paragraph 109",
           "snippet": "Stilk v Myrick (1809): Existing contractual duty does not constitute valid consideration"
+        },
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Consideration and Variations: \"Practical Benefit\"",
+          "snippet": "Traditional existing-duty rule."
         }
       ],
       "links": [
@@ -23611,15 +24038,18 @@
       ],
       "metrics": {
         "mentions": 9,
-        "sources": 3
+        "sources": 3,
+        "lineages": 1
       },
       "neighbors": [
+        "case:williams_v_roffey_bros_nicholls",
         "domain:contractual_terms",
         "domain:formation_of_contract",
         "domain:restitution_and_unjust_enrichment",
         "domain:vitiating_factors",
         "source:contract_big",
         "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood_z_library",
+        "source:curated_authority_lineages",
         "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library",
         "topic:contractual_terms:03:statutory_implied_terms",
         "topic:contractual_terms:04:classification_of_terms",
@@ -23633,11 +24063,29 @@
         "topic:restitution_and_unjust_enrichment:85:the_treatment_of_the_case_by_subsequ",
         "topic:vitiating_factors:03:duress"
       ],
-      "degree": 18,
+      "degree": 20,
       "case_profile": {
-        "treatment": "relevant authority",
-        "quote": "Stilk v Myrick (1809): Existing contractual duty does not constitute valid consideration"
-      }
+        "treatment": "originating authority",
+        "quote": "Stilk v Myrick (1809): Existing contractual duty does not constitute valid consideration",
+        "code": "ORIG",
+        "note": "Traditional existing-duty rule."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "consideration_practical_benefit",
+          "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+          "position": 1,
+          "code": "ORIG",
+          "treatment": "originating authority",
+          "note": "Traditional existing-duty rule.",
+          "topic_ids": [
+            "topic:formation_of_contract:04:consideration"
+          ],
+          "topic_labels": [
+            "Consideration"
+          ]
+        }
+      ]
     },
     {
       "id": "case:sudbrook_trading_estate_ltd_v_eggleton",
@@ -25538,7 +25986,7 @@
       "id": "case:williams_v_roffey_bros_nicholls",
       "label": "Williams v Roffey Bros & Nicholls",
       "type": "case",
-      "summary": "Case linked to 5 topic node(s), 3 domain node(s), and 3 source node(s). Use the public authority links for primary text.",
+      "summary": "Curated authority in the lineage 'Consideration and Variations: \"Practical Benefit\"'. UK practical-benefit exception to the traditional rule.",
       "references": [
         {
           "source_id": "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library",
@@ -25581,6 +26029,13 @@
           "source_kind": "docx",
           "location": "paragraph 106",
           "snippet": "Williams v Roffey Bros & Nicholls (Contractors) Ltd [1991]: Performance of an existing contractual duty can constitute valid consideration if it confers a \"practical benefit\" on the promisor"
+        },
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Consideration and Variations: \"Practical Benefit\"",
+          "snippet": "UK practical-benefit exception to the traditional rule."
         }
       ],
       "links": [
@@ -25591,15 +26046,19 @@
       ],
       "metrics": {
         "mentions": 8,
-        "sources": 3
+        "sources": 3,
+        "lineages": 1
       },
       "neighbors": [
         "case:ltd_v_sung_foo_kee_ltd",
+        "case:stilk_v_myrick",
+        "case:ubc_construction_ltd_v_sung_foo_kee_ltd",
         "domain:formation_of_contract",
         "domain:restitution_and_unjust_enrichment",
         "domain:termination_and_discharge",
         "source:contract_big",
         "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood_z_library",
+        "source:curated_authority_lineages",
         "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall_z_library",
         "topic:formation_of_contract:04:consideration",
         "topic:restitution_and_unjust_enrichment:14:consideration",
@@ -25607,11 +26066,29 @@
         "topic:restitution_and_unjust_enrichment:86:hong_kong_specific_verification",
         "topic:termination_and_discharge:01:by_performance"
       ],
-      "degree": 12,
+      "degree": 15,
       "case_profile": {
-        "treatment": "relevant authority",
-        "quote": "Williams v Roffey Bros & Nicholls (Contractors) Ltd [1991]: Performance of an existing contractual duty can constitute valid consideration if it confers a \"practical benefit\" on the promisor"
-      }
+        "treatment": "qualified",
+        "quote": "Williams v Roffey Bros & Nicholls (Contractors) Ltd [1991]: Performance of an existing contractual duty can constitute valid consideration if it confers a \"practical benefit\" on the promisor",
+        "code": "APPD",
+        "note": "UK practical-benefit exception to the traditional rule."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "consideration_practical_benefit",
+          "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+          "position": 2,
+          "code": "APPD",
+          "treatment": "qualified",
+          "note": "UK practical-benefit exception to the traditional rule.",
+          "topic_ids": [
+            "topic:formation_of_contract:04:consideration"
+          ],
+          "topic_labels": [
+            "Consideration"
+          ]
+        }
+      ]
     },
     {
       "id": "case:wing_hang_bank_ltd_v_kwok_lai_sim",
@@ -26952,7 +27429,7 @@
       "id": "statute:unconscionable_contracts_ordinance_cap_458",
       "label": "Unconscionable Contracts Ordinance (Cap. 458)",
       "type": "statute",
-      "summary": "Statute linked to 5 topic node(s), 4 domain node(s), and 1 source node(s). Use the public authority links for primary text.",
+      "summary": "Curated statutory authority in the lineage 'Unconscionability: \"Statutory\"'. Statutory foundation of the Hong Kong doctrine.",
       "references": [
         {
           "source_id": "source:contract_big",
@@ -26967,6 +27444,13 @@
           "source_kind": "docx",
           "location": "paragraph 151",
           "snippet": "Unconscionable Contracts Ordinance (Cap. 458); Lo Wo v Cheung Chan Ka"
+        },
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Unconscionability: \"Statutory\"",
+          "snippet": "Statutory foundation of the Hong Kong doctrine."
         }
       ],
       "links": [
@@ -26977,22 +27461,41 @@
       ],
       "metrics": {
         "mentions": 2,
-        "sources": 1
+        "sources": 1,
+        "lineages": 1
       },
       "neighbors": [
         "case:lo_wo_v_cheung_chan_ka",
+        "case:shum_kong_v_chan_man_fai",
         "domain:contractual_terms",
         "domain:dispute_resolution",
         "domain:restitution_and_unjust_enrichment",
         "domain:vitiating_factors",
         "source:contract_big",
+        "source:curated_authority_lineages",
         "topic:contractual_terms:03:statutory_implied_terms",
         "topic:dispute_resolution:01:arbitration",
         "topic:dispute_resolution:02:mediation",
         "topic:restitution_and_unjust_enrichment:63:unconscionability",
         "topic:vitiating_factors:05:unconscionability"
       ],
-      "degree": 11
+      "degree": 13,
+      "lineage_memberships": [
+        {
+          "lineage_id": "unconscionability_statutory",
+          "lineage_title": "Unconscionability: \"Statutory\"",
+          "position": 1,
+          "code": "CODI",
+          "treatment": "codified",
+          "note": "Statutory foundation of the Hong Kong doctrine.",
+          "topic_ids": [
+            "topic:vitiating_factors:05:unconscionability"
+          ],
+          "topic_labels": [
+            "Unconscionability"
+          ]
+        }
+      ]
     },
     {
       "id": "statute:general_rule_is_that_contracts_can_be_made_in_any_form_including",
@@ -27028,6 +27531,1037 @@
         "topic:specific_types_of_contracts_specialized_domains:02:sale_of_land_and_leases"
       ],
       "degree": 7
+    },
+    {
+      "id": "source:curated_authority_lineages",
+      "label": "Curated Authority Lineages",
+      "type": "source",
+      "summary": "Curated Hong Kong and UK authority lineages used to structure stare decisis paths in the public tree.",
+      "references": [],
+      "links": [],
+      "metrics": {
+        "kind": "note"
+      },
+      "neighbors": [
+        "case:arnold_v_britton",
+        "case:billion_star_development_ltd_v_wong_tak_fai",
+        "case:cavendish_square_holding_bv_v_el_makdessi",
+        "case:china_great_wall_amc_international_holdings_co_ltd_v_royal_inves",
+        "case:chong_cheng_lin_courtney_v_cathay_pacific_airways_ltd",
+        "case:dunlop_pneumatic_tyre_co_ltd_v_new_garage_motor_co_ltd",
+        "case:fully_profit_asia_ltd_v_secretary_for_justice",
+        "case:hongkong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+        "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
+        "case:law_ting_pong_secondary_school_v_chen_wai_mick",
+        "case:li_sau_keung_v_bank_of_china_hong_kong_ltd",
+        "case:mwb_business_exchange_centres_ltd_v_rock_advertising_ltd",
+        "case:rainy_sky_sa_v_kookmin_bank",
+        "case:re_selectmove",
+        "case:royal_bank_of_scotland_v_etridge_no_2",
+        "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
+        "case:shum_kong_v_chan_man_fai",
+        "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+        "case:stilk_v_myrick",
+        "case:ubc_construction_ltd_v_sung_foo_kee_ltd",
+        "case:williams_v_roffey_bros_nicholls",
+        "case:wood_v_capita",
+        "statute:unconscionable_contracts_ordinance_cap_458"
+      ],
+      "degree": 23
+    },
+    {
+      "id": "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+      "label": "Sinoearn International Ltd v Hyundai-CCECC Joint Venture",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Contractual Interpretation: \"Context vs. Text\"'. Hong Kong CFA endorsement of the contextual approach.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Contractual Interpretation: \"Context vs. Text\"",
+          "snippet": "Hong Kong CFA endorsement of the contextual approach."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Sinoearn+International+Ltd+v+Hyundai-CCECC+Joint+Venture%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "adopted",
+        "code": "FLLW",
+        "quote": "Hong Kong CFA endorsement of the contextual approach.",
+        "note": "Hong Kong CFA endorsement of the contextual approach."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "interpretation_context_text",
+          "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+          "position": 2,
+          "code": "FLLW",
+          "treatment": "adopted",
+          "note": "Hong Kong CFA endorsement of the contextual approach.",
+          "topic_ids": [
+            "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+          ],
+          "topic_labels": [
+            "Express Terms and the Parol Evidence Rule"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
+        "case:wood_v_capita",
+        "domain:contractual_terms",
+        "source:curated_authority_lineages",
+        "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+      ],
+      "degree": 5
+    },
+    {
+      "id": "case:rainy_sky_sa_v_kookmin_bank",
+      "label": "Rainy Sky SA v Kookmin Bank",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Contractual Interpretation: \"Context vs. Text\"'. Commercial common-sense peak in the UK line.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Contractual Interpretation: \"Context vs. Text\"",
+          "snippet": "Commercial common-sense peak in the UK line."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Rainy+Sky+SA+v+Kookmin+Bank%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "relevant authority",
+        "code": "APPD",
+        "quote": "Commercial common-sense peak in the UK line.",
+        "note": "Commercial common-sense peak in the UK line."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "interpretation_context_text",
+          "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+          "position": 3,
+          "code": "APPD",
+          "treatment": "relevant authority",
+          "note": "Commercial common-sense peak in the UK line.",
+          "topic_ids": [
+            "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+          ],
+          "topic_labels": [
+            "Express Terms and the Parol Evidence Rule"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:fully_profit_asia_ltd_v_secretary_for_justice",
+        "domain:contractual_terms",
+        "source:curated_authority_lineages",
+        "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:fully_profit_asia_ltd_v_secretary_for_justice",
+      "label": "Fully Profit (Asia) Ltd v Secretary for Justice",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Contractual Interpretation: \"Context vs. Text\"'. Hong Kong treatment following Rainy Sky.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Contractual Interpretation: \"Context vs. Text\"",
+          "snippet": "Hong Kong treatment following Rainy Sky."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Fully+Profit+%28Asia%29+Ltd+v+Secretary+for+Justice%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "followed",
+        "code": "FLLW",
+        "quote": "Hong Kong treatment following Rainy Sky.",
+        "note": "Hong Kong treatment following Rainy Sky."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "interpretation_context_text",
+          "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+          "position": 4,
+          "code": "FLLW",
+          "treatment": "followed",
+          "note": "Hong Kong treatment following Rainy Sky.",
+          "topic_ids": [
+            "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+          ],
+          "topic_labels": [
+            "Express Terms and the Parol Evidence Rule"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:rainy_sky_sa_v_kookmin_bank",
+        "domain:contractual_terms",
+        "source:curated_authority_lineages",
+        "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:arnold_v_britton",
+      "label": "Arnold v Britton",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Contractual Interpretation: \"Context vs. Text\"'. Textualist correction emphasizing contractual language.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Contractual Interpretation: \"Context vs. Text\"",
+          "snippet": "Textualist correction emphasizing contractual language."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Arnold+v+Britton%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "qualified",
+        "code": "DIST",
+        "quote": "Textualist correction emphasizing contractual language.",
+        "note": "Textualist correction emphasizing contractual language."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "interpretation_context_text",
+          "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+          "position": 5,
+          "code": "DIST",
+          "treatment": "qualified",
+          "note": "Textualist correction emphasizing contractual language.",
+          "topic_ids": [
+            "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+          ],
+          "topic_labels": [
+            "Express Terms and the Parol Evidence Rule"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
+        "domain:contractual_terms",
+        "source:curated_authority_lineages",
+        "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
+      "label": "Sany Heavy Industry (HK) Ltd v Sany-Kenton (HK) Ltd",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Contractual Interpretation: \"Context vs. Text\"'. Recent Hong Kong application of the textualist correction.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Contractual Interpretation: \"Context vs. Text\"",
+          "snippet": "Recent Hong Kong application of the textualist correction."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Sany+Heavy+Industry+%28HK%29+Ltd+v+Sany-Kenton+%28HK%29+Ltd%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "applied",
+        "code": "APPD",
+        "quote": "Recent Hong Kong application of the textualist correction.",
+        "note": "Recent Hong Kong application of the textualist correction."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "interpretation_context_text",
+          "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+          "position": 6,
+          "code": "APPD",
+          "treatment": "applied",
+          "note": "Recent Hong Kong application of the textualist correction.",
+          "topic_ids": [
+            "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+          ],
+          "topic_labels": [
+            "Express Terms and the Parol Evidence Rule"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:arnold_v_britton",
+        "domain:contractual_terms",
+        "source:curated_authority_lineages",
+        "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:wood_v_capita",
+      "label": "Wood v Capita",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Contractual Interpretation: \"Context vs. Text\"'. Modern unitary synthesis balancing text and context.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Contractual Interpretation: \"Context vs. Text\"",
+          "snippet": "Modern unitary synthesis balancing text and context."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Wood+v+Capita%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "qualified",
+        "code": "APPD",
+        "quote": "Modern unitary synthesis balancing text and context.",
+        "note": "Modern unitary synthesis balancing text and context."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "interpretation_context_text",
+          "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+          "position": 7,
+          "code": "APPD",
+          "treatment": "qualified",
+          "note": "Modern unitary synthesis balancing text and context.",
+          "topic_ids": [
+            "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+          ],
+          "topic_labels": [
+            "Express Terms and the Parol Evidence Rule"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+        "domain:contractual_terms",
+        "source:curated_authority_lineages",
+        "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:ubc_construction_ltd_v_sung_foo_kee_ltd",
+      "label": "UBC (Construction) Ltd v Sung Foo Kee Ltd",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Consideration and Variations: \"Practical Benefit\"'. Hong Kong adoption of Williams v Roffey.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Consideration and Variations: \"Practical Benefit\"",
+          "snippet": "Hong Kong adoption of Williams v Roffey."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22UBC+%28Construction%29+Ltd+v+Sung+Foo+Kee+Ltd%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "adopted",
+        "code": "FLLW",
+        "quote": "Hong Kong adoption of Williams v Roffey.",
+        "note": "Hong Kong adoption of Williams v Roffey."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "consideration_practical_benefit",
+          "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+          "position": 3,
+          "code": "FLLW",
+          "treatment": "adopted",
+          "note": "Hong Kong adoption of Williams v Roffey.",
+          "topic_ids": [
+            "topic:formation_of_contract:04:consideration"
+          ],
+          "topic_labels": [
+            "Consideration"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:williams_v_roffey_bros_nicholls",
+        "domain:formation_of_contract",
+        "source:curated_authority_lineages",
+        "topic:formation_of_contract:04:consideration"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:re_selectmove",
+      "label": "Re Selectmove",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Consideration and Variations: \"Practical Benefit\"'. Refused to extend practical benefit to part-payment of debt.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Consideration and Variations: \"Practical Benefit\"",
+          "snippet": "Refused to extend practical benefit to part-payment of debt."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Re+Selectmove%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "qualified",
+        "code": "DIST",
+        "quote": "Refused to extend practical benefit to part-payment of debt.",
+        "note": "Refused to extend practical benefit to part-payment of debt."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "consideration_practical_benefit",
+          "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+          "position": 4,
+          "code": "DIST",
+          "treatment": "qualified",
+          "note": "Refused to extend practical benefit to part-payment of debt.",
+          "topic_ids": [
+            "topic:formation_of_contract:04:consideration"
+          ],
+          "topic_labels": [
+            "Consideration"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:chong_cheng_lin_courtney_v_cathay_pacific_airways_ltd",
+        "case:mwb_business_exchange_centres_ltd_v_rock_advertising_ltd",
+        "domain:formation_of_contract",
+        "source:curated_authority_lineages",
+        "topic:formation_of_contract:04:consideration"
+      ],
+      "degree": 5
+    },
+    {
+      "id": "case:chong_cheng_lin_courtney_v_cathay_pacific_airways_ltd",
+      "label": "Chong Cheng Lin Courtney v Cathay Pacific Airways Ltd",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Consideration and Variations: \"Practical Benefit\"'. Hong Kong follow-on treatment of the Selectmove limitation.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Consideration and Variations: \"Practical Benefit\"",
+          "snippet": "Hong Kong follow-on treatment of the Selectmove limitation."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Chong+Cheng+Lin+Courtney+v+Cathay+Pacific+Airways+Ltd%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "followed",
+        "code": "FLLW",
+        "quote": "Hong Kong follow-on treatment of the Selectmove limitation.",
+        "note": "Hong Kong follow-on treatment of the Selectmove limitation."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "consideration_practical_benefit",
+          "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+          "position": 5,
+          "code": "FLLW",
+          "treatment": "followed",
+          "note": "Hong Kong follow-on treatment of the Selectmove limitation.",
+          "topic_ids": [
+            "topic:formation_of_contract:04:consideration"
+          ],
+          "topic_labels": [
+            "Consideration"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:re_selectmove",
+        "domain:formation_of_contract",
+        "source:curated_authority_lineages",
+        "topic:formation_of_contract:04:consideration"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:mwb_business_exchange_centres_ltd_v_rock_advertising_ltd",
+      "label": "MWB Business Exchange Centres Ltd v Rock Advertising Ltd",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Consideration and Variations: \"Practical Benefit\"'. Illustrates continuing caution in this area.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Consideration and Variations: \"Practical Benefit\"",
+          "snippet": "Illustrates continuing caution in this area."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22MWB+Business+Exchange+Centres+Ltd+v+Rock+Advertising+Ltd%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "relevant authority",
+        "code": "DIST",
+        "quote": "Illustrates continuing caution in this area.",
+        "note": "Illustrates continuing caution in this area."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "consideration_practical_benefit",
+          "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+          "position": 6,
+          "code": "DIST",
+          "treatment": "relevant authority",
+          "note": "Illustrates continuing caution in this area.",
+          "topic_ids": [
+            "topic:formation_of_contract:04:consideration"
+          ],
+          "topic_labels": [
+            "Consideration"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:re_selectmove",
+        "domain:formation_of_contract",
+        "source:curated_authority_lineages",
+        "topic:formation_of_contract:04:consideration"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:cavendish_square_holding_bv_v_el_makdessi",
+      "label": "Cavendish Square Holding BV v El Makdessi",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Penalty Clauses: \"Modern Test\"'. Modern legitimate-interest and proportionality test.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Penalty Clauses: \"Modern Test\"",
+          "snippet": "Modern legitimate-interest and proportionality test."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Cavendish+Square+Holding+BV+v+El+Makdessi%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "qualified",
+        "code": "APPD",
+        "quote": "Modern legitimate-interest and proportionality test.",
+        "note": "Modern legitimate-interest and proportionality test."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "penalty_clauses_modern_test",
+          "lineage_title": "Penalty Clauses: \"Modern Test\"",
+          "position": 2,
+          "code": "APPD",
+          "treatment": "qualified",
+          "note": "Modern legitimate-interest and proportionality test.",
+          "topic_ids": [
+            "topic:remedies_for_breach:03:liquidated_damages_vs_penalties"
+          ],
+          "topic_labels": [
+            "Liquidated Damages vs. Penalties"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:dunlop_pneumatic_tyre_co_ltd_v_new_garage_motor_co_ltd",
+        "case:law_ting_pong_secondary_school_v_chen_wai_mick",
+        "domain:remedies_for_breach",
+        "source:curated_authority_lineages",
+        "topic:remedies_for_breach:03:liquidated_damages_vs_penalties"
+      ],
+      "degree": 5
+    },
+    {
+      "id": "case:law_ting_pong_secondary_school_v_chen_wai_mick",
+      "label": "Law Ting Pong Secondary School v Chen Wai-mick",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Penalty Clauses: \"Modern Test\"'. Hong Kong adoption of the Makdessi test.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Penalty Clauses: \"Modern Test\"",
+          "snippet": "Hong Kong adoption of the Makdessi test."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Law+Ting+Pong+Secondary+School+v+Chen+Wai-mick%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "adopted",
+        "code": "FLLW",
+        "quote": "Hong Kong adoption of the Makdessi test.",
+        "note": "Hong Kong adoption of the Makdessi test."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "penalty_clauses_modern_test",
+          "lineage_title": "Penalty Clauses: \"Modern Test\"",
+          "position": 3,
+          "code": "FLLW",
+          "treatment": "adopted",
+          "note": "Hong Kong adoption of the Makdessi test.",
+          "topic_ids": [
+            "topic:remedies_for_breach:03:liquidated_damages_vs_penalties"
+          ],
+          "topic_labels": [
+            "Liquidated Damages vs. Penalties"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:cavendish_square_holding_bv_v_el_makdessi",
+        "case:china_great_wall_amc_international_holdings_co_ltd_v_royal_inves",
+        "domain:remedies_for_breach",
+        "source:curated_authority_lineages",
+        "topic:remedies_for_breach:03:liquidated_damages_vs_penalties"
+      ],
+      "degree": 5
+    },
+    {
+      "id": "case:china_great_wall_amc_international_holdings_co_ltd_v_royal_inves",
+      "label": "China Great Wall AMC (International) Holdings Co Ltd v Royal-Investment Group Corp",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Penalty Clauses: \"Modern Test\"'. Hong Kong application refining the Law Ting Pong line.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Penalty Clauses: \"Modern Test\"",
+          "snippet": "Hong Kong application refining the Law Ting Pong line."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22China+Great+Wall+AMC+%28International%29+Holdings+Co+Ltd+v+Royal-Investment+Group+Corp%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "applied",
+        "code": "APPD",
+        "quote": "Hong Kong application refining the Law Ting Pong line.",
+        "note": "Hong Kong application refining the Law Ting Pong line."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "penalty_clauses_modern_test",
+          "lineage_title": "Penalty Clauses: \"Modern Test\"",
+          "position": 4,
+          "code": "APPD",
+          "treatment": "applied",
+          "note": "Hong Kong application refining the Law Ting Pong line.",
+          "topic_ids": [
+            "topic:remedies_for_breach:03:liquidated_damages_vs_penalties"
+          ],
+          "topic_labels": [
+            "Liquidated Damages vs. Penalties"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:law_ting_pong_secondary_school_v_chen_wai_mick",
+        "domain:remedies_for_breach",
+        "source:curated_authority_lineages",
+        "topic:remedies_for_breach:03:liquidated_damages_vs_penalties"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:royal_bank_of_scotland_v_etridge_no_2",
+      "label": "Royal Bank of Scotland v Etridge (No 2)",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Undue Influence: \"Etridge\"'. Set the modern bank-procedure approach to constructive notice.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Undue Influence: \"Etridge\"",
+          "snippet": "Set the modern bank-procedure approach to constructive notice."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Royal+Bank+of+Scotland+v+Etridge+%28No+2%29%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "originating authority",
+        "code": "ORIG",
+        "quote": "Set the modern bank-procedure approach to constructive notice.",
+        "note": "Set the modern bank-procedure approach to constructive notice."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "undue_influence_etridge",
+          "lineage_title": "Undue Influence: \"Etridge\"",
+          "position": 1,
+          "code": "ORIG",
+          "treatment": "originating authority",
+          "note": "Set the modern bank-procedure approach to constructive notice.",
+          "topic_ids": [
+            "topic:vitiating_factors:04:undue_influence"
+          ],
+          "topic_labels": [
+            "Undue Influence"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:li_sau_keung_v_bank_of_china_hong_kong_ltd",
+        "domain:vitiating_factors",
+        "source:curated_authority_lineages",
+        "topic:vitiating_factors:04:undue_influence"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:li_sau_keung_v_bank_of_china_hong_kong_ltd",
+      "label": "Li Sau Keung v Bank of China (Hong Kong) Ltd",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Undue Influence: \"Etridge\"'. Hong Kong follow-on application.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Undue Influence: \"Etridge\"",
+          "snippet": "Hong Kong follow-on application."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Li+Sau+Keung+v+Bank+of+China+%28Hong+Kong%29+Ltd%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "followed",
+        "code": "FLLW",
+        "quote": "Hong Kong follow-on application.",
+        "note": "Hong Kong follow-on application."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "undue_influence_etridge",
+          "lineage_title": "Undue Influence: \"Etridge\"",
+          "position": 2,
+          "code": "FLLW",
+          "treatment": "followed",
+          "note": "Hong Kong follow-on application.",
+          "topic_ids": [
+            "topic:vitiating_factors:04:undue_influence"
+          ],
+          "topic_labels": [
+            "Undue Influence"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:royal_bank_of_scotland_v_etridge_no_2",
+        "domain:vitiating_factors",
+        "source:curated_authority_lineages",
+        "topic:vitiating_factors:04:undue_influence"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:shum_kong_v_chan_man_fai",
+      "label": "Shum Kong v Chan Man-fai",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Unconscionability: \"Statutory\"'. Seminal Hong Kong interpretation of the Ordinance.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Unconscionability: \"Statutory\"",
+          "snippet": "Seminal Hong Kong interpretation of the Ordinance."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Shum+Kong+v+Chan+Man-fai%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "applied",
+        "code": "APPD",
+        "quote": "Seminal Hong Kong interpretation of the Ordinance.",
+        "note": "Seminal Hong Kong interpretation of the Ordinance."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "unconscionability_statutory",
+          "lineage_title": "Unconscionability: \"Statutory\"",
+          "position": 2,
+          "code": "APPD",
+          "treatment": "applied",
+          "note": "Seminal Hong Kong interpretation of the Ordinance.",
+          "topic_ids": [
+            "topic:vitiating_factors:05:unconscionability"
+          ],
+          "topic_labels": [
+            "Unconscionability"
+          ]
+        }
+      ],
+      "neighbors": [
+        "domain:vitiating_factors",
+        "source:curated_authority_lineages",
+        "statute:unconscionable_contracts_ordinance_cap_458",
+        "topic:vitiating_factors:05:unconscionability"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:hongkong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+      "label": "Hongkong Fir Shipping Co Ltd v Kawasaki Kisen Kaisha Ltd",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Breach and Termination: \"Intermediate Terms\"'. Foundational innominate-term authority with Hong Kong facts.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Breach and Termination: \"Intermediate Terms\"",
+          "snippet": "Foundational innominate-term authority with Hong Kong facts."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Hongkong+Fir+Shipping+Co+Ltd+v+Kawasaki+Kisen+Kaisha+Ltd%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "originating authority",
+        "code": "ORIG",
+        "quote": "Foundational innominate-term authority with Hong Kong facts.",
+        "note": "Foundational innominate-term authority with Hong Kong facts."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "intermediate_terms_hongkong_fir",
+          "lineage_title": "Breach and Termination: \"Intermediate Terms\"",
+          "position": 1,
+          "code": "ORIG",
+          "treatment": "originating authority",
+          "note": "Foundational innominate-term authority with Hong Kong facts.",
+          "topic_ids": [
+            "topic:contractual_terms:07:innominate_intermediate_terms"
+          ],
+          "topic_labels": [
+            "Innominate (Intermediate) Terms"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:billion_star_development_ltd_v_wong_tak_fai",
+        "domain:contractual_terms",
+        "source:curated_authority_lineages",
+        "topic:contractual_terms:07:innominate_intermediate_terms"
+      ],
+      "degree": 4
+    },
+    {
+      "id": "case:billion_star_development_ltd_v_wong_tak_fai",
+      "label": "Billion Star Development Ltd v Wong Tak-fai",
+      "type": "case",
+      "summary": "Curated authority in the lineage 'Breach and Termination: \"Intermediate Terms\"'. Modern Hong Kong application on termination rights.",
+      "references": [
+        {
+          "source_id": "source:curated_authority_lineages",
+          "source_label": "Curated Authority Lineages",
+          "source_kind": "note",
+          "location": "Breach and Termination: \"Intermediate Terms\"",
+          "snippet": "Modern Hong Kong application on termination rights."
+        }
+      ],
+      "links": [
+        {
+          "label": "Find on HKLII",
+          "url": "https://www.google.com/search?q=site%3Ahklii.hk+%22Billion+Star+Development+Ltd+v+Wong+Tak-fai%22"
+        }
+      ],
+      "metrics": {
+        "mentions": 0,
+        "sources": 1,
+        "lineages": 1
+      },
+      "case_profile": {
+        "treatment": "applied",
+        "code": "APPD",
+        "quote": "Modern Hong Kong application on termination rights.",
+        "note": "Modern Hong Kong application on termination rights."
+      },
+      "lineage_memberships": [
+        {
+          "lineage_id": "intermediate_terms_hongkong_fir",
+          "lineage_title": "Breach and Termination: \"Intermediate Terms\"",
+          "position": 2,
+          "code": "APPD",
+          "treatment": "applied",
+          "note": "Modern Hong Kong application on termination rights.",
+          "topic_ids": [
+            "topic:contractual_terms:07:innominate_intermediate_terms"
+          ],
+          "topic_labels": [
+            "Innominate (Intermediate) Terms"
+          ]
+        }
+      ],
+      "neighbors": [
+        "case:hongkong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+        "domain:contractual_terms",
+        "source:curated_authority_lineages",
+        "topic:contractual_terms:07:innominate_intermediate_terms"
+      ],
+      "degree": 4
     }
   ],
   "edges": [
@@ -46861,6 +48395,873 @@
       "type": "co_discussed",
       "weight": 2.0,
       "mentions": 2
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "ORIG",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:contractual_terms:01:express_terms_and_the_parol_evidence",
+      "target": "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+      "code": "ORIG",
+      "label": "originating authority"
+    },
+    {
+      "source": "domain:contractual_terms",
+      "target": "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "ORIG",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "FLLW",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:contractual_terms:01:express_terms_and_the_parol_evidence",
+      "target": "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+      "code": "FLLW",
+      "label": "adopted"
+    },
+    {
+      "source": "domain:contractual_terms",
+      "target": "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "FLLW",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:rainy_sky_sa_v_kookmin_bank",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "APPD",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:contractual_terms:01:express_terms_and_the_parol_evidence",
+      "target": "case:rainy_sky_sa_v_kookmin_bank",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+      "code": "APPD",
+      "label": "relevant authority"
+    },
+    {
+      "source": "domain:contractual_terms",
+      "target": "case:rainy_sky_sa_v_kookmin_bank",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "APPD",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:fully_profit_asia_ltd_v_secretary_for_justice",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "FLLW",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:contractual_terms:01:express_terms_and_the_parol_evidence",
+      "target": "case:fully_profit_asia_ltd_v_secretary_for_justice",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+      "code": "FLLW",
+      "label": "followed"
+    },
+    {
+      "source": "domain:contractual_terms",
+      "target": "case:fully_profit_asia_ltd_v_secretary_for_justice",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "FLLW",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:arnold_v_britton",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "DIST",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:contractual_terms:01:express_terms_and_the_parol_evidence",
+      "target": "case:arnold_v_britton",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+      "code": "DIST",
+      "label": "qualified"
+    },
+    {
+      "source": "domain:contractual_terms",
+      "target": "case:arnold_v_britton",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "DIST",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "APPD",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:contractual_terms:01:express_terms_and_the_parol_evidence",
+      "target": "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+      "code": "APPD",
+      "label": "applied"
+    },
+    {
+      "source": "domain:contractual_terms",
+      "target": "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "APPD",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:wood_v_capita",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "APPD",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:contractual_terms:01:express_terms_and_the_parol_evidence",
+      "target": "case:wood_v_capita",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+      "code": "APPD",
+      "label": "qualified"
+    },
+    {
+      "source": "domain:contractual_terms",
+      "target": "case:wood_v_capita",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "code": "APPD",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
+      "target": "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+      "code": "FLLW",
+      "label": "HK adoption"
+    },
+    {
+      "source": "case:rainy_sky_sa_v_kookmin_bank",
+      "target": "case:fully_profit_asia_ltd_v_secretary_for_justice",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+      "code": "FLLW",
+      "label": "followed in HK"
+    },
+    {
+      "source": "case:arnold_v_britton",
+      "target": "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+      "code": "APPD",
+      "label": "recent HK application"
+    },
+    {
+      "source": "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+      "target": "case:wood_v_capita",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "interpretation_context_text",
+      "lineage_title": "Contractual Interpretation: \"Context vs. Text\"",
+      "code": "APPD",
+      "label": "modern synthesis"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:stilk_v_myrick",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "code": "ORIG",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:formation_of_contract:04:consideration",
+      "target": "case:stilk_v_myrick",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+      "code": "ORIG",
+      "label": "originating authority"
+    },
+    {
+      "source": "domain:formation_of_contract",
+      "target": "case:stilk_v_myrick",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "code": "ORIG",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:williams_v_roffey_bros_nicholls",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "code": "APPD",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:formation_of_contract:04:consideration",
+      "target": "case:williams_v_roffey_bros_nicholls",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+      "code": "APPD",
+      "label": "qualified"
+    },
+    {
+      "source": "domain:formation_of_contract",
+      "target": "case:williams_v_roffey_bros_nicholls",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "code": "APPD",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:ubc_construction_ltd_v_sung_foo_kee_ltd",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "code": "FLLW",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:formation_of_contract:04:consideration",
+      "target": "case:ubc_construction_ltd_v_sung_foo_kee_ltd",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+      "code": "FLLW",
+      "label": "adopted"
+    },
+    {
+      "source": "domain:formation_of_contract",
+      "target": "case:ubc_construction_ltd_v_sung_foo_kee_ltd",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "code": "FLLW",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:re_selectmove",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "code": "DIST",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:formation_of_contract:04:consideration",
+      "target": "case:re_selectmove",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+      "code": "DIST",
+      "label": "qualified"
+    },
+    {
+      "source": "domain:formation_of_contract",
+      "target": "case:re_selectmove",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "code": "DIST",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:chong_cheng_lin_courtney_v_cathay_pacific_airways_ltd",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "code": "FLLW",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:formation_of_contract:04:consideration",
+      "target": "case:chong_cheng_lin_courtney_v_cathay_pacific_airways_ltd",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+      "code": "FLLW",
+      "label": "followed"
+    },
+    {
+      "source": "domain:formation_of_contract",
+      "target": "case:chong_cheng_lin_courtney_v_cathay_pacific_airways_ltd",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "code": "FLLW",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:mwb_business_exchange_centres_ltd_v_rock_advertising_ltd",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "code": "DIST",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:formation_of_contract:04:consideration",
+      "target": "case:mwb_business_exchange_centres_ltd_v_rock_advertising_ltd",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+      "code": "DIST",
+      "label": "relevant authority"
+    },
+    {
+      "source": "domain:formation_of_contract",
+      "target": "case:mwb_business_exchange_centres_ltd_v_rock_advertising_ltd",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "code": "DIST",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "case:stilk_v_myrick",
+      "target": "case:williams_v_roffey_bros_nicholls",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+      "code": "DIST",
+      "label": "modern exception"
+    },
+    {
+      "source": "case:williams_v_roffey_bros_nicholls",
+      "target": "case:ubc_construction_ltd_v_sung_foo_kee_ltd",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+      "code": "FLLW",
+      "label": "HK adoption"
+    },
+    {
+      "source": "case:re_selectmove",
+      "target": "case:chong_cheng_lin_courtney_v_cathay_pacific_airways_ltd",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+      "code": "FLLW",
+      "label": "HK limitation followed"
+    },
+    {
+      "source": "case:re_selectmove",
+      "target": "case:mwb_business_exchange_centres_ltd_v_rock_advertising_ltd",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "consideration_practical_benefit",
+      "lineage_title": "Consideration and Variations: \"Practical Benefit\"",
+      "code": "DIST",
+      "label": "continuing conflict"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:dunlop_pneumatic_tyre_co_ltd_v_new_garage_motor_co_ltd",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "code": "ORIG",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:remedies_for_breach:03:liquidated_damages_vs_penalties",
+      "target": "case:dunlop_pneumatic_tyre_co_ltd_v_new_garage_motor_co_ltd",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "lineage_title": "Penalty Clauses: \"Modern Test\"",
+      "code": "ORIG",
+      "label": "originating authority"
+    },
+    {
+      "source": "domain:remedies_for_breach",
+      "target": "case:dunlop_pneumatic_tyre_co_ltd_v_new_garage_motor_co_ltd",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "code": "ORIG",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:cavendish_square_holding_bv_v_el_makdessi",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "code": "APPD",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:remedies_for_breach:03:liquidated_damages_vs_penalties",
+      "target": "case:cavendish_square_holding_bv_v_el_makdessi",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "lineage_title": "Penalty Clauses: \"Modern Test\"",
+      "code": "APPD",
+      "label": "qualified"
+    },
+    {
+      "source": "domain:remedies_for_breach",
+      "target": "case:cavendish_square_holding_bv_v_el_makdessi",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "code": "APPD",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:law_ting_pong_secondary_school_v_chen_wai_mick",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "code": "FLLW",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:remedies_for_breach:03:liquidated_damages_vs_penalties",
+      "target": "case:law_ting_pong_secondary_school_v_chen_wai_mick",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "lineage_title": "Penalty Clauses: \"Modern Test\"",
+      "code": "FLLW",
+      "label": "adopted"
+    },
+    {
+      "source": "domain:remedies_for_breach",
+      "target": "case:law_ting_pong_secondary_school_v_chen_wai_mick",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "code": "FLLW",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:china_great_wall_amc_international_holdings_co_ltd_v_royal_inves",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "code": "APPD",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:remedies_for_breach:03:liquidated_damages_vs_penalties",
+      "target": "case:china_great_wall_amc_international_holdings_co_ltd_v_royal_inves",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "lineage_title": "Penalty Clauses: \"Modern Test\"",
+      "code": "APPD",
+      "label": "applied"
+    },
+    {
+      "source": "domain:remedies_for_breach",
+      "target": "case:china_great_wall_amc_international_holdings_co_ltd_v_royal_inves",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "code": "APPD",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "case:dunlop_pneumatic_tyre_co_ltd_v_new_garage_motor_co_ltd",
+      "target": "case:cavendish_square_holding_bv_v_el_makdessi",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "lineage_title": "Penalty Clauses: \"Modern Test\"",
+      "code": "DIST",
+      "label": "modernized test"
+    },
+    {
+      "source": "case:cavendish_square_holding_bv_v_el_makdessi",
+      "target": "case:law_ting_pong_secondary_school_v_chen_wai_mick",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "lineage_title": "Penalty Clauses: \"Modern Test\"",
+      "code": "FLLW",
+      "label": "HK adoption"
+    },
+    {
+      "source": "case:law_ting_pong_secondary_school_v_chen_wai_mick",
+      "target": "case:china_great_wall_amc_international_holdings_co_ltd_v_royal_inves",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "penalty_clauses_modern_test",
+      "lineage_title": "Penalty Clauses: \"Modern Test\"",
+      "code": "APPD",
+      "label": "further application"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:royal_bank_of_scotland_v_etridge_no_2",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "undue_influence_etridge",
+      "code": "ORIG",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:vitiating_factors:04:undue_influence",
+      "target": "case:royal_bank_of_scotland_v_etridge_no_2",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "undue_influence_etridge",
+      "lineage_title": "Undue Influence: \"Etridge\"",
+      "code": "ORIG",
+      "label": "originating authority"
+    },
+    {
+      "source": "domain:vitiating_factors",
+      "target": "case:royal_bank_of_scotland_v_etridge_no_2",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "undue_influence_etridge",
+      "code": "ORIG",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:li_sau_keung_v_bank_of_china_hong_kong_ltd",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "undue_influence_etridge",
+      "code": "FLLW",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:vitiating_factors:04:undue_influence",
+      "target": "case:li_sau_keung_v_bank_of_china_hong_kong_ltd",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "undue_influence_etridge",
+      "lineage_title": "Undue Influence: \"Etridge\"",
+      "code": "FLLW",
+      "label": "followed"
+    },
+    {
+      "source": "domain:vitiating_factors",
+      "target": "case:li_sau_keung_v_bank_of_china_hong_kong_ltd",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "undue_influence_etridge",
+      "code": "FLLW",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "case:royal_bank_of_scotland_v_etridge_no_2",
+      "target": "case:li_sau_keung_v_bank_of_china_hong_kong_ltd",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "undue_influence_etridge",
+      "lineage_title": "Undue Influence: \"Etridge\"",
+      "code": "FLLW",
+      "label": "followed in HK"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "statute:unconscionable_contracts_ordinance_cap_458",
+      "type": "discusses_statute",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "unconscionability_statutory",
+      "code": "CODI",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:vitiating_factors:05:unconscionability",
+      "target": "statute:unconscionable_contracts_ordinance_cap_458",
+      "type": "lineage_statute",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "unconscionability_statutory",
+      "lineage_title": "Unconscionability: \"Statutory\"",
+      "code": "CODI",
+      "label": "codified"
+    },
+    {
+      "source": "domain:vitiating_factors",
+      "target": "statute:unconscionable_contracts_ordinance_cap_458",
+      "type": "domain_statute",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "unconscionability_statutory",
+      "code": "CODI",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:shum_kong_v_chan_man_fai",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "unconscionability_statutory",
+      "code": "APPD",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:vitiating_factors:05:unconscionability",
+      "target": "case:shum_kong_v_chan_man_fai",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "unconscionability_statutory",
+      "lineage_title": "Unconscionability: \"Statutory\"",
+      "code": "APPD",
+      "label": "applied"
+    },
+    {
+      "source": "domain:vitiating_factors",
+      "target": "case:shum_kong_v_chan_man_fai",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "unconscionability_statutory",
+      "code": "APPD",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "statute:unconscionable_contracts_ordinance_cap_458",
+      "target": "case:shum_kong_v_chan_man_fai",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "unconscionability_statutory",
+      "lineage_title": "Unconscionability: \"Statutory\"",
+      "code": "APPD",
+      "label": "leading HK interpretation"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:hongkong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "intermediate_terms_hongkong_fir",
+      "code": "ORIG",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:contractual_terms:07:innominate_intermediate_terms",
+      "target": "case:hongkong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "intermediate_terms_hongkong_fir",
+      "lineage_title": "Breach and Termination: \"Intermediate Terms\"",
+      "code": "ORIG",
+      "label": "originating authority"
+    },
+    {
+      "source": "domain:contractual_terms",
+      "target": "case:hongkong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "intermediate_terms_hongkong_fir",
+      "code": "ORIG",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "source:curated_authority_lineages",
+      "target": "case:billion_star_development_ltd_v_wong_tak_fai",
+      "type": "discusses_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "intermediate_terms_hongkong_fir",
+      "code": "APPD",
+      "label": "curated lineage note"
+    },
+    {
+      "source": "topic:contractual_terms:07:innominate_intermediate_terms",
+      "target": "case:billion_star_development_ltd_v_wong_tak_fai",
+      "type": "lineage_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "intermediate_terms_hongkong_fir",
+      "lineage_title": "Breach and Termination: \"Intermediate Terms\"",
+      "code": "APPD",
+      "label": "applied"
+    },
+    {
+      "source": "domain:contractual_terms",
+      "target": "case:billion_star_development_ltd_v_wong_tak_fai",
+      "type": "domain_case",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "intermediate_terms_hongkong_fir",
+      "code": "APPD",
+      "label": "curated lineage branch"
+    },
+    {
+      "source": "case:hongkong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+      "target": "case:billion_star_development_ltd_v_wong_tak_fai",
+      "type": "lineage_step",
+      "weight": 1.0,
+      "mentions": 1,
+      "lineage_id": "intermediate_terms_hongkong_fir",
+      "lineage_title": "Breach and Termination: \"Intermediate Terms\"",
+      "code": "APPD",
+      "label": "modern HK application"
     }
   ]
 }

@@ -17,18 +17,342 @@
     {
       "label": "Ho  Halls Hong Kong Contract Law, Sixth Edition (Stephen Hall) (Z-Library)",
       "kind": "pdf"
+    },
+    {
+      "label": "Curated Authority Lineages",
+      "kind": "note"
     }
   ],
-  "source_count": 4,
+  "source_count": 5,
   "passage_count": 5530,
-  "node_count": 445,
-  "edge_count": 2833,
-  "retained_case_count": 311,
+  "node_count": 464,
+  "edge_count": 2916,
+  "retained_case_count": 329,
   "retained_statute_count": 20,
   "public_mode": true,
   "notes": [
     "This public export preserves graph structure and authority links.",
     "Third-party source snippets are replaced with bibliographic references.",
-    "Follow HKLII-oriented links for public primary materials."
-  ]
+    "Follow HKLII-oriented links for public primary materials.",
+    "Curated lineage paths add Hong Kong and UK authority sequences with FLLW, APPD, DIST, and CODI edges."
+  ],
+  "lineages": [
+    {
+      "id": "interpretation_context_text",
+      "title": "Contractual Interpretation: \"Context vs. Text\"",
+      "topic_ids": [
+        "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+      ],
+      "topic_labels": [
+        "Express Terms and the Parol Evidence Rule"
+      ],
+      "members": [
+        {
+          "node_id": "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
+          "label": "Investors Compensation Scheme Ltd v West Bromwich Building Society",
+          "type": "case",
+          "position": 1,
+          "code": "ORIG",
+          "treatment": "originating authority",
+          "note": "Originating UK authority for Lord Hoffmann's contextual principles."
+        },
+        {
+          "node_id": "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+          "label": "Sinoearn International Ltd v Hyundai-CCECC Joint Venture",
+          "type": "case",
+          "position": 2,
+          "code": "FLLW",
+          "treatment": "adopted",
+          "note": "Hong Kong CFA endorsement of the contextual approach."
+        },
+        {
+          "node_id": "case:rainy_sky_sa_v_kookmin_bank",
+          "label": "Rainy Sky SA v Kookmin Bank",
+          "type": "case",
+          "position": 3,
+          "code": "APPD",
+          "treatment": "relevant authority",
+          "note": "Commercial common-sense peak in the UK line."
+        },
+        {
+          "node_id": "case:fully_profit_asia_ltd_v_secretary_for_justice",
+          "label": "Fully Profit (Asia) Ltd v Secretary for Justice",
+          "type": "case",
+          "position": 4,
+          "code": "FLLW",
+          "treatment": "followed",
+          "note": "Hong Kong treatment following Rainy Sky."
+        },
+        {
+          "node_id": "case:arnold_v_britton",
+          "label": "Arnold v Britton",
+          "type": "case",
+          "position": 5,
+          "code": "DIST",
+          "treatment": "qualified",
+          "note": "Textualist correction emphasizing contractual language."
+        },
+        {
+          "node_id": "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
+          "label": "Sany Heavy Industry (HK) Ltd v Sany-Kenton (HK) Ltd",
+          "type": "case",
+          "position": 6,
+          "code": "APPD",
+          "treatment": "applied",
+          "note": "Recent Hong Kong application of the textualist correction."
+        },
+        {
+          "node_id": "case:wood_v_capita",
+          "label": "Wood v Capita",
+          "type": "case",
+          "position": 7,
+          "code": "APPD",
+          "treatment": "qualified",
+          "note": "Modern unitary synthesis balancing text and context."
+        }
+      ],
+      "codes": [
+        "APPD",
+        "DIST",
+        "FLLW",
+        "ORIG"
+      ]
+    },
+    {
+      "id": "consideration_practical_benefit",
+      "title": "Consideration and Variations: \"Practical Benefit\"",
+      "topic_ids": [
+        "topic:formation_of_contract:04:consideration"
+      ],
+      "topic_labels": [
+        "Consideration"
+      ],
+      "members": [
+        {
+          "node_id": "case:stilk_v_myrick",
+          "label": "Stilk v Myrick",
+          "type": "case",
+          "position": 1,
+          "code": "ORIG",
+          "treatment": "originating authority",
+          "note": "Traditional existing-duty rule."
+        },
+        {
+          "node_id": "case:williams_v_roffey_bros_nicholls",
+          "label": "Williams v Roffey Bros & Nicholls",
+          "type": "case",
+          "position": 2,
+          "code": "APPD",
+          "treatment": "qualified",
+          "note": "UK practical-benefit exception to the traditional rule."
+        },
+        {
+          "node_id": "case:ubc_construction_ltd_v_sung_foo_kee_ltd",
+          "label": "UBC (Construction) Ltd v Sung Foo Kee Ltd",
+          "type": "case",
+          "position": 3,
+          "code": "FLLW",
+          "treatment": "adopted",
+          "note": "Hong Kong adoption of Williams v Roffey."
+        },
+        {
+          "node_id": "case:re_selectmove",
+          "label": "Re Selectmove",
+          "type": "case",
+          "position": 4,
+          "code": "DIST",
+          "treatment": "qualified",
+          "note": "Refused to extend practical benefit to part-payment of debt."
+        },
+        {
+          "node_id": "case:chong_cheng_lin_courtney_v_cathay_pacific_airways_ltd",
+          "label": "Chong Cheng Lin Courtney v Cathay Pacific Airways Ltd",
+          "type": "case",
+          "position": 5,
+          "code": "FLLW",
+          "treatment": "followed",
+          "note": "Hong Kong follow-on treatment of the Selectmove limitation."
+        },
+        {
+          "node_id": "case:mwb_business_exchange_centres_ltd_v_rock_advertising_ltd",
+          "label": "MWB Business Exchange Centres Ltd v Rock Advertising Ltd",
+          "type": "case",
+          "position": 6,
+          "code": "DIST",
+          "treatment": "relevant authority",
+          "note": "Illustrates continuing caution in this area."
+        }
+      ],
+      "codes": [
+        "APPD",
+        "DIST",
+        "FLLW",
+        "ORIG"
+      ]
+    },
+    {
+      "id": "penalty_clauses_modern_test",
+      "title": "Penalty Clauses: \"Modern Test\"",
+      "topic_ids": [
+        "topic:remedies_for_breach:03:liquidated_damages_vs_penalties"
+      ],
+      "topic_labels": [
+        "Liquidated Damages vs. Penalties"
+      ],
+      "members": [
+        {
+          "node_id": "case:dunlop_pneumatic_tyre_co_ltd_v_new_garage_motor_co_ltd",
+          "label": "Dunlop Pneumatic Tyre Co Ltd v New Garage & Motor Co Ltd",
+          "type": "case",
+          "position": 1,
+          "code": "ORIG",
+          "treatment": "originating authority",
+          "note": "Classic genuine pre-estimate versus deterrent framing."
+        },
+        {
+          "node_id": "case:cavendish_square_holding_bv_v_el_makdessi",
+          "label": "Cavendish Square Holding BV v El Makdessi",
+          "type": "case",
+          "position": 2,
+          "code": "APPD",
+          "treatment": "qualified",
+          "note": "Modern legitimate-interest and proportionality test."
+        },
+        {
+          "node_id": "case:law_ting_pong_secondary_school_v_chen_wai_mick",
+          "label": "Law Ting Pong Secondary School v Chen Wai-mick",
+          "type": "case",
+          "position": 3,
+          "code": "FLLW",
+          "treatment": "adopted",
+          "note": "Hong Kong adoption of the Makdessi test."
+        },
+        {
+          "node_id": "case:china_great_wall_amc_international_holdings_co_ltd_v_royal_inves",
+          "label": "China Great Wall AMC (International) Holdings Co Ltd v Royal-Investment Group Corp",
+          "type": "case",
+          "position": 4,
+          "code": "APPD",
+          "treatment": "applied",
+          "note": "Hong Kong application refining the Law Ting Pong line."
+        }
+      ],
+      "codes": [
+        "APPD",
+        "FLLW",
+        "ORIG"
+      ]
+    },
+    {
+      "id": "undue_influence_etridge",
+      "title": "Undue Influence: \"Etridge\"",
+      "topic_ids": [
+        "topic:vitiating_factors:04:undue_influence"
+      ],
+      "topic_labels": [
+        "Undue Influence"
+      ],
+      "members": [
+        {
+          "node_id": "case:royal_bank_of_scotland_v_etridge_no_2",
+          "label": "Royal Bank of Scotland v Etridge (No 2)",
+          "type": "case",
+          "position": 1,
+          "code": "ORIG",
+          "treatment": "originating authority",
+          "note": "Set the modern bank-procedure approach to constructive notice."
+        },
+        {
+          "node_id": "case:li_sau_keung_v_bank_of_china_hong_kong_ltd",
+          "label": "Li Sau Keung v Bank of China (Hong Kong) Ltd",
+          "type": "case",
+          "position": 2,
+          "code": "FLLW",
+          "treatment": "followed",
+          "note": "Hong Kong follow-on application."
+        }
+      ],
+      "codes": [
+        "FLLW",
+        "ORIG"
+      ]
+    },
+    {
+      "id": "unconscionability_statutory",
+      "title": "Unconscionability: \"Statutory\"",
+      "topic_ids": [
+        "topic:vitiating_factors:05:unconscionability"
+      ],
+      "topic_labels": [
+        "Unconscionability"
+      ],
+      "members": [
+        {
+          "node_id": "statute:unconscionable_contracts_ordinance_cap_458",
+          "label": "Unconscionable Contracts Ordinance (Cap. 458)",
+          "type": "statute",
+          "position": 1,
+          "code": "CODI",
+          "treatment": "codified",
+          "note": "Statutory foundation of the Hong Kong doctrine."
+        },
+        {
+          "node_id": "case:shum_kong_v_chan_man_fai",
+          "label": "Shum Kong v Chan Man-fai",
+          "type": "case",
+          "position": 2,
+          "code": "APPD",
+          "treatment": "applied",
+          "note": "Seminal Hong Kong interpretation of the Ordinance."
+        }
+      ],
+      "codes": [
+        "APPD",
+        "CODI"
+      ]
+    },
+    {
+      "id": "intermediate_terms_hongkong_fir",
+      "title": "Breach and Termination: \"Intermediate Terms\"",
+      "topic_ids": [
+        "topic:contractual_terms:07:innominate_intermediate_terms"
+      ],
+      "topic_labels": [
+        "Innominate (Intermediate) Terms"
+      ],
+      "members": [
+        {
+          "node_id": "case:hongkong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+          "label": "Hongkong Fir Shipping Co Ltd v Kawasaki Kisen Kaisha Ltd",
+          "type": "case",
+          "position": 1,
+          "code": "ORIG",
+          "treatment": "originating authority",
+          "note": "Foundational innominate-term authority with Hong Kong facts."
+        },
+        {
+          "node_id": "case:billion_star_development_ltd_v_wong_tak_fai",
+          "label": "Billion Star Development Ltd v Wong Tak-fai",
+          "type": "case",
+          "position": 2,
+          "code": "APPD",
+          "treatment": "applied",
+          "note": "Modern Hong Kong application on termination rights."
+        }
+      ],
+      "codes": [
+        "APPD",
+        "ORIG"
+      ]
+    }
+  ],
+  "curated_lineage_count": 6,
+  "lineage_codes": {
+    "CODI": "Codified by Hong Kong ordinance",
+    "APPD": "Applied on the same principle",
+    "FLLW": "Followed or adopted in Hong Kong",
+    "DIST": "Distinguished or qualified",
+    "DPRT": "Departed from prior authority",
+    "ORIG": "Originating authority in the lineage"
+  }
 }
