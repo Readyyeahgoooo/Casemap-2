@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 
 from .graphrag import RerankedRetriever, build_artifacts
+from .relationship_graph import build_relationship_artifacts
 
 
 def build_command(args: argparse.Namespace) -> int:
@@ -31,6 +31,17 @@ def query_command(args: argparse.Namespace) -> int:
     return 0
 
 
+def build_relationships_command(args: argparse.Namespace) -> int:
+    manifest = build_relationship_artifacts(
+        taxonomy_docx_path=args.taxonomy,
+        source_paths=args.source,
+        output_dir=args.output_dir,
+        title=args.title,
+    )
+    print(json.dumps(manifest, indent=2, ensure_ascii=False))
+    return 0
+
+
 def parser() -> argparse.ArgumentParser:
     main_parser = argparse.ArgumentParser(description="Casemap MVP GraphRAG pipeline")
     subparsers = main_parser.add_subparsers(dest="command", required=True)
@@ -47,6 +58,25 @@ def parser() -> argparse.ArgumentParser:
     query_parser.add_argument("--top-k", type=int, default=5, help="Number of results to return")
     query_parser.add_argument("--json", action="store_true", dest="as_json", help="Print JSON output")
     query_parser.set_defaults(func=query_command)
+
+    relationship_parser = subparsers.add_parser(
+        "build-relationships",
+        help="Build a richer multi-source relationship graph from a taxonomy docx and supporting sources",
+    )
+    relationship_parser.add_argument("--taxonomy", required=True, help="Primary taxonomy .docx path")
+    relationship_parser.add_argument(
+        "--source",
+        action="append",
+        default=[],
+        help="Supplemental source path. Repeat for each .pdf or .docx source.",
+    )
+    relationship_parser.add_argument("--output-dir", required=True, help="Directory for generated artifacts")
+    relationship_parser.add_argument(
+        "--title",
+        default="Hong Kong Contract Law Relationship Graph",
+        help="Display title for the generated graph",
+    )
+    relationship_parser.set_defaults(func=build_relationships_command)
 
     return main_parser
 

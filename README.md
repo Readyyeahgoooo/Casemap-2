@@ -1,6 +1,10 @@
 # Casemap-
 
-Casemap- is a dependency-light MVP for turning `Contract big .docx` into a legal GraphRAG knowledge map. It builds a typed graph of sections, concepts, statutes, and cases; creates retrieval chunks; reranks search results with graph context; and writes an interactive HTML map you can open locally.
+Casemap- is a dependency-light MVP for turning Hong Kong contract-law materials into a legal GraphRAG knowledge map. It supports:
+
+- a document-level GraphRAG build from `Contract big .docx`
+- a richer multi-source relationship graph that combines `Contract big .docx` with local `.pdf` textbooks
+- a Vercel-ready read-only viewer for the committed sample artifact
 
 ## What It Produces
 
@@ -34,15 +38,31 @@ PYTHONPATH=src python3 -m casemap query \
   --top-k 5
 ```
 
+Build the richer relationship graph from a taxonomy docx plus supporting books:
+
+```bash
+cd /Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-
+PYTHONPATH=src .venv/bin/python -m casemap build-relationships \
+  --taxonomy "/absolute/path/to/Contract big .docx" \
+  --source "/absolute/path/to/Butterworths Hong Kong Contract Law Handbook.pdf" \
+  --source "/absolute/path/to/Contract Law in Hong Kong.pdf" \
+  --source "/absolute/path/to/Ho  Halls Hong Kong Contract Law.pdf" \
+  --output-dir artifacts/hk_contract_relationship
+```
+
+Open `artifacts/hk_contract_relationship/relationship_map.html` in a browser.
+
 ## Design
 
-This MVP avoids external Python dependencies so it can run cleanly in a minimal environment:
+The project stays light on dependencies:
 
 - `.docx` parsing uses the Office XML inside the archive
+- `.pdf` parsing uses `pypdf`
 - graph building uses heuristics over headings, concept labels, statutes, and case references
 - retrieval uses a TF-IDF style lexical score
 - reranking boosts graph neighbors, cited authorities, and structurally central nodes
-- the viewer is a static HTML file with inline data and client-side interactions
+- the relationship graph attaches source passages, page references, and HKLII-oriented external links
+- both viewers are static HTML files with inline data and client-side interactions
 
 ## Vercel Deployment
 
@@ -55,6 +75,10 @@ Vercel's Python runtime requires a top-level ASGI or WSGI application named `app
 
 The committed sample artifacts under `artifacts/contract_big/` let Vercel serve the MVP without access to the original `.docx` file.
 
+## Local-Only Sources
+
+If you enrich the graph with third-party textbooks or other licensed material, keep the generated artifacts local unless you have clear rights to publish them. The repository is set up so the committed public artifact remains the `Contract big` sample, while book-derived outputs can stay untracked under `artifacts/`.
+
 ## Project Layout
 
 ```text
@@ -64,6 +88,8 @@ Casemap-/
     __main__.py
     docx_parser.py
     graphrag.py
+    relationship_graph.py
+    source_parser.py
     viewer.py
   artifacts/
   pyproject.toml
