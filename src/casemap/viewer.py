@@ -1837,6 +1837,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       color: var(--ink);
       cursor: pointer;
       box-shadow: var(--shadow-soft);
+      touch-action: manipulation;
     }
 
     .results {
@@ -1909,15 +1910,10 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       padding: 14px 15px;
       text-align: left;
       cursor: pointer;
-      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+      touch-action: manipulation;
       font: inherit;
       color: var(--ink);
-    }
-
-    .tree-node:hover {
-      transform: translateY(-2px);
-      border-color: var(--line-strong);
-      box-shadow: 0 20px 44px rgba(16, 18, 22, 0.08);
     }
 
     .tree-node.active {
@@ -2166,6 +2162,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
 
     .data-list li.clickable {
       cursor: pointer;
+      touch-action: manipulation;
     }
 
     .list-meta {
@@ -2187,6 +2184,13 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
 
     a:hover {
       border-color: rgba(16, 18, 22, 0.36);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .tree-node:hover {
+        border-color: var(--line-strong);
+        box-shadow: 0 20px 44px rgba(16, 18, 22, 0.08);
+      }
     }
 
     @media (max-width: 1120px) {
@@ -2266,6 +2270,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     const lineageList = document.getElementById("lineageList");
     const referenceList = document.getElementById("referenceList");
     const neighborList = document.getElementById("neighborList");
+    const hoverPreviewEnabled = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
     const domains = nodes
       .filter((node) => node.type === "domain")
@@ -2425,8 +2430,10 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     }
 
     function bindNodeInteractions(element, node) {
-      element.addEventListener("mouseenter", () => renderDetails(node, true));
-      element.addEventListener("mouseleave", () => renderDetails(getNode(state.selectedNodeId) || rootNode));
+      if (hoverPreviewEnabled) {
+        element.addEventListener("mouseenter", () => renderDetails(node, true));
+        element.addEventListener("mouseleave", () => renderDetails(getNode(state.selectedNodeId) || rootNode));
+      }
       element.addEventListener("click", () => {
         setSelection(node);
         render();
