@@ -323,6 +323,13 @@ def _build_public_case_profile(node: dict) -> dict:
     }
 
 
+def _clean_public_source_label(value: str) -> str:
+    cleaned = value.replace("_", " ").strip()
+    cleaned = re.sub(r"\s*\(?(?:Z[- ]?Library)\)?\s*", " ", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"\s{2,}", " ", cleaned)
+    return cleaned.strip(" -_,")
+
+
 def _lineage_authority_type(label: str) -> str:
     lowered = label.lower()
     if "ordinance" in lowered or "(cap." in lowered:
@@ -654,12 +661,21 @@ def _augment_public_payload_with_lineages(public_payload: dict) -> None:
 
 
 def export_public_relationship_payload(payload: dict, title: str | None = None) -> dict:
+    source_id_map: dict[str, str] = {}
+    source_label_map: dict[str, str] = {}
+    for node in payload["nodes"]:
+        if node["type"] != "source":
+            continue
+        clean_label = _clean_public_source_label(node["label"])
+        source_label_map[node["id"]] = clean_label
+        source_id_map[node["id"]] = f"source:{slugify(clean_label)}"
+
     public_payload = {
         "meta": {
             "title": title or payload["meta"]["title"],
             "generated_at": payload["meta"]["generated_at"],
             "source_documents": [
-                {"label": source["label"], "kind": source["kind"]}
+                {"label": _clean_public_source_label(source["label"]), "kind": source["kind"]}
                 for source in payload["meta"].get("source_documents", [])
             ],
             "source_count": payload["meta"]["source_count"],
@@ -676,26 +692,40 @@ def export_public_relationship_payload(payload: dict, title: str | None = None) 
             ],
         },
         "nodes": [],
-        "edges": [dict(edge) for edge in payload["edges"]],
+        "edges": [
+            {
+                **dict(edge),
+                "source": source_id_map.get(edge["source"], edge["source"]),
+                "target": source_id_map.get(edge["target"], edge["target"]),
+            }
+            for edge in payload["edges"]
+        ],
     }
 
     node_lookup = {node["id"]: node for node in payload["nodes"]}
 
     for node in payload["nodes"]:
         public_node = dict(node)
+        if node["type"] == "source":
+            public_node["id"] = source_id_map.get(node["id"], node["id"])
+            public_node["label"] = source_label_map.get(node["id"], node["label"])
         public_references = []
         for reference in node.get("references", []):
             is_user_note = reference.get("source_kind") == "docx"
+            clean_source_label = source_label_map.get(
+                reference["source_id"],
+                _clean_public_source_label(reference["source_label"]),
+            )
             public_references.append(
                 {
-                    "source_id": reference["source_id"],
-                    "source_label": reference["source_label"],
+                    "source_id": source_id_map.get(reference["source_id"], reference["source_id"]),
+                    "source_label": clean_source_label,
                     "source_kind": reference.get("source_kind", "unknown"),
                     "location": reference["location"],
                     "snippet": (
                         reference["snippet"]
                         if is_user_note
-                        else f"Referenced in {reference['source_label']} ({reference['location']}). Full passage omitted in public deployment."
+                        else f"Referenced in {clean_source_label} ({reference['location']}). Full passage omitted in public deployment."
                     ),
                 }
             )

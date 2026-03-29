@@ -36,7 +36,10 @@ class Passage:
 
 
 def _label_from_path(path: Path) -> str:
-    return path.stem.replace("_", " ").strip()
+    label = path.stem.replace("_", " ").strip()
+    label = re.sub(r"\s*\(?(?:Z[- ]?Library)\)?\s*", " ", label, flags=re.IGNORECASE)
+    label = re.sub(r"\s{2,}", " ", label)
+    return label.strip(" -_,")
 
 
 def _normalize_text(text: str) -> str:
