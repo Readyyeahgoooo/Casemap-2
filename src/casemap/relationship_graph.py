@@ -21,7 +21,7 @@ from .graphrag import (
     top_keywords,
 )
 from .source_parser import Passage, SourceDocument, load_source_document
-from .viewer import render_relationship_map, render_relationship_tree
+from .viewer import render_relationship_family_tree, render_relationship_map, render_relationship_tree
 
 CASE_SEARCH_TEMPLATE = 'https://www.google.com/search?q={query}'
 CASE_NAME_CONNECTORS = {
@@ -288,9 +288,38 @@ def _write_relationship_payload(payload: dict, output_path: Path) -> dict:
 
     graph_file.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     viewer_file.write_text(render_relationship_map(payload), encoding="utf-8")
-    tree_file.write_text(render_relationship_tree(payload), encoding="utf-8")
+    tree_file.write_text(render_relationship_family_tree(payload), encoding="utf-8")
     manifest_file.write_text(json.dumps(payload["meta"], indent=2, ensure_ascii=False), encoding="utf-8")
     return payload["meta"]
+
+
+def _infer_treatment_label(text: str) -> str:
+    lowered = text.lower()
+    if any(marker in lowered for marker in ("not adopted", "not adopt", "declined", "not followed", "rejected")):
+        return "not adopted"
+    if any(marker in lowered for marker in ("qualified", "distinguished", "limited", "refined")):
+        return "qualified"
+    if any(marker in lowered for marker in ("adopted", "followed", "applied", "affirmed", "accepted")):
+        return "adopted"
+    return "relevant authority"
+
+
+def _build_public_case_profile(node: dict) -> dict:
+    references = node.get("references", [])
+    docx_reference = next((reference for reference in references if reference.get("source_kind") == "docx"), None)
+    treatment_basis = ""
+    if docx_reference:
+        treatment_basis = docx_reference.get("snippet", "")
+    elif node.get("summary"):
+        treatment_basis = node["summary"]
+    treatment = _infer_treatment_label(treatment_basis)
+    quote = ""
+    if docx_reference and docx_reference.get("snippet"):
+        quote = docx_reference["snippet"]
+    return {
+        "treatment": treatment,
+        "quote": quote,
+    }
 
 
 def export_public_relationship_payload(payload: dict, title: str | None = None) -> dict:
@@ -323,16 +352,23 @@ def export_public_relationship_payload(payload: dict, title: str | None = None) 
 
     for node in payload["nodes"]:
         public_node = dict(node)
-        public_node["references"] = [
-            {
-                "source_id": reference["source_id"],
-                "source_label": reference["source_label"],
-                "source_kind": reference.get("source_kind", "unknown"),
-                "location": reference["location"],
-                "snippet": f"Referenced in {reference['source_label']} ({reference['location']}). Full passage omitted in public deployment.",
-            }
-            for reference in node.get("references", [])
-        ]
+        public_references = []
+        for reference in node.get("references", []):
+            is_user_note = reference.get("source_kind") == "docx"
+            public_references.append(
+                {
+                    "source_id": reference["source_id"],
+                    "source_label": reference["source_label"],
+                    "source_kind": reference.get("source_kind", "unknown"),
+                    "location": reference["location"],
+                    "snippet": (
+                        reference["snippet"]
+                        if is_user_note
+                        else f"Referenced in {reference['source_label']} ({reference['location']}). Full passage omitted in public deployment."
+                    ),
+                }
+            )
+        public_node["references"] = public_references
 
         if node["type"] == "source":
             kind = node.get("metrics", {}).get("kind", "source").upper()
@@ -353,6 +389,9 @@ def export_public_relationship_payload(payload: dict, title: str | None = None) 
             public_node["summary"] = node.get("summary", "")
         elif node["type"] == "domain":
             public_node["summary"] = node.get("summary", "")
+
+        if node["type"] == "case":
+            public_node["case_profile"] = _build_public_case_profile(node)
 
         public_payload["nodes"].append(public_node)
 
