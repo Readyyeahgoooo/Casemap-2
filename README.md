@@ -10,6 +10,8 @@ Casemap- is a dependency-light MVP for turning `Contract big .docx` into a legal
 - `sample_queries.json`: example reranked retrieval output
 - `knowledge_map.html`: interactive local viewer
 
+The repository also includes a Vercel-ready `app.py` WSGI entrypoint. When deployed, it serves the knowledge map at `/` and lightweight JSON endpoints such as `/api/manifest`, `/api/sample-queries`, and `/api/query?q=...`.
+
 ## Quick Start
 
 ```bash
@@ -41,6 +43,17 @@ This MVP avoids external Python dependencies so it can run cleanly in a minimal 
 - retrieval uses a TF-IDF style lexical score
 - reranking boosts graph neighbors, cited authorities, and structurally central nodes
 - the viewer is a static HTML file with inline data and client-side interactions
+
+## Vercel Deployment
+
+Vercel's Python runtime requires a top-level ASGI or WSGI application named `app` in files such as `app.py`. This repo ships a root `app.py` that:
+
+- serves the built map at `/`
+- exposes `GET /api/manifest`
+- exposes `GET /api/sample-queries`
+- exposes `GET /api/query?q=third+party+rights&top_k=5`
+
+The committed sample artifacts under `artifacts/contract_big/` let Vercel serve the MVP without access to the original `.docx` file.
 
 ## Project Layout
 

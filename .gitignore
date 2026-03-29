@@ -2,4 +2,10 @@
 .venv/
 __pycache__/
 *.pyc
-artifacts/
+artifacts/*
+!artifacts/contract_big/
+!artifacts/contract_big/chunks.json
+!artifacts/contract_big/graph.json
+!artifacts/contract_big/knowledge_map.html
+!artifacts/contract_big/manifest.json
+!artifacts/contract_big/sample_queries.json

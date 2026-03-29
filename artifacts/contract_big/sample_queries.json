@@ -1,0 +1,498 @@
+{
+  "When can a third party enforce a contract term?": [
+    {
+      "rank": 1,
+      "chunk_id": "chunk:privity_of_contract:02",
+      "score": 0.8409,
+      "score_breakdown": {
+        "lexical": 1.0,
+        "graph": 0.8803,
+        "authority": 0.0,
+        "centrality": 0.0157
+      },
+      "section": "Privity of Contract",
+      "title": "Statutory Exceptions",
+      "text": "Statutory Exceptions: The Contracts (Rights of Third Parties) Ordinance (Cap. 623) provides a major exception, allowing a third party to enforce a contractual term if the contract expressly provides that they may do so, or if the term purports to confer a benefit on the third party, provided the third party is expressly identified.",
+      "citations": [
+        "The Contracts (Rights of Third Parties) Ordinance (Cap. 623)"
+      ],
+      "keywords": [
+        "third",
+        "statutory",
+        "exceptions",
+        "provides",
+        "term",
+        "expressly"
+      ],
+      "graph_neighbors": [
+        "General Rule",
+        "Tweddle v Atkinson; Contracts (Rights of Third Parties)",
+        "Privity of Contract",
+        "The Contracts (Rights of Third Parties) Ordinance (Cap. 623)"
+      ]
+    },
+    {
+      "rank": 2,
+      "chunk_id": "chunk:restitution_and_unjust_enrichment:74",
+      "score": 0.7996,
+      "score_breakdown": {
+        "lexical": 0.8843,
+        "graph": 1.0,
+        "authority": 0.0,
+        "centrality": 0.0276
+      },
+      "section": "Restitution and Unjust Enrichment",
+      "title": "Tweddle v Atkinson; Contracts (Rights of Third Parties)",
+      "text": "Tweddle v Atkinson; Contracts (Rights of Third Parties) Ordinance (Cap. 623)",
+      "citations": [
+        "Contracts (Rights of Third Parties) Ordinance (Cap. 623)",
+        "Tweddle v Atkinson"
+      ],
+      "keywords": [
+        "tweddle",
+        "atkinson",
+        "rights",
+        "third",
+        "parties)",
+        "ordinance"
+      ],
+      "graph_neighbors": [
+        "Tweddle v Atkinson",
+        "Tweddle v Atkinson & Dunlop Pneumatic Tyre Co",
+        "Statutory Exceptions",
+        "Privity of Contract",
+        "Conflict of Laws",
+        "Restitution and Unjust Enrichment",
+        "Contracts (Rights of Third Parties) Ordinance (Cap. 623)"
+      ]
+    },
+    {
+      "rank": 3,
+      "chunk_id": "chunk:restitution_and_unjust_enrichment:12",
+      "score": 0.3037,
+      "score_breakdown": {
+        "lexical": 0.1768,
+        "graph": 0.7717,
+        "authority": 0.0,
+        "centrality": 0.0236
+      },
+      "section": "Restitution and Unjust Enrichment",
+      "title": "Brinkibon Ltd v Stahag Stahl [1983]",
+      "text": "Brinkibon Ltd v Stahag Stahl [1983]: For instantaneous electronic communications (telex/fax), acceptance is effective where and when it is received. (Requires retrieval)",
+      "citations": [
+        "Brinkibon Ltd v Stahag Stahl"
+      ],
+      "keywords": [
+        "brinkibon",
+        "ltd",
+        "stahag",
+        "stahl",
+        "instantaneous",
+        "electronic"
+      ],
+      "graph_neighbors": [
+        "Brinkibon Ltd v Stahag Stahl",
+        "Communication of Acceptance",
+        "Brinkibon Ltd v Stahag Stahl",
+        "Adams v Lindsell (1818)",
+        "Electronic Transactions Ordinance (Cap. 553) s.17",
+        "Restitution and Unjust Enrichment"
+      ]
+    },
+    {
+      "rank": 4,
+      "chunk_id": "chunk:restitution_and_unjust_enrichment:46",
+      "score": 0.2982,
+      "score_breakdown": {
+        "lexical": 0.2033,
+        "graph": 0.6847,
+        "authority": 0.0,
+        "centrality": 0.0197
+      },
+      "section": "Restitution and Unjust Enrichment",
+      "title": "Officious bystander test",
+      "text": "Officious bystander test: A term may be implied if it is so obvious that \"it goes without saying\" that both parties would have agreed to it had an officious bystander suggested it",
+      "citations": [],
+      "keywords": [
+        "officious",
+        "bystander",
+        "test",
+        "term",
+        "implied",
+        "so"
+      ],
+      "graph_neighbors": [
+        "BP Refinery (Westernport) Pty Ltd v Shire of Hastings",
+        "Implied Terms",
+        "Yifung Developments Ltd v Liu Chi Keung Ricky [2016] HKCFI 678",
+        "Statutory Implied Terms",
+        "Restitution and Unjust Enrichment"
+      ]
+    },
+    {
+      "rank": 5,
+      "chunk_id": "chunk:restitution_and_unjust_enrichment:47",
+      "score": 0.2701,
+      "score_breakdown": {
+        "lexical": 0.1681,
+        "graph": 0.6587,
+        "authority": 0.0,
+        "centrality": 0.0236
+      },
+      "section": "Restitution and Unjust Enrichment",
+      "title": "Statutory Implied Terms",
+      "text": "Statutory Implied Terms",
+      "citations": [],
+      "keywords": [
+        "statutory",
+        "implied",
+        "terms"
+      ],
+      "graph_neighbors": [
+        "Implied Terms",
+        "Statutory Implied Terms",
+        "Classification of Terms",
+        "Officious bystander test",
+        "Sale of Goods Ordinance (Cap. 26)",
+        "Restitution and Unjust Enrichment"
+      ]
+    }
+  ],
+  "How are exemption clauses controlled?": [
+    {
+      "rank": 1,
+      "chunk_id": "chunk:contractual_terms:08",
+      "score": 0.8131,
+      "score_breakdown": {
+        "lexical": 1.0,
+        "graph": 0.7685,
+        "authority": 0.0,
+        "centrality": 0.0197
+      },
+      "section": "Contractual Terms",
+      "title": "Exemption Clauses",
+      "text": "Exemption Clauses: Clauses attempting to exclude or restrict liability are construed strictly against the party relying on them (the contra proferentem rule).",
+      "citations": [],
+      "keywords": [
+        "clauses",
+        "exemption",
+        "attempting",
+        "exclude",
+        "restrict",
+        "liability"
+      ],
+      "graph_neighbors": [
+        "Innominate (Intermediate) Terms",
+        "Statutory Control of Exemption Clauses",
+        "Control of Exemption Clauses Ordinance (Cap. 71) s.7(1)",
+        "Control of Exemption Clauses Ordinance (Cap. 71) s.7(2)",
+        "Contractual Terms"
+      ]
+    },
+    {
+      "rank": 2,
+      "chunk_id": "chunk:restitution_and_unjust_enrichment:50",
+      "score": 0.6517,
+      "score_breakdown": {
+        "lexical": 0.6444,
+        "graph": 1.0,
+        "authority": 0.0,
+        "centrality": 0.0433
+      },
+      "section": "Restitution and Unjust Enrichment",
+      "title": "Control of Exemption Clauses Ordinance (Cap. 71) s.7(2)",
+      "text": "Control of Exemption Clauses Ordinance (Cap. 71) s.7(2): For property damage caused by negligence, an exemption clause is only effective if it satisfies the requirement of reasonableness",
+      "citations": [
+        "Control of Exemption Clauses Ordinance (Cap. 71)"
+      ],
+      "keywords": [
+        "exemption",
+        "control",
+        "clauses",
+        "ordinance",
+        "cap",
+        "71)"
+      ],
+      "graph_neighbors": [
+        "Exemption Clauses",
+        "Statutory Control of Exemption Clauses",
+        "Data Privacy in Contracts",
+        "Arbitration",
+        "Mediation",
+        "Control of Exemption Clauses Ordinance (Cap. 71) s.7(1)",
+        "Identified Gaps Requiring Direct HKLII Retrieval",
+        "Sale of Goods and Services"
+      ]
+    },
+    {
+      "rank": 3,
+      "chunk_id": "chunk:restitution_and_unjust_enrichment:49",
+      "score": 0.5953,
+      "score_breakdown": {
+        "lexical": 0.5534,
+        "graph": 1.0,
+        "authority": 0.0,
+        "centrality": 0.0433
+      },
+      "section": "Restitution and Unjust Enrichment",
+      "title": "Control of Exemption Clauses Ordinance (Cap. 71) s.7(1)",
+      "text": "Control of Exemption Clauses Ordinance (Cap. 71) s.7(1): Provides that liability for death or personal injury resulting from negligence cannot be excluded or restricted",
+      "citations": [
+        "Control of Exemption Clauses Ordinance (Cap. 71)"
+      ],
+      "keywords": [
+        "control",
+        "exemption",
+        "clauses",
+        "ordinance",
+        "cap",
+        "71)"
+      ],
+      "graph_neighbors": [
+        "Exemption Clauses",
+        "Statutory Control of Exemption Clauses",
+        "Data Privacy in Contracts",
+        "Arbitration",
+        "Mediation",
+        "Sale of Goods Ordinance (Cap. 26)",
+        "Control of Exemption Clauses Ordinance (Cap. 71) s.7(2)",
+        "Sale of Goods and Services"
+      ]
+    },
+    {
+      "rank": 4,
+      "chunk_id": "chunk:contractual_terms:09",
+      "score": 0.5087,
+      "score_breakdown": {
+        "lexical": 0.509,
+        "graph": 0.7685,
+        "authority": 0.0,
+        "centrality": 0.0197
+      },
+      "section": "Contractual Terms",
+      "title": "Statutory Control of Exemption Clauses",
+      "text": "Statutory Control of Exemption Clauses: Under the Control of Exemption Clauses Ordinance (Cap. 71), a party cannot exclude liability for death or personal injury resulting from negligence. Excluding other negligence liability, or liability for breach of contract when dealing on standard terms or with a consumer, is only valid if the clause satisfies the statutory test of \"reasonableness\".",
+      "citations": [
+        "Under the Control of Exemption Clauses Ordinance (Cap. 71)"
+      ],
+      "keywords": [
+        "statutory",
+        "control",
+        "exemption",
+        "clauses",
+        "liability",
+        "negligence"
+      ],
+      "graph_neighbors": [
+        "Exemption Clauses",
+        "Control of Exemption Clauses Ordinance (Cap. 71) s.7(1)",
+        "Control of Exemption Clauses Ordinance (Cap. 71) s.7(2)",
+        "Contractual Terms",
+        "Under the Control of Exemption Clauses Ordinance (Cap. 71)"
+      ]
+    },
+    {
+      "rank": 5,
+      "chunk_id": "chunk:specific_types_of_contracts_specialized_domains:01",
+      "score": 0.2564,
+      "score_breakdown": {
+        "lexical": 0.0915,
+        "graph": 0.7861,
+        "authority": 0.0,
+        "centrality": 0.063
+      },
+      "section": "Specific Types of Contracts (Specialized Domains)",
+      "title": "Sale of Goods and Services",
+      "text": "Sale of Goods and Services: Contracts are governed by the Sale of Goods Ordinance (Cap. 26) and the Supply of Services (Implied Terms) Ordinance (Cap. 457), which imply strict conditions regarding title, description, merchantable quality, and reasonable care and skill. Key sub-topics include the passing of property/title, the nemo dat rule (a seller cannot pass better title than they have), and retention of title (Romalpa) clauses.",
+      "citations": [
+        "Contracts are governed by the Sale of Goods Ordinance (Cap. 26) and the Supply of Services (Implied Terms) Ordinance (Cap. 457)"
+      ],
+      "keywords": [
+        "title",
+        "sale",
+        "goods",
+        "services",
+        "ordinance",
+        "cap"
+      ],
+      "graph_neighbors": [
+        "Statutory Implied Terms",
+        "Data Privacy in Contracts",
+        "Arbitration",
+        "Mediation",
+        "Electronic Transactions Ordinance (Cap. 553) s.17",
+        "Conveyancing and Property Ordinance (Cap. 219) s.3(1)",
+        "Sale of Goods Ordinance (Cap. 26)",
+        "Control of Exemption Clauses Ordinance (Cap. 71) s.7(1)"
+      ]
+    }
+  ],
+  "What formalities apply to land sale contracts?": [
+    {
+      "rank": 1,
+      "chunk_id": "chunk:specific_types_of_contracts_specialized_domains:02",
+      "score": 0.735,
+      "score_breakdown": {
+        "lexical": 1.0,
+        "graph": 0.4554,
+        "authority": 0.0,
+        "centrality": 0.0236
+      },
+      "section": "Specific Types of Contracts (Specialized Domains)",
+      "title": "Sale of Land and Leases",
+      "text": "Sale of Land and Leases: Contracts for the sale or disposition of land must be evidenced in writing under section 3(1) of the Conveyancing and Property Ordinance (Cap. 219), subject to the equitable doctrine of part performance. The framework should map Provisional Agreements for Sale and Purchase (PASP)—which are legally binding—and the vendor's implied duty to prove and give \"good title\".",
+      "citations": [
+        "Contracts for the sale or disposition of land must be evidenced in writing under section 3(1) of the Conveyancing and Property Ordinance (Cap. 219)"
+      ],
+      "keywords": [
+        "sale",
+        "land",
+        "leases",
+        "disposition",
+        "evidenced",
+        "writing"
+      ],
+      "graph_neighbors": [
+        "Formality",
+        "Conveyancing and Property Ordinance (Cap. 219) s.3(1)",
+        "Sale of Goods and Services",
+        "Employment Contracts",
+        "Specific Types of Contracts (Specialized Domains)",
+        "Contracts for the sale or disposition of land must be evidenced in writing under section 3(1) of the Conveyancing and Property Ordinance (Cap. 219)"
+      ]
+    },
+    {
+      "rank": 2,
+      "chunk_id": "chunk:restitution_and_unjust_enrichment:04",
+      "score": 0.5696,
+      "score_breakdown": {
+        "lexical": 0.8157,
+        "graph": 0.2532,
+        "authority": 0.0,
+        "centrality": 0.0118
+      },
+      "section": "Restitution and Unjust Enrichment",
+      "title": "Below is what can be sourced from the",
+      "text": "Below is what can be sourced from the results, followed by identified gaps that would require direct HKLII retrieval.",
+      "citations": [],
+      "keywords": [
+        "below",
+        "what",
+        "sourced",
+        "results",
+        "followed",
+        "identified"
+      ],
+      "graph_neighbors": [
+        "Based on the search results, I can provide",
+        "Section 1",
+        "Restitution and Unjust Enrichment"
+      ]
+    },
+    {
+      "rank": 3,
+      "chunk_id": "chunk:restitution_and_unjust_enrichment:48",
+      "score": 0.5038,
+      "score_breakdown": {
+        "lexical": 0.5396,
+        "graph": 0.6691,
+        "authority": 0.0,
+        "centrality": 0.0394
+      },
+      "section": "Restitution and Unjust Enrichment",
+      "title": "Sale of Goods Ordinance (Cap. 26)",
+      "text": "Sale of Goods Ordinance (Cap. 26): Implies conditions as to title, description, merchantable quality, and fitness for purpose. (Statutory authority; requires retrieval for specific sections)",
+      "citations": [
+        "Sale of Goods Ordinance (Cap. 26)"
+      ],
+      "keywords": [
+        "sale",
+        "goods",
+        "ordinance",
+        "cap",
+        "26)",
+        "implies"
+      ],
+      "graph_neighbors": [
+        "Statutory Implied Terms",
+        "Data Privacy in Contracts",
+        "Arbitration",
+        "Mediation",
+        "Statutory Implied Terms",
+        "Control of Exemption Clauses Ordinance (Cap. 71) s.7(1)",
+        "Sale of Goods and Services",
+        "Unconscionability"
+      ]
+    },
+    {
+      "rank": 4,
+      "chunk_id": "chunk:restitution_and_unjust_enrichment:34",
+      "score": 0.4789,
+      "score_breakdown": {
+        "lexical": 0.4352,
+        "graph": 0.8276,
+        "authority": 0.0,
+        "centrality": 0.0433
+      },
+      "section": "Restitution and Unjust Enrichment",
+      "title": "Conveyancing and Property Ordinance (Cap. 219) s.3(1)",
+      "text": "Conveyancing and Property Ordinance (Cap. 219) s.3(1): Contracts for the sale or disposition of land must be in writing or evidenced by a signed memorandum. (Statutory authority)",
+      "citations": [
+        "Conveyancing and Property Ordinance (Cap. 219)"
+      ],
+      "keywords": [
+        "conveyancing",
+        "property",
+        "ordinance",
+        "cap",
+        "219)",
+        "3(1)"
+      ],
+      "graph_neighbors": [
+        "Data Privacy in Contracts",
+        "Arbitration",
+        "Mediation",
+        "Formality",
+        "Formality",
+        "Tang Kwai Cheung v Yeung Sze Ting [2024] HKCA 383",
+        "Sale of Goods and Services",
+        "Sale of Land and Leases"
+      ]
+    },
+    {
+      "rank": 5,
+      "chunk_id": "chunk:specific_types_of_contracts_specialized_domains:01",
+      "score": 0.4775,
+      "score_breakdown": {
+        "lexical": 0.4466,
+        "graph": 0.7897,
+        "authority": 0.0,
+        "centrality": 0.063
+      },
+      "section": "Specific Types of Contracts (Specialized Domains)",
+      "title": "Sale of Goods and Services",
+      "text": "Sale of Goods and Services: Contracts are governed by the Sale of Goods Ordinance (Cap. 26) and the Supply of Services (Implied Terms) Ordinance (Cap. 457), which imply strict conditions regarding title, description, merchantable quality, and reasonable care and skill. Key sub-topics include the passing of property/title, the nemo dat rule (a seller cannot pass better title than they have), and retention of title (Romalpa) clauses.",
+      "citations": [
+        "Contracts are governed by the Sale of Goods Ordinance (Cap. 26) and the Supply of Services (Implied Terms) Ordinance (Cap. 457)"
+      ],
+      "keywords": [
+        "title",
+        "sale",
+        "goods",
+        "services",
+        "ordinance",
+        "cap"
+      ],
+      "graph_neighbors": [
+        "Statutory Implied Terms",
+        "Data Privacy in Contracts",
+        "Arbitration",
+        "Mediation",
+        "Electronic Transactions Ordinance (Cap. 553) s.17",
+        "Conveyancing and Property Ordinance (Cap. 219) s.3(1)",
+        "Sale of Goods Ordinance (Cap. 26)",
+        "Control of Exemption Clauses Ordinance (Cap. 71) s.7(1)"
+      ]
+    }
+  ]
+}

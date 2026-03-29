@@ -1,0 +1,15 @@
+{
+  "source_document": "/Users/puiyuenwong/Desktop/\u684c\u9762 - Pui\u7684MacBook Air/Real uni (1)/PCLL 2023 /Haldanes demo try /Album /Contract big .docx",
+  "generated_at": "2026-03-29T16:31:42.955858+00:00",
+  "paragraph_count": 179,
+  "section_count": 19,
+  "node_count": 255,
+  "edge_count": 546,
+  "chunk_count": 160,
+  "files": {
+    "graph": "/Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-/artifacts/contract_big/graph.json",
+    "chunks": "/Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-/artifacts/contract_big/chunks.json",
+    "viewer": "/Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-/artifacts/contract_big/knowledge_map.html",
+    "samples": "/Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-/artifacts/contract_big/sample_queries.json"
+  }
+}
