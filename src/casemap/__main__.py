@@ -4,7 +4,7 @@ import argparse
 import json
 
 from .graphrag import RerankedRetriever, build_artifacts
-from .relationship_graph import build_relationship_artifacts
+from .relationship_graph import build_relationship_artifacts, export_public_relationship_artifacts
 
 
 def build_command(args: argparse.Namespace) -> int:
@@ -35,6 +35,16 @@ def build_relationships_command(args: argparse.Namespace) -> int:
     manifest = build_relationship_artifacts(
         taxonomy_docx_path=args.taxonomy,
         source_paths=args.source,
+        output_dir=args.output_dir,
+        title=args.title,
+    )
+    print(json.dumps(manifest, indent=2, ensure_ascii=False))
+    return 0
+
+
+def export_public_relationships_command(args: argparse.Namespace) -> int:
+    manifest = export_public_relationship_artifacts(
+        graph_path=args.graph,
         output_dir=args.output_dir,
         title=args.title,
     )
@@ -77,6 +87,19 @@ def parser() -> argparse.ArgumentParser:
         help="Display title for the generated graph",
     )
     relationship_parser.set_defaults(func=build_relationships_command)
+
+    public_relationship_parser = subparsers.add_parser(
+        "export-public-relationships",
+        help="Create a public-safe relationship graph artifact from a richer local graph",
+    )
+    public_relationship_parser.add_argument("--graph", required=True, help="Path to relationship_graph.json")
+    public_relationship_parser.add_argument("--output-dir", required=True, help="Directory for generated artifacts")
+    public_relationship_parser.add_argument(
+        "--title",
+        default="Hong Kong Contract Law Public Relationship Graph",
+        help="Display title for the generated graph",
+    )
+    public_relationship_parser.set_defaults(func=export_public_relationships_command)
 
     return main_parser
 

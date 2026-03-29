@@ -1172,3 +1172,508 @@ def render_relationship_map(graph_payload: dict) -> str:
 </body>
 </html>
 """
+
+
+def render_relationship_tree(graph_payload: dict) -> str:
+    data = json.dumps(graph_payload, ensure_ascii=False)
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Casemap Relationship Tree</title>
+  <style>
+    :root {{
+      --bg: #f7f0e4;
+      --panel: rgba(255, 251, 244, 0.96);
+      --ink: #232427;
+      --muted: #666055;
+      --line: rgba(35, 36, 39, 0.1);
+      --domain: #0f4c5c;
+      --topic: #f4a261;
+      --case: #7f5539;
+      --statute: #bc4749;
+      --source: #52796f;
+      --accent: #283618;
+    }}
+
+    * {{
+      box-sizing: border-box;
+    }}
+
+    body {{
+      margin: 0;
+      font-family: "Georgia", "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(244, 162, 97, 0.16), transparent 26%),
+        linear-gradient(180deg, #faf5eb 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }}
+
+    .shell {{
+      display: grid;
+      grid-template-columns: 440px minmax(0, 1fr);
+      min-height: 100vh;
+    }}
+
+    .tree-panel, .detail-panel {{
+      padding: 22px 20px;
+      overflow-y: auto;
+    }}
+
+    .tree-panel {{
+      border-right: 1px solid var(--line);
+      background: var(--panel);
+    }}
+
+    .detail-panel {{
+      background: linear-gradient(180deg, rgba(255, 251, 244, 0.78), rgba(247, 240, 228, 0.92));
+    }}
+
+    .meta {{
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 8px;
+    }}
+
+    h1, h2, h3 {{
+      margin: 0;
+    }}
+
+    h1 {{
+      font-size: 36px;
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+    }}
+
+    .intro {{
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }}
+
+    .nav {{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }}
+
+    .nav a {{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.58);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+    }}
+
+    .nav a.active {{
+      background: rgba(15, 76, 92, 0.12);
+      border-color: rgba(15, 76, 92, 0.24);
+    }}
+
+    .search-box {{
+      margin-bottom: 18px;
+    }}
+
+    .search-box input {{
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(35, 36, 39, 0.14);
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.86);
+    }}
+
+    .result-list, .ref-list, .neighbor-list, .metric-list, .link-list {{
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }}
+
+    .result-list {{
+      margin-bottom: 22px;
+    }}
+
+    .result-btn, .node-btn {{
+      width: 100%;
+      text-align: left;
+      border: 1px solid rgba(35, 36, 39, 0.08);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.56);
+      padding: 10px 12px;
+      cursor: pointer;
+      font: inherit;
+      color: inherit;
+    }}
+
+    .node-btn small, .result-btn small {{
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }}
+
+    details {{
+      border-left: 2px solid rgba(35, 36, 39, 0.08);
+      padding-left: 12px;
+      margin-bottom: 12px;
+    }}
+
+    details > summary {{
+      list-style: none;
+      cursor: pointer;
+      margin-left: -12px;
+      padding-left: 12px;
+    }}
+
+    details > summary::-webkit-details-marker {{
+      display: none;
+    }}
+
+    .domain-summary {{
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(15, 76, 92, 0.08);
+      border: 1px solid rgba(15, 76, 92, 0.18);
+    }}
+
+    .topic-summary {{
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(244, 162, 97, 0.12);
+      border: 1px solid rgba(244, 162, 97, 0.18);
+    }}
+
+    .group-block {{
+      margin: 10px 0 16px;
+      padding-left: 8px;
+      display: grid;
+      gap: 8px;
+    }}
+
+    .group-title {{
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-top: 2px;
+    }}
+
+    .chip {{
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      margin-bottom: 8px;
+      color: white;
+    }}
+
+    .chip.domain {{ background: var(--domain); }}
+    .chip.topic {{ background: var(--topic); color: var(--ink); }}
+    .chip.case {{ background: var(--case); }}
+    .chip.statute {{ background: var(--statute); }}
+    .chip.source {{ background: var(--source); }}
+
+    .summary {{
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0 0 18px;
+    }}
+
+    .metric-list li, .link-list li, .ref-list li, .neighbor-list li {{
+      border: 1px solid rgba(35, 36, 39, 0.08);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.54);
+      padding: 12px 14px;
+      font-size: 14px;
+      line-height: 1.5;
+    }}
+
+    .ref-meta {{
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }}
+
+    a {{
+      color: var(--domain);
+      text-decoration: none;
+    }}
+
+    a:hover {{
+      text-decoration: underline;
+    }}
+
+    .empty {{
+      color: var(--muted);
+      font-style: italic;
+    }}
+
+    @media (max-width: 1080px) {{
+      .shell {{
+        grid-template-columns: 1fr;
+      }}
+      .tree-panel {{
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }}
+    }}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="tree-panel">
+      <div class="meta">Casemap Tree</div>
+      <h1>Hierarchical Contract Law Tree</h1>
+      <p class="intro">Read the legal picture top-down: doctrinal domains, their sub-topics, and the related authorities and sources attached to each branch.</p>
+      <nav class="nav">
+        <a href="/" class="active">Tree</a>
+        <a href="/relationships">Graph</a>
+        <a href="/mvp">MVP</a>
+      </nav>
+      <div class="search-box">
+        <div class="meta">Jump To Node</div>
+        <input id="searchInput" type="search" placeholder="Case, topic, statute, source">
+      </div>
+      <ul id="resultList" class="result-list"></ul>
+      <div class="meta">Tree</div>
+      <div id="treeRoot"></div>
+    </aside>
+    <main class="detail-panel">
+      <div class="meta">Selection</div>
+      <h2 id="nodeTitle">Overview</h2>
+      <div id="nodeChip" class="chip domain">tree</div>
+      <p id="nodeSummary" class="summary">Select a domain, topic, case, statute, or source to inspect its details, public links, and graph neighbors.</p>
+      <div class="meta">Metrics</div>
+      <ul id="metricList" class="metric-list"><li class="empty">Choose a node to view metrics.</li></ul>
+      <div class="meta">External Links</div>
+      <ul id="linkList" class="link-list"><li class="empty">No node selected.</li></ul>
+      <div class="meta">Supporting References</div>
+      <ul id="referenceList" class="ref-list"><li class="empty">No node selected.</li></ul>
+      <div class="meta">Related Nodes</div>
+      <ul id="neighborList" class="neighbor-list"><li class="empty">No node selected.</li></ul>
+    </main>
+  </div>
+  <script>
+    const payload = {data};
+    const nodes = payload.nodes;
+    const edges = payload.edges;
+    const nodeMap = new Map(nodes.map((node) => [node.id, node]));
+    const adjacency = new Map(nodes.map((node) => [node.id, new Set()]));
+    const byType = {{
+      domain: nodes.filter((node) => node.type === "domain").sort((a, b) => a.label.localeCompare(b.label)),
+    }};
+
+    edges.forEach((edge) => {{
+      adjacency.get(edge.source)?.add(edge.target);
+      adjacency.get(edge.target)?.add(edge.source);
+    }});
+
+    const treeRoot = document.getElementById("treeRoot");
+    const resultList = document.getElementById("resultList");
+    const searchInput = document.getElementById("searchInput");
+    const titleEl = document.getElementById("nodeTitle");
+    const chipEl = document.getElementById("nodeChip");
+    const summaryEl = document.getElementById("nodeSummary");
+    const metricList = document.getElementById("metricList");
+    const linkList = document.getElementById("linkList");
+    const referenceList = document.getElementById("referenceList");
+    const neighborList = document.getElementById("neighborList");
+
+    function neighborsByType(nodeId, type) {{
+      return [...(adjacency.get(nodeId) || [])]
+        .map((id) => nodeMap.get(id))
+        .filter((node) => node && node.type === type)
+        .sort((a, b) => a.label.localeCompare(b.label));
+    }}
+
+    function makeNodeButton(node, context) {{
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "node-btn";
+      button.innerHTML = `<strong>${{node.label}}</strong><small>${{node.type}}${{context ? " · " + context : ""}}</small>`;
+      button.addEventListener("click", () => selectNode(node.id));
+      return button;
+    }}
+
+    function renderTree() {{
+      treeRoot.innerHTML = "";
+      byType.domain.forEach((domain) => {{
+        const domainDetails = document.createElement("details");
+        domainDetails.open = true;
+
+        const domainSummary = document.createElement("summary");
+        domainSummary.className = "domain-summary";
+        domainSummary.appendChild(makeNodeButton(domain, `${{neighborsByType(domain.id, "topic").length}} topics`));
+        domainDetails.appendChild(domainSummary);
+
+        const topicIds = edges
+          .filter((edge) => edge.type === "contains" && edge.source === domain.id)
+          .map((edge) => nodeMap.get(edge.target))
+          .filter(Boolean)
+          .sort((a, b) => a.label.localeCompare(b.label));
+
+        topicIds.forEach((topic) => {{
+          const topicDetails = document.createElement("details");
+          const topicSummary = document.createElement("summary");
+          topicSummary.className = "topic-summary";
+          topicSummary.appendChild(makeNodeButton(topic, `${{neighborsByType(topic.id, "case").length}} cases · ${{neighborsByType(topic.id, "statute").length}} statutes`));
+          topicDetails.appendChild(topicSummary);
+
+          const blocks = [
+            ["Cases", neighborsByType(topic.id, "case")],
+            ["Statutes", neighborsByType(topic.id, "statute")],
+            ["Sources", neighborsByType(topic.id, "source")],
+          ];
+
+          blocks.forEach(([label, items]) => {{
+            if (!items.length) return;
+            const block = document.createElement("div");
+            block.className = "group-block";
+            const heading = document.createElement("div");
+            heading.className = "group-title";
+            heading.textContent = label;
+            block.appendChild(heading);
+            items.slice(0, 16).forEach((item) => block.appendChild(makeNodeButton(item, topic.label)));
+            topicDetails.appendChild(block);
+          }});
+
+          domainDetails.appendChild(topicDetails);
+        }});
+
+        const domainAuthorities = [
+          ...neighborsByType(domain.id, "case"),
+          ...neighborsByType(domain.id, "statute"),
+        ]
+          .filter((node, index, arr) => arr.findIndex((item) => item.id === node.id) === index)
+          .slice(0, 12);
+
+        if (domainAuthorities.length) {{
+          const crossBlock = document.createElement("div");
+          crossBlock.className = "group-block";
+          const heading = document.createElement("div");
+          heading.className = "group-title";
+          heading.textContent = "Cross-cutting Authorities";
+          crossBlock.appendChild(heading);
+          domainAuthorities.forEach((item) => crossBlock.appendChild(makeNodeButton(item, domain.label)));
+          domainDetails.appendChild(crossBlock);
+        }}
+
+        treeRoot.appendChild(domainDetails);
+      }});
+    }}
+
+    function renderResults(query) {{
+      const lowered = query.trim().toLowerCase();
+      resultList.innerHTML = "";
+      if (!lowered) return;
+      const matches = nodes
+        .filter((node) => `${{node.label}} ${{node.summary || ""}}`.toLowerCase().includes(lowered))
+        .sort((a, b) => (b.degree || 0) - (a.degree || 0))
+        .slice(0, 10);
+      matches.forEach((node) => {{
+        const item = document.createElement("li");
+        item.appendChild(makeNodeButton(node, `degree ${{node.degree || 0}}`));
+        resultList.appendChild(item);
+      }});
+      if (!matches.length) {{
+        resultList.innerHTML = "<li class='empty'>No matching nodes.</li>";
+      }}
+    }}
+
+    function renderMetrics(node) {{
+      metricList.innerHTML = "";
+      const metrics = Object.entries(node.metrics || {{}});
+      const degreeItem = document.createElement("li");
+      degreeItem.textContent = `degree: ${{node.degree || 0}}`;
+      metricList.appendChild(degreeItem);
+      if (!metrics.length) return;
+      metrics.forEach(([key, value]) => {{
+        const item = document.createElement("li");
+        item.textContent = `${{key}}: ${{value}}`;
+        metricList.appendChild(item);
+      }});
+    }}
+
+    function renderLinks(node) {{
+      linkList.innerHTML = "";
+      if (!node.links || !node.links.length) {{
+        linkList.innerHTML = "<li class='empty'>No external links available.</li>";
+        return;
+      }}
+      node.links.forEach((link) => {{
+        const item = document.createElement("li");
+        item.innerHTML = `<a href="${{link.url}}" target="_blank" rel="noreferrer">${{link.label}}</a>`;
+        linkList.appendChild(item);
+      }});
+    }}
+
+    function renderReferences(node) {{
+      referenceList.innerHTML = "";
+      if (!node.references || !node.references.length) {{
+        referenceList.innerHTML = "<li class='empty'>No references attached.</li>";
+        return;
+      }}
+      node.references.forEach((reference) => {{
+        const item = document.createElement("li");
+        item.innerHTML = `<div class="ref-meta">${{reference.source_label}} · ${{reference.location}}</div><div>${{reference.snippet}}</div>`;
+        referenceList.appendChild(item);
+      }});
+    }}
+
+    function renderNeighbors(node) {{
+      neighborList.innerHTML = "";
+      const neighbors = [...(adjacency.get(node.id) || [])]
+        .map((id) => nodeMap.get(id))
+        .filter(Boolean)
+        .sort((a, b) => a.label.localeCompare(b.label))
+        .slice(0, 18);
+      if (!neighbors.length) {{
+        neighborList.innerHTML = "<li class='empty'>No related nodes.</li>";
+        return;
+      }}
+      neighbors.forEach((neighbor) => {{
+        const item = document.createElement("li");
+        item.innerHTML = `<strong>${{neighbor.label}}</strong><div class="ref-meta">${{neighbor.type}}</div>`;
+        item.addEventListener("click", () => selectNode(neighbor.id));
+        neighborList.appendChild(item);
+      }});
+    }}
+
+    function selectNode(nodeId) {{
+      const node = nodeMap.get(nodeId);
+      if (!node) return;
+      titleEl.textContent = node.label;
+      chipEl.textContent = node.type;
+      chipEl.className = `chip ${{node.type}}`;
+      summaryEl.textContent = node.summary || "No summary available.";
+      renderMetrics(node);
+      renderLinks(node);
+      renderReferences(node);
+      renderNeighbors(node);
+    }}
+
+    searchInput.addEventListener("input", (event) => renderResults(event.target.value));
+
+    renderTree();
+    const firstDomain = byType.domain[0];
+    if (firstDomain) {{
+      selectNode(firstDomain.id);
+    }}
+  </script>
+</body>
+</html>
+"""

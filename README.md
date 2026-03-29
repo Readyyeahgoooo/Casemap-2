@@ -52,6 +52,22 @@ PYTHONPATH=src .venv/bin/python -m casemap build-relationships \
 
 Open `artifacts/hk_contract_relationship/relationship_map.html` in a browser.
 
+Create a public-safe deployment artifact from that richer local graph:
+
+```bash
+cd /Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-
+PYTHONPATH=src .venv/bin/python -m casemap export-public-relationships \
+  --graph artifacts/hk_contract_relationship/relationship_graph.json \
+  --output-dir artifacts/public_relationship_graph \
+  --title "Hong Kong Contract Law Public Structure"
+```
+
+This produces:
+
+- `relationship_map.html`: graph view
+- `relationship_tree.html`: hierarchical tree view
+- `relationship_graph.json`: public-safe graph payload with bibliographic references only
+
 ## Design
 
 The project stays light on dependencies:
@@ -62,6 +78,7 @@ The project stays light on dependencies:
 - retrieval uses a TF-IDF style lexical score
 - reranking boosts graph neighbors, cited authorities, and structurally central nodes
 - the relationship graph attaches source passages, page references, and HKLII-oriented external links
+- the public export strips third-party snippets and keeps only structure, bibliographic references, and public-facing links
 - both viewers are static HTML files with inline data and client-side interactions
 
 ## Vercel Deployment
@@ -74,6 +91,7 @@ Vercel's Python runtime requires a top-level ASGI or WSGI application named `app
 - exposes `GET /api/query?q=third+party+rights&top_k=5`
 
 The committed sample artifacts under `artifacts/contract_big/` let Vercel serve the MVP without access to the original `.docx` file.
+The committed public artifact under `artifacts/public_relationship_graph/` lets Vercel serve the richer tree and graph views without exposing textbook passages.
 
 ## Local-Only Sources
 

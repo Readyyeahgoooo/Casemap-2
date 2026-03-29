@@ -21,7 +21,7 @@ from .graphrag import (
     top_keywords,
 )
 from .source_parser import Passage, SourceDocument, load_source_document
-from .viewer import render_relationship_map
+from .viewer import render_relationship_map, render_relationship_tree
 
 CASE_SEARCH_TEMPLATE = 'https://www.google.com/search?q={query}'
 CASE_NAME_CONNECTORS = {
@@ -277,6 +277,96 @@ def _statute_links(statute_name: str) -> list[dict]:
             "url": f"https://hklii.hk/en/legis/ord/{cap_number}",
         }
     ]
+
+
+def _write_relationship_payload(payload: dict, output_path: Path) -> dict:
+    output_path.mkdir(parents=True, exist_ok=True)
+    graph_file = output_path / "relationship_graph.json"
+    viewer_file = output_path / "relationship_map.html"
+    tree_file = output_path / "relationship_tree.html"
+    manifest_file = output_path / "manifest.json"
+
+    graph_file.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    viewer_file.write_text(render_relationship_map(payload), encoding="utf-8")
+    tree_file.write_text(render_relationship_tree(payload), encoding="utf-8")
+    manifest_file.write_text(json.dumps(payload["meta"], indent=2, ensure_ascii=False), encoding="utf-8")
+    return payload["meta"]
+
+
+def export_public_relationship_payload(payload: dict, title: str | None = None) -> dict:
+    public_payload = {
+        "meta": {
+            "title": title or payload["meta"]["title"],
+            "generated_at": payload["meta"]["generated_at"],
+            "source_documents": [
+                {"label": source["label"], "kind": source["kind"]}
+                for source in payload["meta"].get("source_documents", [])
+            ],
+            "source_count": payload["meta"]["source_count"],
+            "passage_count": payload["meta"]["passage_count"],
+            "node_count": payload["meta"]["node_count"],
+            "edge_count": payload["meta"]["edge_count"],
+            "retained_case_count": payload["meta"]["retained_case_count"],
+            "retained_statute_count": payload["meta"]["retained_statute_count"],
+            "public_mode": True,
+            "notes": [
+                "This public export preserves graph structure and authority links.",
+                "Third-party source snippets are replaced with bibliographic references.",
+                "Follow HKLII-oriented links for public primary materials.",
+            ],
+        },
+        "nodes": [],
+        "edges": payload["edges"],
+    }
+
+    node_lookup = {node["id"]: node for node in payload["nodes"]}
+
+    for node in payload["nodes"]:
+        public_node = dict(node)
+        public_node["references"] = [
+            {
+                "source_id": reference["source_id"],
+                "source_label": reference["source_label"],
+                "source_kind": reference.get("source_kind", "unknown"),
+                "location": reference["location"],
+                "snippet": f"Referenced in {reference['source_label']} ({reference['location']}). Full passage omitted in public deployment.",
+            }
+            for reference in node.get("references", [])
+        ]
+
+        if node["type"] == "source":
+            kind = node.get("metrics", {}).get("kind", "source").upper()
+            public_node["summary"] = (
+                f"{kind} source retained as bibliographic metadata only in the public deployment."
+            )
+        elif node["type"] in {"case", "statute"}:
+            neighbors = [node_lookup[neighbor_id] for neighbor_id in node.get("neighbors", []) if neighbor_id in node_lookup]
+            topic_count = sum(1 for neighbor in neighbors if neighbor["type"] == "topic")
+            domain_count = sum(1 for neighbor in neighbors if neighbor["type"] == "domain")
+            source_count = sum(1 for neighbor in neighbors if neighbor["type"] == "source")
+            public_node["summary"] = (
+                f"{node['type'].title()} linked to {topic_count} topic node(s), "
+                f"{domain_count} domain node(s), and {source_count} source node(s). "
+                "Use the public authority links for primary text."
+            )
+        elif node["type"] == "topic":
+            public_node["summary"] = node.get("summary", "")
+        elif node["type"] == "domain":
+            public_node["summary"] = node.get("summary", "")
+
+        public_payload["nodes"].append(public_node)
+
+    return public_payload
+
+
+def export_public_relationship_artifacts(
+    graph_path: str | Path,
+    output_dir: str | Path,
+    title: str | None = None,
+) -> dict:
+    payload = json.loads(Path(graph_path).read_text(encoding="utf-8"))
+    public_payload = export_public_relationship_payload(payload, title=title)
+    return _write_relationship_payload(public_payload, Path(output_dir).expanduser().resolve())
 
 
 def build_relationship_artifacts(
@@ -643,12 +733,4 @@ def build_relationship_artifacts(
         "nodes": nodes,
         "edges": edges,
     }
-
-    graph_file = output_path / "relationship_graph.json"
-    viewer_file = output_path / "relationship_map.html"
-    manifest_file = output_path / "manifest.json"
-
-    graph_file.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
-    viewer_file.write_text(render_relationship_map(payload), encoding="utf-8")
-    manifest_file.write_text(json.dumps(payload["meta"], indent=2, ensure_ascii=False), encoding="utf-8")
-    return payload["meta"]
+    return _write_relationship_payload(payload, output_path)

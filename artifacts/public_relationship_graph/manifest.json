@@ -1,0 +1,34 @@
+{
+  "title": "Hong Kong Contract Law Public Structure",
+  "generated_at": "2026-03-29T18:55:34.898905+00:00",
+  "source_documents": [
+    {
+      "label": "Contract big",
+      "kind": "docx"
+    },
+    {
+      "label": "Butterworths Hong Kong Contract Law Handbook - Fourth Edition (Astina Au, Cindy Li, Elliot Fung, Adrian Lai etc.) (Z-Library)",
+      "kind": "pdf"
+    },
+    {
+      "label": "Contract Law in Hong Kong (Michael J. Fisher, Desmond G. Greenwood) (Z-Library)",
+      "kind": "pdf"
+    },
+    {
+      "label": "Ho  Halls Hong Kong Contract Law, Sixth Edition (Stephen Hall) (Z-Library)",
+      "kind": "pdf"
+    }
+  ],
+  "source_count": 4,
+  "passage_count": 5530,
+  "node_count": 445,
+  "edge_count": 2833,
+  "retained_case_count": 311,
+  "retained_statute_count": 20,
+  "public_mode": true,
+  "notes": [
+    "This public export preserves graph structure and authority links.",
+    "Third-party source snippets are replaced with bibliographic references.",
+    "Follow HKLII-oriented links for public primary materials."
+  ]
+}

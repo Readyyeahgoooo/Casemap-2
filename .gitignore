@@ -9,3 +9,8 @@ artifacts/*
 !artifacts/contract_big/knowledge_map.html
 !artifacts/contract_big/manifest.json
 !artifacts/contract_big/sample_queries.json
+!artifacts/public_relationship_graph/
+!artifacts/public_relationship_graph/relationship_graph.json
+!artifacts/public_relationship_graph/relationship_map.html
+!artifacts/public_relationship_graph/relationship_tree.html
+!artifacts/public_relationship_graph/manifest.json
