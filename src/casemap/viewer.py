@@ -478,17 +478,22 @@ def render_relationship_map(graph_payload: dict) -> str:
   <title>Casemap Relationship Graph</title>
   <style>
     :root {{
-      --bg: #f6f0e1;
-      --panel: rgba(255, 251, 244, 0.96);
-      --line: rgba(40, 41, 44, 0.1);
-      --ink: #202124;
-      --muted: #655f54;
-      --domain: #0f4c5c;
-      --topic: #f4a261;
-      --case: #7f5539;
-      --statute: #bc4749;
-      --source: #52796f;
-      --accent: #283618;
+      --bg: #edf1f5;
+      --bg-deep: #dde3ea;
+      --panel: rgba(255, 255, 255, 0.84);
+      --panel-strong: rgba(255, 255, 255, 0.94);
+      --line: rgba(15, 18, 22, 0.08);
+      --line-strong: rgba(15, 18, 22, 0.16);
+      --ink: #101317;
+      --muted: #69727d;
+      --domain: #121418;
+      --topic: #39414b;
+      --case: #5b6470;
+      --statute: #8c96a2;
+      --source: #c2cad4;
+      --accent: #0f1216;
+      --shadow: 0 26px 80px rgba(15, 18, 22, 0.09);
+      --shadow-soft: 0 16px 38px rgba(15, 18, 22, 0.06);
     }}
 
     * {{
@@ -498,100 +503,149 @@ def render_relationship_map(graph_payload: dict) -> str:
     body {{
       margin: 0;
       min-height: 100vh;
-      font-family: "Georgia", "Times New Roman", serif;
+      font-family: "Avenir Next", "Helvetica Neue", sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(244, 162, 97, 0.18), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(15, 76, 92, 0.16), transparent 26%),
-        linear-gradient(180deg, #f9f4ea 0%, var(--bg) 100%);
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.86), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(173, 181, 192, 0.24), transparent 28%),
+        linear-gradient(180deg, #f7f9fb 0%, var(--bg) 54%, var(--bg-deep) 100%);
     }}
 
     .shell {{
       display: grid;
-      grid-template-columns: 300px minmax(0, 1fr) 380px;
+      grid-template-columns: 320px minmax(0, 1fr) 400px;
       min-height: 100vh;
     }}
 
     .panel {{
       background: var(--panel);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       border-right: 1px solid var(--line);
-      padding: 22px 20px;
+      padding: 24px 22px;
       overflow-y: auto;
     }}
 
     .details {{
       border-right: 0;
       border-left: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(242, 245, 248, 0.96));
     }}
 
     .canvas-panel {{
-      padding: 20px;
+      padding: 24px;
       display: grid;
       grid-template-rows: auto 1fr;
-      gap: 14px;
+      gap: 16px;
     }}
 
     .meta {{
       color: var(--muted);
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.16em;
       margin-bottom: 8px;
     }}
 
     h1, h2 {{
       margin: 0;
+      font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+      font-weight: 600;
     }}
 
     h1 {{
-      font-size: 34px;
-      line-height: 0.96;
-      letter-spacing: -0.04em;
-      margin-bottom: 8px;
+      font-size: clamp(34px, 4vw, 46px);
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      margin-bottom: 12px;
     }}
 
     .intro {{
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.55;
-      margin-bottom: 18px;
+      line-height: 1.62;
+      margin: 0 0 20px;
+      max-width: 28rem;
+    }}
+
+    .nav {{
+      display: inline-flex;
+      gap: 8px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 20px;
+    }}
+
+    .nav a {{
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.01em;
+    }}
+
+    .nav a.active {{
+      background: var(--accent);
+      color: white;
     }}
 
     .counts {{
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 18px;
+      gap: 12px;
+      margin-bottom: 20px;
     }}
 
     .count-card {{
-      padding: 12px 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(40, 41, 44, 0.08);
-      background: rgba(255, 255, 255, 0.52);
+      padding: 14px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 247, 250, 0.82));
+      box-shadow: var(--shadow-soft);
     }}
 
     .count-card strong {{
       display: block;
-      font-size: 22px;
+      font-size: 24px;
       line-height: 1;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
+      letter-spacing: -0.03em;
+    }}
+
+    .count-card span {{
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }}
+
+    .control-block {{
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 16px;
     }}
 
     .search-box input {{
       width: 100%;
-      padding: 12px 14px;
+      padding: 13px 14px;
       border-radius: 16px;
-      border: 1px solid rgba(40, 41, 44, 0.14);
+      border: 1px solid var(--line-strong);
       font-size: 14px;
-      background: rgba(255, 255, 255, 0.86);
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--ink);
+      font: inherit;
     }}
 
     .filters {{
       display: grid;
       gap: 10px;
-      margin: 18px 0 18px;
     }}
 
     .filter-row {{
@@ -599,8 +653,16 @@ def render_relationship_map(graph_payload: dict) -> str:
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--ink);
+      padding: 10px 12px;
+      border: 1px solid rgba(15, 18, 22, 0.06);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.58);
+    }}
+
+    .filter-row input {{
+      accent-color: var(--accent);
     }}
 
     .results {{
@@ -612,33 +674,67 @@ def render_relationship_map(graph_payload: dict) -> str:
       width: 100%;
       text-align: left;
       padding: 12px 14px;
-      border: 1px solid rgba(40, 41, 44, 0.08);
+      border: 1px solid var(--line);
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.58);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(245, 247, 250, 0.84));
       cursor: pointer;
       font: inherit;
       color: inherit;
+      box-shadow: var(--shadow-soft);
     }}
 
     .result-btn small {{
       display: block;
-      margin-top: 4px;
+      margin-top: 5px;
       color: var(--muted);
       font-size: 12px;
     }}
 
+    .result-btn strong {{
+      display: block;
+      font-size: 14px;
+      line-height: 1.4;
+    }}
+
+    .canvas-header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      flex-wrap: wrap;
+    }}
+
+    .canvas-title {{
+      font-size: 26px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+    }}
+
+    .canvas-copy {{
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.56;
+      max-width: 42rem;
+    }}
+
     .board {{
-      border-radius: 24px;
-      border: 1px solid rgba(40, 41, 44, 0.08);
-      background: rgba(255, 251, 244, 0.78);
-      box-shadow: 0 24px 80px rgba(40, 41, 44, 0.08);
+      position: relative;
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(243, 246, 250, 0.96)),
+        repeating-linear-gradient(0deg, rgba(15, 18, 22, 0.03) 0 1px, transparent 1px 34px),
+        repeating-linear-gradient(90deg, rgba(15, 18, 22, 0.03) 0 1px, transparent 1px 34px);
+      box-shadow: var(--shadow);
       overflow: hidden;
-      min-height: calc(100vh - 70px);
+      min-height: calc(100vh - 112px);
     }}
 
     svg {{
       width: 100%;
-      height: calc(100vh - 70px);
+      height: calc(100vh - 112px);
       display: block;
     }}
 
@@ -646,7 +742,7 @@ def render_relationship_map(graph_payload: dict) -> str:
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
     }}
 
@@ -654,12 +750,18 @@ def render_relationship_map(graph_payload: dict) -> str:
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.76);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }}
 
     .swatch {{
-      width: 11px;
-      height: 11px;
-      border-radius: 999px;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
       display: inline-block;
     }}
 
@@ -668,14 +770,23 @@ def render_relationship_map(graph_payload: dict) -> str:
       transition: opacity 120ms ease;
     }}
 
+    .node circle {{
+      stroke: rgba(255, 255, 255, 0.92);
+      stroke-width: 1.4;
+      filter: drop-shadow(0 10px 22px rgba(15, 18, 22, 0.12));
+      transition: stroke-width 140ms ease, stroke 140ms ease;
+    }}
+
     .edge {{
-      stroke: rgba(40, 41, 44, 0.12);
-      stroke-width: 1.2;
+      stroke: rgba(15, 18, 22, 0.1);
+      stroke-width: 1.1;
     }}
 
     .node-label {{
       fill: var(--ink);
-      font-size: 11px;
+      font-size: 10.5px;
+      font-family: "SFMono-Regular", "Menlo", "Monaco", monospace;
+      letter-spacing: 0.02em;
       pointer-events: none;
     }}
 
@@ -688,31 +799,33 @@ def render_relationship_map(graph_payload: dict) -> str:
     }}
 
     .active-edge {{
-      stroke: rgba(40, 41, 44, 0.5);
-      stroke-width: 2.4;
+      stroke: rgba(15, 18, 22, 0.55);
+      stroke-width: 2.2;
     }}
 
     .active-node circle {{
       stroke: var(--accent);
-      stroke-width: 3.6;
+      stroke-width: 3.8;
     }}
 
     .pill {{
       display: inline-block;
-      padding: 6px 10px;
+      padding: 7px 12px;
       border-radius: 999px;
-      background: rgba(40, 41, 44, 0.06);
+      background: rgba(15, 18, 22, 0.06);
+      border: 1px solid var(--line);
       color: var(--muted);
       font-size: 12px;
       margin-bottom: 14px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
     }}
 
     .summary {{
       font-size: 15px;
-      line-height: 1.6;
+      line-height: 1.64;
       margin: 0 0 18px;
+      color: var(--ink);
     }}
 
     .metric-list, .link-list, .ref-list, .neighbor-list {{
@@ -724,12 +837,13 @@ def render_relationship_map(graph_payload: dict) -> str:
     }}
 
     .metric-list li, .link-list li, .ref-list li, .neighbor-list li {{
-      border: 1px solid rgba(40, 41, 44, 0.08);
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.72);
       padding: 12px 14px;
       font-size: 14px;
       line-height: 1.5;
+      box-shadow: var(--shadow-soft);
     }}
 
     .ref-meta {{
@@ -739,12 +853,24 @@ def render_relationship_map(graph_payload: dict) -> str:
     }}
 
     a {{
-      color: var(--domain);
+      color: var(--ink);
       text-decoration: none;
+      border-bottom: 1px solid rgba(15, 18, 22, 0.16);
     }}
 
     a:hover {{
-      text-decoration: underline;
+      border-color: rgba(15, 18, 22, 0.36);
+    }}
+
+    @media (hover: hover) and (pointer: fine) {{
+      .result-btn:hover {{
+        border-color: var(--line-strong);
+        box-shadow: 0 20px 42px rgba(15, 18, 22, 0.08);
+      }}
+
+      .node:hover circle {{
+        stroke-width: 2.2;
+      }}
     }}
 
     @media (max-width: 1200px) {{
@@ -759,38 +885,56 @@ def render_relationship_map(graph_payload: dict) -> str:
       svg {{
         height: 72vh;
       }}
+
+      .board {{
+        min-height: 72vh;
+      }}
     }}
   </style>
 </head>
 <body>
   <div class="shell">
     <aside class="panel">
+      <nav class="nav">
+        <a href="/">Authority Tree</a>
+        <a href="/relationships" class="active">Relationship Graph</a>
+        <a href="/mvp">MVP GraphRAG</a>
+      </nav>
       <div class="meta">Casemap Relationship Graph</div>
       <h1>Hong Kong Contract Law</h1>
-      <p class="intro">This view clusters doctrine, cases, statutes, and source documents. Search for a case or concept, then inspect the supporting book passages and external links in the detail panel.</p>
+      <p class="intro">A legal research network view for doctrine, authorities, statutes, and source structure. Search for a case or topic, filter the graph, then inspect the right-hand dossier for references and links.</p>
       <div class="counts">
         <div class="count-card"><strong>{graph_payload["meta"]["node_count"]}</strong><span>Nodes</span></div>
         <div class="count-card"><strong>{graph_payload["meta"]["edge_count"]}</strong><span>Edges</span></div>
         <div class="count-card"><strong>{graph_payload["meta"]["source_count"]}</strong><span>Sources</span></div>
         <div class="count-card"><strong>{graph_payload["meta"]["passage_count"]}</strong><span>Passages</span></div>
       </div>
-      <div class="search-box">
+      <div class="control-block search-box">
         <div class="meta">Search</div>
         <input id="searchInput" type="search" placeholder="Case, topic, statute, source">
       </div>
-      <div class="filters">
-        <div class="meta">Filters</div>
-        <label class="filter-row"><span>Domains</span><input type="checkbox" data-type="domain" checked></label>
-        <label class="filter-row"><span>Topics</span><input type="checkbox" data-type="topic" checked></label>
-        <label class="filter-row"><span>Cases</span><input type="checkbox" data-type="case" checked></label>
-        <label class="filter-row"><span>Statutes</span><input type="checkbox" data-type="statute" checked></label>
-        <label class="filter-row"><span>Sources</span><input type="checkbox" data-type="source" checked></label>
+      <div class="control-block">
+        <div class="meta">Scope</div>
+        <div class="filters">
+          <label class="filter-row"><span>Domains</span><input type="checkbox" data-type="domain" checked></label>
+          <label class="filter-row"><span>Topics</span><input type="checkbox" data-type="topic" checked></label>
+          <label class="filter-row"><span>Cases</span><input type="checkbox" data-type="case" checked></label>
+          <label class="filter-row"><span>Statutes</span><input type="checkbox" data-type="statute" checked></label>
+          <label class="filter-row"><span>Sources</span><input type="checkbox" data-type="source" checked></label>
+        </div>
       </div>
-      <div class="meta">Matches</div>
-      <div id="results" class="results"></div>
+      <div class="control-block">
+        <div class="meta">Matches</div>
+        <div id="results" class="results"></div>
+      </div>
     </aside>
     <section class="canvas-panel">
-      <div>
+      <div class="canvas-header">
+        <div>
+          <div class="meta">Authority Network</div>
+          <h2 class="canvas-title">Doctrinal Relationship Map</h2>
+          <p class="canvas-copy">A Cornell-LII-style research surface with a more modern monochrome finish. Ground nodes anchor the topics; topics radiate into authorities, statutes, and source structure.</p>
+        </div>
         <div class="legend">
           <span><i class="swatch" style="background: var(--domain)"></i>Domain</span>
           <span><i class="swatch" style="background: var(--topic)"></i>Topic</span>
@@ -806,8 +950,8 @@ def render_relationship_map(graph_payload: dict) -> str:
     <aside class="panel details">
       <div class="meta">Selection</div>
       <h2 id="nodeTitle">Overview</h2>
-      <div id="nodeType" class="pill">Graph</div>
-      <p id="nodeSummary" class="summary">Select a node to inspect its role in the graph, related authorities, supporting source passages, and any available external links.</p>
+      <div id="nodeType" class="pill">Authority Network</div>
+      <p id="nodeSummary" class="summary">Select a node to inspect its role in the network, linked authorities, supporting source passages, and any available public-facing links.</p>
       <div class="meta">Metrics</div>
       <ul id="metricList" class="metric-list"><li>Choose a node to view counts and metadata.</li></ul>
       <div class="meta">External Links</div>
@@ -998,7 +1142,7 @@ def render_relationship_map(graph_payload: dict) -> str:
       const matches = filteredNodes(query).slice(0, 12);
       resultsEl.innerHTML = "";
       if (!matches.length) {{
-        resultsEl.innerHTML = "<div class='intro'>No matching nodes for the current filters.</div>";
+        resultsEl.innerHTML = "<div class='intro'>No matching nodes for the current search and scope.</div>";
         return;
       }}
       matches.forEach((node) => {{
@@ -1071,8 +1215,8 @@ def render_relationship_map(graph_payload: dict) -> str:
 
     function resetDetail() {{
       titleEl.textContent = "Overview";
-      typeEl.textContent = "Graph";
-      summaryEl.textContent = "Select a node to inspect its role in the graph, related authorities, supporting source passages, and any available external links.";
+      typeEl.textContent = "Authority Network";
+      summaryEl.textContent = "Select a node to inspect its role in the network, linked authorities, supporting source passages, and any available public-facing links.";
       metricList.innerHTML = "<li>Choose a node to view counts and metadata.</li>";
       linkList.innerHTML = "<li>No node selected.</li>";
       referenceList.innerHTML = "<li>No node selected.</li>";
