@@ -34,7 +34,8 @@
     "This public export preserves graph structure and authority links.",
     "Third-party source snippets are replaced with bibliographic references.",
     "Follow HKLII-oriented links for public primary materials.",
-    "Curated lineage paths add Hong Kong and UK authority sequences with FLLW, APPD, DIST, and CODI edges."
+    "Curated lineage paths add Hong Kong and UK authority sequences with FLLW, APPD, DIST, and CODI edges.",
+    "The authority tree is arranged by the contract lifecycle: formation, contents, vitiating factors, termination, remedies, privity, special contracts, and cross-cutting issues."
   ],
   "lineages": [
     {
@@ -354,5 +355,2234 @@
     "DIST": "Distinguished or qualified",
     "DPRT": "Departed from prior authority",
     "ORIG": "Originating authority in the lineage"
+  },
+  "authority_tree": {
+    "id": "authority_tree:hk_contract_lifecycle",
+    "label_en": "Hong Kong Contract Law Knowledge Graph",
+    "label_zh": "香港合同法知识图谱",
+    "summary_en": "Lifecycle-structured authority tree: formation, contents, vitiating factors, termination, remedies, privity, special contracts, and cross-cutting issues.",
+    "summary_zh": "按合同生命周期整理的权威树：形成、内容、效力瑕疵、终止、救济、相对性、特殊合同类型与跨界议题。",
+    "modules": [
+      {
+        "id": "module:formation",
+        "slug": "formation",
+        "type": "module",
+        "label_en": "Formation",
+        "label_zh": "形成",
+        "label": "Formation / 形成",
+        "secondary_label": "形成",
+        "summary_en": "Contract coming into existence: agreement, consideration, intention, capacity, and formality.",
+        "summary_zh": "合同从无到有的阶段：协议、约因、法律约束意图、行为能力与形式要求。",
+        "summary": "Contract coming into existence: agreement, consideration, intention, capacity, and formality.",
+        "subgrounds": [
+          {
+            "id": "subground:formation:agreement",
+            "module_id": "module:formation",
+            "slug": "agreement",
+            "type": "subground",
+            "label_en": "Agreement",
+            "label_zh": "协议",
+            "label": "Agreement / 协议",
+            "secondary_label": "协议",
+            "summary_en": "Objective consensus, including offer, acceptance, and certainty.",
+            "summary_zh": "客观合意，包括要约、接受与协议确定性。",
+            "summary": "Objective consensus, including offer, acceptance, and certainty.",
+            "children": [
+              {
+                "en": "Offer vs. invitation to treat",
+                "zh": "要约与邀请要约的区分"
+              },
+              {
+                "en": "Rules of acceptance",
+                "zh": "接受的规则"
+              },
+              {
+                "en": "Certainty of agreement",
+                "zh": "协议确定性"
+              }
+            ],
+            "topic_ids": [
+              "topic:formation_of_contract:01:agreement_offer_and_acceptance",
+              "topic:formation_of_contract:02:offer_vs_invitation_to_treat",
+              "topic:formation_of_contract:03:communication_of_acceptance"
+            ],
+            "topic_labels": [
+              "Agreement (Offer and Acceptance)",
+              "Offer vs. Invitation to Treat",
+              "Communication of Acceptance"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:adams_v_lindsell",
+              "case:brinkibon_ltd_v_stahag_stahl",
+              "case:carlill_v_carbolic_smoke_ball_co",
+              "case:centrovincial_estates_plc_v_merchant_investors_insurance_co_ltd",
+              "case:chartbrook_ltd_v_persimmon_homes_ltd",
+              "case:china_pride_investment_ltd_v_silverpole_ltd",
+              "case:chwee_kin_keong_v_digilandmall_com_pte_ltd",
+              "case:dickinson_v_dodds",
+              "case:entores_v_miles_far_east_corporation",
+              "case:first_laser_ltd_v_fujian_enterprises",
+              "case:fisher_v_bell",
+              "case:grainger_son_v_gough",
+              "case:hadley_v_baxendale",
+              "case:hillas_co_ltd_v_arcos_ltd",
+              "case:in_gibson_v_manchester_city_council",
+              "case:koo_ming_kown_v_next_media_ltd",
+              "case:parker_v_clark",
+              "case:payne_v_cave",
+              "case:pharmaceutical_society_of_great_britain_v_boots_cash_chemists",
+              "case:powell_v_lee",
+              "case:redgrave_v_hurd",
+              "case:ritchie_v_atkinson",
+              "case:smith_v_hughes",
+              "case:sumpter_v_hedges",
+              "case:thornton_v_shoe_lane_parking_ltd",
+              "case:weeks_v_tybald"
+            ],
+            "statute_ids": [
+              "statute:a_false_statement_of_fact_that_induces_a_party_to_enter_into_a_c",
+              "statute:control_of_exemption_clauses_ordinance_cap_71",
+              "statute:electronic_transactions_ordinance_cap_553",
+              "statute:governed_by_the_mediation_ordinance_cap_620",
+              "statute:map_how_offer_and_acceptance_apply_to_clickwrap_and_browsewrap_a"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 3,
+              "cases": 26,
+              "statutes": 5,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:formation:consideration",
+            "module_id": "module:formation",
+            "slug": "consideration",
+            "type": "subground",
+            "label_en": "Consideration",
+            "label_zh": "约因",
+            "label": "Consideration / 约因",
+            "secondary_label": "约因",
+            "summary_en": "Exchange of value and the enforceability of variations.",
+            "summary_zh": "价值交换与合同变更可执行性。",
+            "summary": "Exchange of value and the enforceability of variations.",
+            "children": [],
+            "topic_ids": [
+              "topic:formation_of_contract:04:consideration"
+            ],
+            "topic_labels": [
+              "Consideration"
+            ],
+            "lineage_ids": [
+              "consideration_practical_benefit"
+            ],
+            "lineage_titles": [
+              "Consideration and Variations: \"Practical Benefit\""
+            ],
+            "case_ids": [
+              "case:andayani_v_chan_oi_ling",
+              "case:bainbridge_v_firmstone",
+              "case:balfour_v_balfour",
+              "case:bell_v_lever_bros",
+              "case:bell_v_lever_bros_ltd",
+              "case:beswick_v_beswick",
+              "case:british_russian_gazette_trade_outlook_ltd_v_associated_newspaper",
+              "case:brogden_v_metropolitan_railway_co",
+              "case:carlill_v_carbolic_smoke_ball_co",
+              "case:central_london_property_trust_ltd_v_high_trees_house_ltd",
+              "case:chan_man_tin_v_cheng_leeky",
+              "case:chappel_co_ltd_v_nestle_co_ltd",
+              "case:chong_cheng_lin_courtney_v_cathay_pacific_airways_ltd",
+              "case:city_polytechnic_of_hong_kong_v_blue_cross",
+              "case:city_university_of_hong_kong_v_blue_cross",
+              "case:combe_v_combe",
+              "case:cooper_v_phibbs",
+              "case:coulls_v_bagot",
+              "case:currie_v_misa",
+              "case:cutter_v_powell",
+              "case:d_c_builders_v_rees",
+              "case:darton_ltd_v_hong_kong_island_development_ltd",
+              "case:duke_of_st_albans_v_shore",
+              "case:dunlop_pneumatic_tyre_co_ltd_v_selfridge_co_ltd",
+              "case:fibrosa_spolka_akcyjna_v_fairbairn_lawson_combe_barbour_ltd",
+              "case:foakes_v_beer",
+              "case:foakes_v_beer_it",
+              "case:glasbrook_bros_ltd_v_glamorgan_county_council",
+              "case:hadley_v_baxendale",
+              "case:haigh_v_brooks",
+              "case:hartley_v_ponsonby",
+              "case:hughes_v_metropolitan_railway_co",
+              "case:in_spencer_v_harding",
+              "case:kepong_prospecting_ltd_v_schmidt",
+              "case:l_d_associates_v_chan_man_chon_madalena",
+              "case:lampleigh_v_brathwait",
+              "case:lewis_v_averay",
+              "case:ltd_v_cooper",
+              "case:ltd_v_gold_king_consolidator_ltd",
+              "case:ltd_v_sung_foo_kee_ltd",
+              "case:mwb_business_exchange_centres_ltd_v_rock_advertising_ltd",
+              "case:new_zealand_shipping_co_ltd_v_a_m_satterthwaite_co_ltd",
+              "case:north_ocean_shipping_co_ltd_v_hyundai_construction_co_ltd",
+              "case:pao_on_v_lau_yiu_long",
+              "case:pitt_v_phh_asset_management_ltd",
+              "case:re_selectmove",
+              "case:roscorla_v_thomas",
+              "case:rowland_v_divall",
+              "case:saunders_v_anglia_building_society",
+              "case:scally_v_southern_health_and_social_services_board",
+              "case:shadwell_v_shadwell",
+              "case:shanghai_tongji_science_technology_industrial_co_ltd_v_casil_cle",
+              "case:shuey_v_united_states",
+              "case:simpkins_v_pays",
+              "case:steinberg_v_scala",
+              "case:stewart_v_casey",
+              "case:stilk_v_myrick",
+              "case:thomas_v_thomas",
+              "case:tinn_v_hoffman_co",
+              "case:trident_general_insurance_co_ltd_v_mcniece_bros_pty_ltd",
+              "case:tweddle_v_atkinson",
+              "case:tweddle_v_atkinson_dunlop_pneumatic_tyre_co_ltd",
+              "case:ubc_construction_ltd_v_sung_foo_kee_ltd",
+              "case:union_eagle_ltd_v_golden_achievement_ltd",
+              "case:wade_v_simeon",
+              "case:ward_v_byham",
+              "case:williams_v_roffey",
+              "case:williams_v_roffey_bros",
+              "case:williams_v_roffey_bros_nicholls",
+              "case:yau_chin_kwan_v_tin_shui_wai_development_ltd"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 70,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 1
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:formation:intention",
+            "module_id": "module:formation",
+            "slug": "intention",
+            "type": "subground",
+            "label_en": "Intention to Create Legal Relations",
+            "label_zh": "法律约束意图",
+            "label": "Intention to Create Legal Relations / 法律约束意图",
+            "secondary_label": "法律约束意图",
+            "summary_en": "Whether the parties objectively intended legal enforceability.",
+            "summary_zh": "当事人是否客观上意图产生法律约束力。",
+            "summary": "Whether the parties objectively intended legal enforceability.",
+            "children": [],
+            "topic_ids": [
+              "topic:formation_of_contract:05:intention_to_create_legal_relations"
+            ],
+            "topic_labels": [
+              "Intention to Create Legal Relations"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:balfour_v_balfour",
+              "case:balfour_v_balfour_revisited",
+              "case:first_laser_ltd_v_fujian_enterprises",
+              "case:gee_tai_trading_co_ltd_v_sun_wah_oil_cereal_ltd",
+              "case:ho_lai_king_v_kwok_fung_ying",
+              "case:jones_v_padavatton",
+              "case:ma_ip_hung_v_lai_chuen",
+              "case:merritt_v_merritt",
+              "case:new_world_development_co_ltd_v_sun_hung_kai_securities_ltd",
+              "case:simpkins_v_pays",
+              "case:stephen_chiau_sing_chi_v_alice_yu_man_fung",
+              "case:sudbrook_trading_estate_ltd_v_eggleton"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 12,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:formation:capacity",
+            "module_id": "module:formation",
+            "slug": "capacity",
+            "type": "subground",
+            "label_en": "Capacity",
+            "label_zh": "行为能力",
+            "label": "Capacity / 行为能力",
+            "secondary_label": "行为能力",
+            "summary_en": "Who may contract and on what terms.",
+            "summary_zh": "谁有能力订立合同，以及能力限制如何影响效力。",
+            "summary": "Who may contract and on what terms.",
+            "children": [],
+            "topic_ids": [
+              "topic:formation_of_contract:06:capacity"
+            ],
+            "topic_labels": [
+              "Capacity"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:always_win_ltd_v_autofit_ltd",
+              "case:barton_v_armstrong",
+              "case:beswick_v_beswick",
+              "case:bisset_v_wilkinson",
+              "case:blackburn_v_mackey",
+              "case:burnard_v_haggis",
+              "case:chaplin_v_leslie_frewin",
+              "case:gore_v_gibson",
+              "case:matthews_v_baxter",
+              "case:nash_v_inman",
+              "case:peters_v_fleming",
+              "case:r_b_customs_brokers_co_ltd_v_united_dominions_trust_ltd",
+              "case:roberts_v_gray",
+              "case:saunders_v_anglia_building_society",
+              "case:stilk_v_myrick",
+              "case:trident_general_insurance_co_ltd_v_mcniece_bros_pty_ltd",
+              "case:tweddle_v_atkinson",
+              "case:union_bank_of_hong_kong_ltd_v_ng_yiu_hing"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 18,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:formation:formality",
+            "module_id": "module:formation",
+            "slug": "formality",
+            "type": "subground",
+            "label_en": "Formality",
+            "label_zh": "形式要求",
+            "label": "Formality / 形式要求",
+            "secondary_label": "形式要求",
+            "summary_en": "Writing, signature, and formal validity requirements.",
+            "summary_zh": "书面、签署与形式有效性要求。",
+            "summary": "Writing, signature, and formal validity requirements.",
+            "children": [],
+            "topic_ids": [
+              "topic:formation_of_contract:07:formality"
+            ],
+            "topic_labels": [
+              "Formality"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:bunge_corp_v_tradax_sa",
+              "case:co_ltd_v_nominee",
+              "case:darton_ltd_v_hong_kong_island_development_ltd",
+              "case:first_laser_ltd_v_fujian_enterprises",
+              "case:green_park_properties_ltd_v_dorku_ltd",
+              "case:herne_bay_steam_boat_co_v_hutton",
+              "case:parker_v_taswell",
+              "case:ritchie_v_atkinson",
+              "case:solle_v_butcher",
+              "case:sumpter_v_hedges",
+              "case:union_eagle_ltd_v_golden_achievement_ltd"
+            ],
+            "statute_ids": [
+              "statute:contracts_rights_of_third_parties_ordinance_cap_623",
+              "statute:contracts_for_the_sale_or_disposition_of_land_must_be_evidenced_",
+              "statute:conveyancing_and_property_ordinance_cap_219",
+              "statute:law_amendment_and_reform_consolidation_ordinance_cap_23",
+              "statute:general_rule_is_that_contracts_can_be_made_in_any_form_including"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 11,
+              "statutes": 5,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          }
+        ],
+        "metrics": {
+          "subgrounds": 5,
+          "topics": 7,
+          "cases": 122,
+          "statutes": 10,
+          "sources": 4,
+          "lineages": 1
+        }
+      },
+      {
+        "id": "module:contents",
+        "slug": "contents",
+        "type": "module",
+        "label_en": "Contents",
+        "label_zh": "内容",
+        "label": "Contents / 内容",
+        "secondary_label": "内容",
+        "summary_en": "What the contract says, how its terms are identified, interpreted, implied, classified, and controlled.",
+        "summary_zh": "合同内容为何：条款如何识别、解释、默示、分类与控制。",
+        "summary": "What the contract says, how its terms are identified, interpreted, implied, classified, and controlled.",
+        "subgrounds": [
+          {
+            "id": "subground:contents:term_identification",
+            "module_id": "module:contents",
+            "slug": "term_identification",
+            "type": "subground",
+            "label_en": "Term Identification",
+            "label_zh": "条款识别",
+            "label": "Term Identification / 条款识别",
+            "secondary_label": "条款识别",
+            "summary_en": "Express terms, representations, and the parol evidence rule.",
+            "summary_zh": "明示条款、陈述与口头证据规则。",
+            "summary": "Express terms, representations, and the parol evidence rule.",
+            "children": [
+              {
+                "en": "Express terms vs representations",
+                "zh": "明示条款与陈述的区分"
+              },
+              {
+                "en": "Parol evidence rule",
+                "zh": "口头证据规则"
+              }
+            ],
+            "topic_ids": [
+              "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+            ],
+            "topic_labels": [
+              "Express Terms and the Parol Evidence Rule"
+            ],
+            "lineage_ids": [
+              "interpretation_context_text"
+            ],
+            "lineage_titles": [
+              "Contractual Interpretation: \"Context vs. Text\""
+            ],
+            "case_ids": [
+              "case:arnold_v_britton",
+              "case:balfour_v_balfour",
+              "case:cheng_kwei_sheng_v_li_shek_tong",
+              "case:estrange_v_graucob",
+              "case:fully_profit_asia_ltd_v_secretary_for_justice",
+              "case:ho_lai_king_v_kwok_fung_ying",
+              "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
+              "case:jones_v_padavatton",
+              "case:ltd_v_mudd",
+              "case:rainy_sky_sa_v_kookmin_bank",
+              "case:routledge_v_mckay",
+              "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
+              "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+              "case:wood_v_capita"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 14,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 1
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:contents:interpretation",
+            "module_id": "module:contents",
+            "slug": "interpretation",
+            "type": "subground",
+            "label_en": "Interpretation",
+            "label_zh": "条款解释",
+            "label": "Interpretation / 条款解释",
+            "secondary_label": "条款解释",
+            "summary_en": "Objective interpretation and the context-versus-text lineage.",
+            "summary_zh": "客观解释原则，以及文本与语境之间的权威发展路径。",
+            "summary": "Objective interpretation and the context-versus-text lineage.",
+            "children": [
+              {
+                "en": "Objective interpretation",
+                "zh": "客观解释原则"
+              },
+              {
+                "en": "ICS / Sinoearn / Arnold / Wood line",
+                "zh": "ICS / Sinoearn / Arnold / Wood 发展脉络"
+              }
+            ],
+            "topic_ids": [
+              "topic:contractual_terms:01:express_terms_and_the_parol_evidence"
+            ],
+            "topic_labels": [
+              "Express Terms and the Parol Evidence Rule"
+            ],
+            "lineage_ids": [
+              "interpretation_context_text"
+            ],
+            "lineage_titles": [
+              "Contractual Interpretation: \"Context vs. Text\""
+            ],
+            "case_ids": [
+              "case:arnold_v_britton",
+              "case:balfour_v_balfour",
+              "case:cheng_kwei_sheng_v_li_shek_tong",
+              "case:estrange_v_graucob",
+              "case:fully_profit_asia_ltd_v_secretary_for_justice",
+              "case:ho_lai_king_v_kwok_fung_ying",
+              "case:investors_compensation_scheme_ltd_v_west_bromwich_building_socie",
+              "case:jones_v_padavatton",
+              "case:ltd_v_mudd",
+              "case:rainy_sky_sa_v_kookmin_bank",
+              "case:routledge_v_mckay",
+              "case:sany_heavy_industry_hk_ltd_v_sany_kenton_hk_ltd",
+              "case:sinoearn_international_ltd_v_hyundai_ccecc_joint_venture",
+              "case:wood_v_capita"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 14,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 1
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:contents:implied_terms",
+            "module_id": "module:contents",
+            "slug": "implied_terms",
+            "type": "subground",
+            "label_en": "Implied Terms",
+            "label_zh": "默示条款",
+            "label": "Implied Terms / 默示条款",
+            "secondary_label": "默示条款",
+            "summary_en": "Terms implied in fact, in law, by statute, or by custom.",
+            "summary_zh": "事实默示、法律默示、成文法默示与惯例默示。",
+            "summary": "Terms implied in fact, in law, by statute, or by custom.",
+            "children": [
+              {
+                "en": "Implied in fact",
+                "zh": "事实默示"
+              },
+              {
+                "en": "Implied in law",
+                "zh": "法律默示"
+              },
+              {
+                "en": "Implied by statute",
+                "zh": "成文法默示"
+              },
+              {
+                "en": "Implied by custom",
+                "zh": "惯例默示"
+              }
+            ],
+            "topic_ids": [
+              "topic:contractual_terms:02:implied_terms",
+              "topic:contractual_terms:03:statutory_implied_terms"
+            ],
+            "topic_labels": [
+              "Implied Terms",
+              "Statutory Implied Terms"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:bunge_corp_v_tradax_sa",
+              "case:co_ltd_v_nominee",
+              "case:d_c_builders_v_rees",
+              "case:donoghue_v_stevenson",
+              "case:foley_v_classique_coaches_ltd",
+              "case:in_liverpool_city_council_v_irwin",
+              "case:in_reigate_v_union_manufacturing_co",
+              "case:lampleigh_v_brathwait",
+              "case:liverpool_city_council_v_irwin",
+              "case:ltd_v_mudd",
+              "case:malik_v_bank_of_credit_and_commerce_international_sa",
+              "case:marks_and_spencer_plc_v_bnp_paribas_securities_services_trust_co",
+              "case:may_and_butcher_ltd_v_r",
+              "case:payne_v_cave",
+              "case:pharmaceutical_society_of_great_britain_v_boots_cash_chemists",
+              "case:pilkington_v_wood",
+              "case:polyset_ltd_v_panhandat_ltd",
+              "case:pty_ltd_v_shire_of_hastings",
+              "case:ritchie_v_atkinson",
+              "case:scally_v_southern_health_and_social_services_board",
+              "case:stilk_v_myrick",
+              "case:sumpter_v_hedges",
+              "case:tang_kwai_cheung_v_yeung_sze_ting",
+              "case:tony_investments_ltd_v_fung_sun_kwan",
+              "case:tung_ho_wah_v_star_cruises",
+              "case:way_v_latilla",
+              "case:yifung_developments_ltd_v_liu_chi_keung_ricky"
+            ],
+            "statute_ids": [
+              "statute:contracts_are_governed_by_the_sale_of_goods_ordinance_cap_26_and",
+              "statute:conveyancing_and_property_ordinance_cap_219",
+              "statute:misrepresentation_ordinance_cap_284",
+              "statute:sale_of_goods_ordinance_cap_26",
+              "statute:sale_of_goods_ordinance_cap_26_implies_conditions_that_the_selle",
+              "statute:unconscionable_contracts_ordinance_cap_458"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 2,
+              "cases": 27,
+              "statutes": 6,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:contents:classification",
+            "module_id": "module:contents",
+            "slug": "classification",
+            "type": "subground",
+            "label_en": "Term Classification",
+            "label_zh": "条款分类",
+            "label": "Term Classification / 条款分类",
+            "secondary_label": "条款分类",
+            "summary_en": "Condition, warranty, and innominate term analysis.",
+            "summary_zh": "条件、保证与中间条款分析。",
+            "summary": "Condition, warranty, and innominate term analysis.",
+            "children": [
+              {
+                "en": "Conditions",
+                "zh": "条件"
+              },
+              {
+                "en": "Warranties",
+                "zh": "保证"
+              },
+              {
+                "en": "Innominate terms",
+                "zh": "中间条款"
+              }
+            ],
+            "topic_ids": [
+              "topic:contractual_terms:04:classification_of_terms",
+              "topic:contractual_terms:05:conditions",
+              "topic:contractual_terms:06:warranties",
+              "topic:contractual_terms:07:innominate_intermediate_terms"
+            ],
+            "topic_labels": [
+              "Classification of Terms",
+              "Conditions",
+              "Warranties",
+              "Innominate (Intermediate) Terms"
+            ],
+            "lineage_ids": [
+              "intermediate_terms_hongkong_fir"
+            ],
+            "lineage_titles": [
+              "Breach and Termination: \"Intermediate Terms\""
+            ],
+            "case_ids": [
+              "case:always_win_ltd_v_autofit_ltd",
+              "case:ask_re_ltd_v_grain_mineral_resources_pte_ltd",
+              "case:balfour_v_balfour",
+              "case:bettini_v_gye",
+              "case:billion_star_development_ltd_v_wong_tak_fai",
+              "case:building_authority_v_appeal_tribunal",
+              "case:chang_pui_yin_v_bank_of_singapore_ltd",
+              "case:city_university_of_hong_kong_v_blue_cross",
+              "case:co_ltd_v_nominee",
+              "case:cooper_v_phibbs",
+              "case:couchman_v_hill",
+              "case:d_c_builders_v_rees",
+              "case:donoghue_v_stevenson",
+              "case:estrange_v_graucob",
+              "case:foley_v_classique_coaches_ltd",
+              "case:fong_yau_hei_v_gammon_construction_ltd",
+              "case:hang_seng_finance_ltd_v_lin_kwok_man",
+              "case:hartley_v_ponsonby",
+              "case:hillas_co_ltd_v_arcos_ltd",
+              "case:ho_lai_king_v_kwok_fung_ying",
+              "case:hong_kong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+              "case:hongkong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+              "case:howe_v_smith",
+              "case:in_liverpool_city_council_v_irwin",
+              "case:in_mccutcheon_v_david_macbrayne_ltd",
+              "case:jones_v_padavatton",
+              "case:l_schuler_ag_v_wickman_machine_tool_sales_ltd",
+              "case:lo_wo_v_cheung_chan_ka",
+              "case:lombard_north_central_plc_v_butterworth",
+              "case:ltd_v_mcgregor",
+              "case:mackie_v_the_european_assurance_society",
+              "case:malik_v_bank_of_credit_and_commerce_international_sa",
+              "case:mersey_steel_and_iron_co_v_naylor",
+              "case:photo_production_ltd_v_securicor_transport_ltd",
+              "case:polyset_ltd_v_panhandat_ltd",
+              "case:pty_ltd_v_shire_of_hastings",
+              "case:saunders_v_anglia_building_society",
+              "case:scally_v_southern_health_and_social_services_board",
+              "case:son_wells_v_pratt_and_haynes",
+              "case:stilk_v_myrick",
+              "case:tekdata_interconnections_ltd_v_amphenol_ltd",
+              "case:thornton_v_shoe_lane_parking_ltd",
+              "case:tony_investments_ltd_v_fung_sun_kwan",
+              "case:tung_ho_wah_v_star_cruises",
+              "case:wong_wai_chun_v_the_china_navigation_co_ltd",
+              "case:workers_trust_merchant_bank_ltd_v_dojap_investments_ltd",
+              "case:yau_chin_kwan_v_tin_shui_wai_development_ltd",
+              "case:of_hadley_v_baxendale"
+            ],
+            "statute_ids": [
+              "statute:control_of_exemption_clauses_ordinance_cap_71",
+              "statute:sale_of_goods_ordinance_cap_26"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 4,
+              "cases": 48,
+              "statutes": 2,
+              "sources": 4,
+              "lineages": 1
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:contents:exemption_clauses",
+            "module_id": "module:contents",
+            "slug": "exemption_clauses",
+            "type": "subground",
+            "label_en": "Exemption Clauses",
+            "label_zh": "免责条款",
+            "label": "Exemption Clauses / 免责条款",
+            "secondary_label": "免责条款",
+            "summary_en": "Construction, contra proferentem, and statutory control.",
+            "summary_zh": "解释原则、不利起草者解释规则与成文法控制。",
+            "summary": "Construction, contra proferentem, and statutory control.",
+            "children": [
+              {
+                "en": "Common law construction",
+                "zh": "普通法解释原则"
+              },
+              {
+                "en": "Statutory control",
+                "zh": "成文法控制"
+              }
+            ],
+            "topic_ids": [
+              "topic:contractual_terms:08:exemption_clauses",
+              "topic:contractual_terms:09:statutory_control_of_exemption_claus"
+            ],
+            "topic_labels": [
+              "Exemption Clauses",
+              "Statutory Control of Exemption Clauses"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:aktieselskabet_dansk_skibsfinansiering_v_brothers",
+              "case:always_win_ltd_v_autofit_ltd",
+              "case:bewise_motors_co_ltd_v_hoi_kong_container_services_ltd",
+              "case:canada_steamship_lines_ltd_v_r",
+              "case:chang_pui_yin_v_bank_of_singapore_ltd",
+              "case:couchman_v_hill",
+              "case:donoghue_v_stevenson",
+              "case:estrange_v_graucob",
+              "case:fong_yau_hei_v_gammon_construction_ltd",
+              "case:fung_hing_chiu_cyril_v_henry_wai_co",
+              "case:green_park_properties_ltd_v_dorku_ltd",
+              "case:in_mccutcheon_v_david_macbrayne_ltd",
+              "case:lee_yuk_shing_v_dianoor_international_ltd",
+              "case:mccutcheon_v_david_macbrayne_ltd",
+              "case:son_wells_v_pratt_and_haynes",
+              "case:thompson_v_t_lohan",
+              "case:thornton_v_shoe_lane_parking_ltd",
+              "case:trident_general_insurance_co_ltd_v_mcniece_bros_pty_ltd",
+              "case:wing_hang_bank_ltd_v_kwok_lai_sim",
+              "case:wong_ng_kai_fung_patsy_v_yau_lai_chu",
+              "case:wong_wai_chun_v_the_china_navigation_co_ltd"
+            ],
+            "statute_ids": [
+              "statute:contracts_rights_of_third_parties_ordinance_cap_623",
+              "statute:control_of_exemption_clauses_ordinance_cap_71",
+              "statute:misrepresentation_ordinance_cap_284",
+              "statute:personal_data_privacy_ordinance_cap_486"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 2,
+              "cases": 21,
+              "statutes": 4,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          }
+        ],
+        "metrics": {
+          "subgrounds": 5,
+          "topics": 9,
+          "cases": 83,
+          "statutes": 9,
+          "sources": 4,
+          "lineages": 2
+        }
+      },
+      {
+        "id": "module:vitiating_factors",
+        "slug": "vitiating_factors",
+        "type": "module",
+        "label_en": "Vitiating Factors",
+        "label_zh": "效力瑕疵",
+        "label": "Vitiating Factors / 效力瑕疵",
+        "secondary_label": "效力瑕疵",
+        "summary_en": "Reasons why an apparent contract may be void, voidable, or unenforceable.",
+        "summary_zh": "为何表面成立的合同可能无效、可撤销或不可执行。",
+        "summary": "Reasons why an apparent contract may be void, voidable, or unenforceable.",
+        "subgrounds": [
+          {
+            "id": "subground:vitiating_factors:misrepresentation",
+            "module_id": "module:vitiating_factors",
+            "slug": "misrepresentation",
+            "type": "subground",
+            "label_en": "Misrepresentation",
+            "label_zh": "失实陈述",
+            "label": "Misrepresentation / 失实陈述",
+            "secondary_label": "失实陈述",
+            "summary_en": "False statements inducing entry into contract.",
+            "summary_zh": "引致订约的虚假陈述。",
+            "summary": "False statements inducing entry into contract.",
+            "children": [],
+            "topic_ids": [
+              "topic:vitiating_factors:01:misrepresentation"
+            ],
+            "topic_labels": [
+              "Misrepresentation"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:aktieselskabet_dansk_skibsfinansiering_v_brothers",
+              "case:balchita_ltd_v_kam_yuck_investment_co_ltd",
+              "case:bisset_v_wilkinson",
+              "case:chang_pui_yin_v_bank_of_singapore_ltd",
+              "case:davis_contractors_ltd_v_fareham_udc",
+              "case:derry_v_peek",
+              "case:dick_bentley_productions_ltd_v_harold_smith",
+              "case:east_v_maurer",
+              "case:edgington_v_fitzmaurice",
+              "case:government_of_zanzibar_v_british_aerospace",
+              "case:green_park_properties_ltd_v_dorku_ltd",
+              "case:hedley_byrne_co_ltd_v_heller_partners_ltd",
+              "case:hedley_byrne_v_heller",
+              "case:hulton_v_hulton",
+              "case:kleinwort_benson_ltd_v_lincoln_city_council",
+              "case:kowloon_development_finance_ltd_v_pendex_industries_ltd",
+              "case:leaf_v_international_galleries",
+              "case:long_year_development_ltd_v_tse_fuk_man_norman",
+              "case:ltd_v_mudd",
+              "case:mersey_steel_and_iron_co_v_naylor",
+              "case:ming_shiu_chung_v_ming_shiu_sum",
+              "case:moorgate_mercantile_co_ltd_v_twitchings",
+              "case:newtons_of_wembley_ltd_v_williams",
+              "case:pepsi_cola_international_ltd_v_charles_lee",
+              "case:redgrave_v_hurd",
+              "case:smith_v_eric_s_bush",
+              "case:symons_co_v_buckleton",
+              "case:traill_v_baring",
+              "case:wales_v_wadham",
+              "case:walford_v_miles",
+              "case:whittington_v_seale_hayne",
+              "case:wing_hang_bank_ltd_v_kwok_lai_sim"
+            ],
+            "statute_ids": [
+              "statute:a_false_statement_of_fact_that_induces_a_party_to_enter_into_a_c",
+              "statute:misrepresentation_ordinance_cap_284"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 32,
+              "statutes": 2,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:vitiating_factors:mistake",
+            "module_id": "module:vitiating_factors",
+            "slug": "mistake",
+            "type": "subground",
+            "label_en": "Mistake",
+            "label_zh": "错误",
+            "label": "Mistake / 错误",
+            "secondary_label": "错误",
+            "summary_en": "Common, mutual, and unilateral mistake.",
+            "summary_zh": "共同错误、相互错误与单方错误。",
+            "summary": "Common, mutual, and unilateral mistake.",
+            "children": [],
+            "topic_ids": [
+              "topic:vitiating_factors:02:mistake"
+            ],
+            "topic_labels": [
+              "Mistake"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:adams_v_lindsell",
+              "case:balfour_v_balfour_revisited",
+              "case:bell_v_lever_bros",
+              "case:bell_v_lever_bros_ltd",
+              "case:bell_v_lever_brothers_ltd",
+              "case:centrovincial_estates_plc_v_merchant_investors_insurance_co_ltd",
+              "case:chan_woon_hung_v_associated_bankers_insurance_co_ltd",
+              "case:chartbrook_ltd_v_persimmon_homes_ltd",
+              "case:chwee_kin_keong_v_digilandmall_com_pte_ltd",
+              "case:city_university_of_hong_kong_v_blue_cross",
+              "case:cooper_v_phibbs",
+              "case:couturier_v_hastie",
+              "case:cundy_v_lindsay",
+              "case:estrange_v_graucob",
+              "case:foakes_v_beer",
+              "case:gallie_v_lee",
+              "case:great_peace_shipping_ltd_v_tsavliris_salvage",
+              "case:hong_kong_hua_qiao_co_ltd_v_cham_ka_tai",
+              "case:joscelyne_v_nissen",
+              "case:kleinwort_benson_ltd_v_lincoln_city_council",
+              "case:kowloon_development_finance_ltd_v_pendex_industries_ltd",
+              "case:lewis_v_averay",
+              "case:ltd_v_credit",
+              "case:ltd_v_shu_kong_garment_factory_ltd",
+              "case:luo_xing_juan_v_estate_of_hui_shui_see",
+              "case:mackie_v_the_european_assurance_society",
+              "case:mcrae_v_commonwealth_disposals_commission",
+              "case:ming_shiu_chung_v_ming_shiu_sum",
+              "case:newtons_of_wembley_ltd_v_williams",
+              "case:saunders_v_anglia_building_society",
+              "case:shanklin_pier_ltd_v_detel_products_ltd",
+              "case:shogun_finance_ltd_v_hudson",
+              "case:shogun_finance_v_hudson",
+              "case:smith_v_hughes",
+              "case:solle_v_butcher",
+              "case:tamplin_v_james",
+              "case:taylor_v_caldwell",
+              "case:tony_investments_ltd_v_fung_sun_kwan",
+              "case:traill_v_baring",
+              "case:union_bank_of_hong_kong_ltd_v_ng_yiu_hing",
+              "case:woodar_investment_development_ltd_v_wimpey_construction"
+            ],
+            "statute_ids": [
+              "statute:law_amendment_and_reform_consolidation_ordinance_cap_23"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 41,
+              "statutes": 1,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:vitiating_factors:duress",
+            "module_id": "module:vitiating_factors",
+            "slug": "duress",
+            "type": "subground",
+            "label_en": "Duress",
+            "label_zh": "胁迫",
+            "label": "Duress / 胁迫",
+            "secondary_label": "胁迫",
+            "summary_en": "Physical and economic pressure undermining consent.",
+            "summary_zh": "人身或经济压力导致同意受损。",
+            "summary": "Physical and economic pressure undermining consent.",
+            "children": [],
+            "topic_ids": [
+              "topic:vitiating_factors:03:duress"
+            ],
+            "topic_labels": [
+              "Duress"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:barton_v_armstrong",
+              "case:chang_pui_yin_v_bank_of_singapore_ltd",
+              "case:city_polytechnic_of_hong_kong_v_blue_cross",
+              "case:d_c_builders_ltd_v_rees",
+              "case:estinah_v_golden_hand_indonesian_employment_agency",
+              "case:foakes_v_beer",
+              "case:li_sau_ying_v_bank_of_china",
+              "case:ltd_v_wah_tong_paper_products_group_ltd",
+              "case:north_ocean_shipping_co_ltd_v_hyundai_construction_co_ltd",
+              "case:pakistan_international_airline_corp_v_times_travel",
+              "case:pao_on_v_lau_yiu_long",
+              "case:rookes_v_barnard",
+              "case:royal_bank_of_scotland_v_etridge",
+              "case:stilk_v_myrick",
+              "case:universe_tankships_inc_of_monrovia_v_international_transport_wor",
+              "case:williams_v_bayley",
+              "case:williams_v_roffey",
+              "case:williams_v_roffey_bros"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 18,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:vitiating_factors:undue_influence",
+            "module_id": "module:vitiating_factors",
+            "slug": "undue_influence",
+            "type": "subground",
+            "label_en": "Undue Influence",
+            "label_zh": "不当影响",
+            "label": "Undue Influence / 不当影响",
+            "secondary_label": "不当影响",
+            "summary_en": "Improper influence and the Etridge adoption line.",
+            "summary_zh": "不当影响与 Etridge 在香港的采纳路径。",
+            "summary": "Improper influence and the Etridge adoption line.",
+            "children": [],
+            "topic_ids": [
+              "topic:vitiating_factors:04:undue_influence"
+            ],
+            "topic_labels": [
+              "Undue Influence"
+            ],
+            "lineage_ids": [
+              "undue_influence_etridge"
+            ],
+            "lineage_titles": [
+              "Undue Influence: \"Etridge\""
+            ],
+            "case_ids": [
+              "case:bank_ltd_v_bundy",
+              "case:commercial_bank_of_australia_ltd_v_amadio",
+              "case:estinah_v_golden_hand_indonesian_employment_agency",
+              "case:li_sau_keung_v_bank_of_china_hong_kong_ltd",
+              "case:li_sau_ying_v_bank_of_china",
+              "case:ltd_v_wah_tong_paper_products_group_ltd",
+              "case:national_westminster_bank_plc_v_morgan",
+              "case:royal_bank_of_scotland_plc_v_etridge",
+              "case:royal_bank_of_scotland_v_etridge",
+              "case:royal_bank_of_scotland_v_etridge_no_2",
+              "case:williams_v_bayley"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 11,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 1
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:vitiating_factors:unconscionability",
+            "module_id": "module:vitiating_factors",
+            "slug": "unconscionability",
+            "type": "subground",
+            "label_en": "Unconscionability",
+            "label_zh": "不合情理",
+            "label": "Unconscionability / 不合情理",
+            "secondary_label": "不合情理",
+            "summary_en": "Common law and statutory unfairness control.",
+            "summary_zh": "普通法与成文法下的不公控制。",
+            "summary": "Common law and statutory unfairness control.",
+            "children": [],
+            "topic_ids": [
+              "topic:vitiating_factors:05:unconscionability"
+            ],
+            "topic_labels": [
+              "Unconscionability"
+            ],
+            "lineage_ids": [
+              "unconscionability_statutory"
+            ],
+            "lineage_titles": [
+              "Unconscionability: \"Statutory\""
+            ],
+            "case_ids": [
+              "case:balfour_v_balfour",
+              "case:chang_pui_yin_v_bank_of_singapore_ltd",
+              "case:commercial_bank_of_australia_ltd_v_amadio",
+              "case:donoghue_v_stevenson",
+              "case:gore_v_gibson",
+              "case:lo_wo_v_cheung_chan_ka",
+              "case:matthews_v_baxter",
+              "case:royal_bank_of_scotland_v_etridge",
+              "case:shum_kong_v_chan_man_fai",
+              "case:trident_general_insurance_co_ltd_v_mcniece_bros_pty_ltd"
+            ],
+            "statute_ids": [
+              "statute:unconscionable_contracts_ordinance_cap_458"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 10,
+              "statutes": 1,
+              "sources": 4,
+              "lineages": 1
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:vitiating_factors:illegality",
+            "module_id": "module:vitiating_factors",
+            "slug": "illegality",
+            "type": "subground",
+            "label_en": "Illegality",
+            "label_zh": "非法性",
+            "label": "Illegality / 非法性",
+            "secondary_label": "非法性",
+            "summary_en": "Illegality in formation or performance.",
+            "summary_zh": "订立时非法或履行时非法。",
+            "summary": "Illegality in formation or performance.",
+            "children": [],
+            "topic_ids": [
+              "topic:vitiating_factors:06:illegality"
+            ],
+            "topic_labels": [
+              "Illegality"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:attwood_v_lamont",
+              "case:esso_petroleum_co_ltd_v_harper",
+              "case:herbert_morris_ltd_v_saxelby",
+              "case:holman_v_johnson",
+              "case:kaufman_v_gerson",
+              "case:kiriri_cotton_co_ltd_v_dewani",
+              "case:ltd_v_s_spanglett_ltd",
+              "case:ltd_v_total_oil",
+              "case:marles_v_philip_trant_sons_ltd",
+              "case:music_publishing_co_ltd_v_macaulay",
+              "case:patel_v_mirza",
+              "case:tinsley_v_milligan"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 12,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          }
+        ],
+        "metrics": {
+          "subgrounds": 6,
+          "topics": 6,
+          "cases": 109,
+          "statutes": 4,
+          "sources": 4,
+          "lineages": 2
+        }
+      },
+      {
+        "id": "module:termination",
+        "slug": "termination",
+        "type": "module",
+        "label_en": "Termination",
+        "label_zh": "终止",
+        "label": "Termination / 终止",
+        "secondary_label": "终止",
+        "summary_en": "When and how contractual obligations come to an end.",
+        "summary_zh": "合同义务何时以及如何终止。",
+        "summary": "When and how contractual obligations come to an end.",
+        "subgrounds": [
+          {
+            "id": "subground:termination:performance",
+            "module_id": "module:termination",
+            "slug": "performance",
+            "type": "subground",
+            "label_en": "Performance",
+            "label_zh": "履行完毕",
+            "label": "Performance / 履行完毕",
+            "secondary_label": "履行完毕",
+            "summary_en": "Discharge by full or sufficient performance.",
+            "summary_zh": "因完全或充分履行而解除。",
+            "summary": "Discharge by full or sufficient performance.",
+            "children": [],
+            "topic_ids": [
+              "topic:termination_and_discharge:01:by_performance"
+            ],
+            "topic_labels": [
+              "By Performance"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:carlill_v_carbolic_smoke_ball_co",
+              "case:cutter_v_powell",
+              "case:d_c_builders_ltd_v_rees",
+              "case:foakes_v_beer",
+              "case:hadley_v_baxendale",
+              "case:hoenig_v_isaacs",
+              "case:sumpter_v_hedges",
+              "case:williams_v_roffey_bros_nicholls"
+            ],
+            "statute_ids": [
+              "statute:occurs_when_a_supervening_unforeseeable_event_occurring_without_"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 8,
+              "statutes": 1,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:termination:agreement_termination",
+            "module_id": "module:termination",
+            "slug": "agreement_termination",
+            "type": "subground",
+            "label_en": "Termination by Agreement",
+            "label_zh": "协议终止",
+            "label": "Termination by Agreement / 协议终止",
+            "secondary_label": "协议终止",
+            "summary_en": "Current graph placeholder. Refine with HKLII if distinct rescission or mutual discharge authorities are needed.",
+            "summary_zh": "当前图谱中的占位结构；如需明确解除或双方同意终止的香港权威，可由 HKLII 补强。",
+            "summary": "Current graph placeholder. Refine with HKLII if distinct rescission or mutual discharge authorities are needed.",
+            "children": [],
+            "topic_ids": [],
+            "topic_labels": [],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [],
+            "statute_ids": [],
+            "source_ids": [],
+            "metrics": {
+              "topics": 0,
+              "cases": 0,
+              "statutes": 0,
+              "sources": 0,
+              "lineages": 0
+            },
+            "coverage": "placeholder"
+          },
+          {
+            "id": "subground:termination:repudiatory_breach",
+            "module_id": "module:termination",
+            "slug": "repudiatory_breach",
+            "type": "subground",
+            "label_en": "Repudiatory Breach",
+            "label_zh": "违约终止",
+            "label": "Repudiatory Breach / 违约终止",
+            "secondary_label": "违约终止",
+            "summary_en": "Termination for serious breach or renunciation.",
+            "summary_zh": "因根本违约或毁约表态而终止。",
+            "summary": "Termination for serious breach or renunciation.",
+            "children": [],
+            "topic_ids": [
+              "topic:termination_and_discharge:02:by_breach"
+            ],
+            "topic_labels": [
+              "By Breach"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:afovos_shipping_co_sa_v_pagnan",
+              "case:diamond_jubilee_investment_ltd_v_chan_yiu_chung_sidney",
+              "case:duke_of_st_albans_v_shore",
+              "case:fercometal_sarl_v_mediterranean_shipping_co_sa",
+              "case:hong_kong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+              "case:l_schuler_ag_v_wickman_machine_tool_sales_ltd",
+              "case:ltd_v_mcgregor",
+              "case:union_eagle_ltd_v_golden_achievement_ltd",
+              "case:vitol_sa_v_norelf_ltd"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 9,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:termination:frustration",
+            "module_id": "module:termination",
+            "slug": "frustration",
+            "type": "subground",
+            "label_en": "Frustration",
+            "label_zh": "合同受挫",
+            "label": "Frustration / 合同受挫",
+            "secondary_label": "合同受挫",
+            "summary_en": "Supervening events preventing or radically transforming performance.",
+            "summary_zh": "后发事件阻止履行或使履行发生根本变化。",
+            "summary": "Supervening events preventing or radically transforming performance.",
+            "children": [],
+            "topic_ids": [
+              "topic:termination_and_discharge:03:by_frustration"
+            ],
+            "topic_labels": [
+              "By Frustration"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:balfour_v_balfour",
+              "case:davis_contractors_ltd_v_fareham_udc",
+              "case:davis_contractors_ltd_v_fareham_urban_district_council",
+              "case:davis_contractors_v_fareham_udc",
+              "case:fibrosa_v_fairbairn",
+              "case:herne_bay_steam_boat_co_v_hutton",
+              "case:howell_v_coupland",
+              "case:krell_v_henry",
+              "case:ltd_v_hunt",
+              "case:ltd_v_shu_kong_garment_factory_ltd",
+              "case:paradine_v_jane",
+              "case:parker_v_clark",
+              "case:sumpter_v_hedges",
+              "case:taylor_v_caldwell",
+              "case:tweddle_v_atkinson"
+            ],
+            "statute_ids": [
+              "statute:contracts_rights_of_third_parties_ordinance_cap_623",
+              "statute:law_amendment_and_reform_consolidation_ordinance_cap_23",
+              "statute:occurs_when_a_supervening_unforeseeable_event_occurring_without_"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 15,
+              "statutes": 3,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          }
+        ],
+        "metrics": {
+          "subgrounds": 4,
+          "topics": 3,
+          "cases": 31,
+          "statutes": 3,
+          "sources": 4,
+          "lineages": 0
+        }
+      },
+      {
+        "id": "module:remedies",
+        "slug": "remedies",
+        "type": "module",
+        "label_en": "Remedies",
+        "label_zh": "救济",
+        "label": "Remedies / 救济",
+        "secondary_label": "救济",
+        "summary_en": "Consequences of breach and the available legal or equitable responses.",
+        "summary_zh": "违约后的后果，以及普通法与衡平法下可获得的救济。",
+        "summary": "Consequences of breach and the available legal or equitable responses.",
+        "subgrounds": [
+          {
+            "id": "subground:remedies:damages",
+            "module_id": "module:remedies",
+            "slug": "damages",
+            "type": "subground",
+            "label_en": "Damages",
+            "label_zh": "损害赔偿",
+            "label": "Damages / 损害赔偿",
+            "secondary_label": "损害赔偿",
+            "summary_en": "Expectation, reliance, remoteness, and liquidated damages versus penalties.",
+            "summary_zh": "预期利益、信赖利益、可预见性，以及约定赔偿金与罚金。",
+            "summary": "Expectation, reliance, remoteness, and liquidated damages versus penalties.",
+            "children": [
+              {
+                "en": "Expectation vs reliance",
+                "zh": "预期利益与信赖利益"
+              },
+              {
+                "en": "Hadley v Baxendale remoteness",
+                "zh": "Hadley v Baxendale 可预见性规则"
+              },
+              {
+                "en": "Liquidated damages vs penalties",
+                "zh": "约定赔偿金与罚金"
+              }
+            ],
+            "topic_ids": [
+              "topic:remedies_for_breach:01:unliquidated_damages",
+              "topic:remedies_for_breach:02:remoteness_of_damage",
+              "topic:remedies_for_breach:03:liquidated_damages_vs_penalties"
+            ],
+            "topic_labels": [
+              "Unliquidated Damages",
+              "Remoteness of Damage",
+              "Liquidated Damages vs. Penalties"
+            ],
+            "lineage_ids": [
+              "penalty_clauses_modern_test"
+            ],
+            "lineage_titles": [
+              "Penalty Clauses: \"Modern Test\""
+            ],
+            "case_ids": [
+              "case:allcard_v_skinner",
+              "case:beswick_v_beswick",
+              "case:bewise_motors_co_ltd_v_hoi_kong_container_services_ltd",
+              "case:burnard_v_haggis",
+              "case:cathay_pacific_airways_ltd_v_hong_kong_air_cargo_terminals_ltd",
+              "case:cavendish_square_holding_bv_v_el_makdessi",
+              "case:cavendish_square_holding_bv_v_talal_el_makdessi",
+              "case:china_great_wall_amc_international_holdings_co_ltd_v_royal_inves",
+              "case:china_pride_investment_ltd_v_silverpole_ltd",
+              "case:dick_bentley_productions_ltd_v_harold_smith",
+              "case:duke_of_st_albans_v_shore",
+              "case:dunlop_pneumatic_tyre_co_ltd_v_new_garage_motor_co_ltd",
+              "case:hadley_v_baxendale",
+              "case:hadley_v_baxendale_the",
+              "case:hedley_byrne_co_ltd_v_heller_partners_ltd",
+              "case:jennings_v_rundall",
+              "case:law_ting_pong_secondary_school_v_chen_wai_mick",
+              "case:ltd_v_mcgregor",
+              "case:ltd_v_newman_industries_ltd",
+              "case:luen_yick_co_v_tang_man_kee_machinery_workshop",
+              "case:maritime_national_fish_ltd_v_ocean_trawlers_ltd",
+              "case:mersey_steel_and_iron_co_v_naylor",
+              "case:morris_garner_v_one_step",
+              "case:robinson_v_harman",
+              "case:shum_kit_ching_v_caesar_beauty_centre_ltd",
+              "case:surrey_county_council_v_bredero_homes_ltd",
+              "case:whittington_v_seale_hayne",
+              "case:wing_hang_bank_ltd_v_kwok_lai_sim",
+              "case:wroth_v_tyler",
+              "case:wrotham_park_estate_co_v_parkside_homes_ltd",
+              "case:of_hadley_v_baxendale"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 3,
+              "cases": 31,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 1
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:remedies:equitable_remedies",
+            "module_id": "module:remedies",
+            "slug": "equitable_remedies",
+            "type": "subground",
+            "label_en": "Equitable Remedies",
+            "label_zh": "衡平法救济",
+            "label": "Equitable Remedies / 衡平法救济",
+            "secondary_label": "衡平法救济",
+            "summary_en": "Specific performance and injunctions.",
+            "summary_zh": "强制履行与禁制令。",
+            "summary": "Specific performance and injunctions.",
+            "children": [
+              {
+                "en": "Specific performance",
+                "zh": "强制履行"
+              },
+              {
+                "en": "Injunctions",
+                "zh": "禁制令"
+              }
+            ],
+            "topic_ids": [
+              "topic:remedies_for_breach:04:equitable_remedies"
+            ],
+            "topic_labels": [
+              "Equitable Remedies"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:co_ltd_v_nominee",
+              "case:cooper_v_phibbs",
+              "case:cutter_v_powell",
+              "case:davis_contractors_ltd_v_fareham_udc",
+              "case:hadley_v_baxendale",
+              "case:hang_seng_finance_ltd_v_lin_kwok_man",
+              "case:leaf_v_international_galleries",
+              "case:marles_v_philip_trant_sons_ltd",
+              "case:union_eagle_ltd_v_golden_achievement_ltd"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 9,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          }
+        ],
+        "metrics": {
+          "subgrounds": 2,
+          "topics": 4,
+          "cases": 39,
+          "statutes": 0,
+          "sources": 4,
+          "lineages": 1
+        }
+      },
+      {
+        "id": "module:privity",
+        "slug": "privity",
+        "type": "module",
+        "label_en": "Privity",
+        "label_zh": "相对性",
+        "label": "Privity / 相对性",
+        "secondary_label": "相对性",
+        "summary_en": "Who may sue or rely on contractual rights.",
+        "summary_zh": "谁可以主张合同权利或依赖合同利益。",
+        "summary": "Who may sue or rely on contractual rights.",
+        "subgrounds": [
+          {
+            "id": "subground:privity:common_law_privity",
+            "module_id": "module:privity",
+            "slug": "common_law_privity",
+            "type": "subground",
+            "label_en": "Common Law Principle",
+            "label_zh": "普通法原则",
+            "label": "Common Law Principle / 普通法原则",
+            "secondary_label": "普通法原则",
+            "summary_en": "Current graph placeholder for the privity baseline; refine with primary authorities.",
+            "summary_zh": "当前图谱中的相对性基线占位节点；可由主要判例进一步补强。",
+            "summary": "Current graph placeholder for the privity baseline; refine with primary authorities.",
+            "children": [],
+            "topic_ids": [],
+            "topic_labels": [],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [],
+            "statute_ids": [],
+            "source_ids": [],
+            "metrics": {
+              "topics": 0,
+              "cases": 0,
+              "statutes": 0,
+              "sources": 0,
+              "lineages": 0
+            },
+            "coverage": "placeholder"
+          },
+          {
+            "id": "subground:privity:statutory_exceptions",
+            "module_id": "module:privity",
+            "slug": "statutory_exceptions",
+            "type": "subground",
+            "label_en": "Statutory Exceptions",
+            "label_zh": "成文法例外",
+            "label": "Statutory Exceptions / 成文法例外",
+            "secondary_label": "成文法例外",
+            "summary_en": "Contracts (Rights of Third Parties) Ordinance and related exceptions.",
+            "summary_zh": "《合约（第三者权利）条例》及相关例外。",
+            "summary": "Contracts (Rights of Third Parties) Ordinance and related exceptions.",
+            "children": [
+              {
+                "en": "Cap. 623",
+                "zh": "第 623 章"
+              }
+            ],
+            "topic_ids": [
+              "topic:privity_of_contract:02:statutory_exceptions"
+            ],
+            "topic_labels": [
+              "Statutory Exceptions"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:always_win_ltd_v_autofit_ltd",
+              "case:beswick_v_beswick",
+              "case:coulls_v_bagot",
+              "case:donoghue_v_stevenson",
+              "case:fong_yau_hei_v_gammon_construction_ltd",
+              "case:shanklin_pier_ltd_v_detel_products_ltd",
+              "case:trident_general_insurance_co_ltd_v_mcniece_bros_pty_ltd",
+              "case:tweddle_v_atkinson",
+              "case:woodar_investment_development_ltd_v_wimpey_construction"
+            ],
+            "statute_ids": [
+              "statute:contracts_rights_of_third_parties_ordinance_cap_623",
+              "statute:control_of_exemption_clauses_ordinance_cap_71",
+              "statute:electronic_transactions_ordinance_cap_553"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 9,
+              "statutes": 3,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          }
+        ],
+        "metrics": {
+          "subgrounds": 2,
+          "topics": 1,
+          "cases": 9,
+          "statutes": 3,
+          "sources": 4,
+          "lineages": 0
+        }
+      },
+      {
+        "id": "module:special_contracts",
+        "slug": "special_contracts",
+        "type": "module",
+        "label_en": "Special Contracts",
+        "label_zh": "特殊合同类型",
+        "label": "Special Contracts / 特殊合同类型",
+        "secondary_label": "特殊合同类型",
+        "summary_en": "Contract doctrine applied in recurrent subject-matter areas.",
+        "summary_zh": "合同法在反复出现的特定交易领域中的适用。",
+        "summary": "Contract doctrine applied in recurrent subject-matter areas.",
+        "subgrounds": [
+          {
+            "id": "subground:special_contracts:sale_of_goods",
+            "module_id": "module:special_contracts",
+            "slug": "sale_of_goods",
+            "type": "subground",
+            "label_en": "Sale of Goods",
+            "label_zh": "货物买卖",
+            "label": "Sale of Goods / 货物买卖",
+            "secondary_label": "货物买卖",
+            "summary_en": "Sale of goods, transfer of title, and statutory implied terms.",
+            "summary_zh": "货物买卖、所有权转移与成文法默示条款。",
+            "summary": "Sale of goods, transfer of title, and statutory implied terms.",
+            "children": [],
+            "topic_ids": [
+              "topic:specific_types_of_contracts_specialized_domains:01:sale_of_goods_and_services"
+            ],
+            "topic_labels": [
+              "Sale of Goods and Services"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:donoghue_v_stevenson",
+              "case:howell_v_coupland",
+              "case:tony_investments_ltd_v_fung_sun_kwan",
+              "case:tung_ho_wah_v_star_cruises"
+            ],
+            "statute_ids": [
+              "statute:contracts_are_governed_by_the_sale_of_goods_ordinance_cap_26_and",
+              "statute:contracts_for_the_sale_or_disposition_of_land_must_be_evidenced_",
+              "statute:control_of_exemption_clauses_ordinance_cap_71",
+              "statute:governed_by_the_mediation_ordinance_cap_620",
+              "statute:sale_of_goods_ordinance_cap_26"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 4,
+              "statutes": 5,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:special_contracts:supply_of_services",
+            "module_id": "module:special_contracts",
+            "slug": "supply_of_services",
+            "type": "subground",
+            "label_en": "Supply of Services",
+            "label_zh": "服务提供",
+            "label": "Supply of Services / 服务提供",
+            "secondary_label": "服务提供",
+            "summary_en": "Reasonable skill, care, time, and charges in service contracts.",
+            "summary_zh": "服务合同中的合理技能、谨慎、时间与收费。",
+            "summary": "Reasonable skill, care, time, and charges in service contracts.",
+            "children": [],
+            "topic_ids": [
+              "topic:specific_types_of_contracts_specialized_domains:01:sale_of_goods_and_services"
+            ],
+            "topic_labels": [
+              "Sale of Goods and Services"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:donoghue_v_stevenson",
+              "case:howell_v_coupland",
+              "case:tony_investments_ltd_v_fung_sun_kwan",
+              "case:tung_ho_wah_v_star_cruises"
+            ],
+            "statute_ids": [
+              "statute:contracts_are_governed_by_the_sale_of_goods_ordinance_cap_26_and",
+              "statute:contracts_for_the_sale_or_disposition_of_land_must_be_evidenced_",
+              "statute:control_of_exemption_clauses_ordinance_cap_71",
+              "statute:governed_by_the_mediation_ordinance_cap_620",
+              "statute:sale_of_goods_ordinance_cap_26"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 4,
+              "statutes": 5,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:special_contracts:sale_of_land",
+            "module_id": "module:special_contracts",
+            "slug": "sale_of_land",
+            "type": "subground",
+            "label_en": "Sale of Land",
+            "label_zh": "土地买卖",
+            "label": "Sale of Land / 土地买卖",
+            "secondary_label": "土地买卖",
+            "summary_en": "Land sale formalities and interim sale agreements.",
+            "summary_zh": "土地交易的形式要求与临时买卖协议。",
+            "summary": "Land sale formalities and interim sale agreements.",
+            "children": [],
+            "topic_ids": [
+              "topic:specific_types_of_contracts_specialized_domains:02:sale_of_land_and_leases"
+            ],
+            "topic_labels": [
+              "Sale of Land and Leases"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:coulls_v_bagot",
+              "case:parker_v_taswell",
+              "case:tony_investments_ltd_v_fung_sun_kwan",
+              "case:union_eagle_ltd_v_golden_achievement_ltd"
+            ],
+            "statute_ids": [
+              "statute:contracts_for_the_sale_or_disposition_of_land_must_be_evidenced_",
+              "statute:conveyancing_and_property_ordinance_cap_219",
+              "statute:general_rule_is_that_contracts_can_be_made_in_any_form_including"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 4,
+              "statutes": 3,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:special_contracts:employment",
+            "module_id": "module:special_contracts",
+            "slug": "employment",
+            "type": "subground",
+            "label_en": "Employment Contracts",
+            "label_zh": "雇佣合同",
+            "label": "Employment Contracts / 雇佣合同",
+            "secondary_label": "雇佣合同",
+            "summary_en": "Service contracts, worker status, and relational obligations.",
+            "summary_zh": "服务合同、劳动者身份与关系性义务。",
+            "summary": "Service contracts, worker status, and relational obligations.",
+            "children": [],
+            "topic_ids": [
+              "topic:specific_types_of_contracts_specialized_domains:03:employment_contracts"
+            ],
+            "topic_labels": [
+              "Employment Contracts"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:cutter_v_powell",
+              "case:paradine_v_jane"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 2,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:special_contracts:construction",
+            "module_id": "module:special_contracts",
+            "slug": "construction",
+            "type": "subground",
+            "label_en": "Construction Contracts",
+            "label_zh": "建设工程合同",
+            "label": "Construction Contracts / 建设工程合同",
+            "secondary_label": "建设工程合同",
+            "summary_en": "Standard forms, certification, and contractual variation in construction.",
+            "summary_zh": "标准格式、认证与建设工程中的合同变更。",
+            "summary": "Standard forms, certification, and contractual variation in construction.",
+            "children": [],
+            "topic_ids": [
+              "topic:specific_types_of_contracts_specialized_domains:04:construction_contracts"
+            ],
+            "topic_labels": [
+              "Construction Contracts"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 0,
+              "statutes": 0,
+              "sources": 3,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:special_contracts:credit_security",
+            "module_id": "module:special_contracts",
+            "slug": "credit_security",
+            "type": "subground",
+            "label_en": "Credit, Security, and Guarantees",
+            "label_zh": "信贷与担保",
+            "label": "Credit, Security, and Guarantees / 信贷与担保",
+            "secondary_label": "信贷与担保",
+            "summary_en": "Security devices, guarantees, and finance-related obligations.",
+            "summary_zh": "担保工具、保证与融资合同义务。",
+            "summary": "Security devices, guarantees, and finance-related obligations.",
+            "children": [],
+            "topic_ids": [
+              "topic:specific_types_of_contracts_specialized_domains:05:credit_security_and_guarantees"
+            ],
+            "topic_labels": [
+              "Credit, Security, and Guarantees"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:hillas_co_ltd_v_arcos_ltd",
+              "case:may_and_butcher_ltd_v_r",
+              "case:walford_v_miles"
+            ],
+            "statute_ids": [
+              "statute:differentiate_between_mortgages_charges_fixed_and_floating_pledg"
+            ],
+            "source_ids": [
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 3,
+              "statutes": 1,
+              "sources": 3,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:special_contracts:insurance",
+            "module_id": "module:special_contracts",
+            "slug": "insurance",
+            "type": "subground",
+            "label_en": "Insurance Contracts",
+            "label_zh": "保险合同",
+            "label": "Insurance Contracts / 保险合同",
+            "secondary_label": "保险合同",
+            "summary_en": "Utmost good faith and insurable interest issues.",
+            "summary_zh": "最高诚信义务与可保利益问题。",
+            "summary": "Utmost good faith and insurable interest issues.",
+            "children": [],
+            "topic_ids": [
+              "topic:specific_types_of_contracts_specialized_domains:06:insurance_contracts"
+            ],
+            "topic_labels": [
+              "Insurance Contracts"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:taylor_v_caldwell"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 1,
+              "cases": 1,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          }
+        ],
+        "metrics": {
+          "subgrounds": 7,
+          "topics": 6,
+          "cases": 13,
+          "statutes": 8,
+          "sources": 4,
+          "lineages": 0
+        }
+      },
+      {
+        "id": "module:cross_cutting",
+        "slug": "cross_cutting",
+        "type": "module",
+        "label_en": "Cross-Cutting Issues",
+        "label_zh": "跨界议题",
+        "label": "Cross-Cutting Issues / 跨界议题",
+        "secondary_label": "跨界议题",
+        "summary_en": "Technology, cross-border, and procedure-focused overlays on contract doctrine.",
+        "summary_zh": "技术、跨境与程序性议题对合同法的横向覆盖。",
+        "summary": "Technology, cross-border, and procedure-focused overlays on contract doctrine.",
+        "subgrounds": [
+          {
+            "id": "subground:cross_cutting:electronic_contracting",
+            "module_id": "module:cross_cutting",
+            "slug": "electronic_contracting",
+            "type": "subground",
+            "label_en": "Electronic Contracting and Emerging Technology",
+            "label_zh": "电子合同与新兴技术",
+            "label": "Electronic Contracting and Emerging Technology / 电子合同与新兴技术",
+            "secondary_label": "电子合同与新兴技术",
+            "summary_en": "Clickwrap, browsewrap, smart contracts, and privacy-related contract issues.",
+            "summary_zh": "点击协议、浏览协议、智能合约与数据隐私相关合同问题。",
+            "summary": "Clickwrap, browsewrap, smart contracts, and privacy-related contract issues.",
+            "children": [],
+            "topic_ids": [
+              "topic:cyber_law_and_emerging_technologies_modern_modalities:01:electronic_contracting",
+              "topic:cyber_law_and_emerging_technologies_modern_modalities:02:smart_contracts_blockchain",
+              "topic:cyber_law_and_emerging_technologies_modern_modalities:03:data_privacy_in_contracts"
+            ],
+            "topic_labels": [
+              "Electronic Contracting",
+              "Smart Contracts & Blockchain",
+              "Data Privacy in Contracts"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:brinkibon_ltd_v_stahag_stahl",
+              "case:chwee_kin_keong_v_digilandmall_com_pte_ltd",
+              "case:in_gibson_v_manchester_city_council"
+            ],
+            "statute_ids": [
+              "statute:differentiate_between_mortgages_charges_fixed_and_floating_pledg",
+              "statute:electronic_transactions_ordinance_cap_553",
+              "statute:map_how_offer_and_acceptance_apply_to_clickwrap_and_browsewrap_a",
+              "statute:map_the_arbitration_ordinance_cap_609",
+              "statute:personal_data_privacy_ordinance_cap_486"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 3,
+              "cases": 3,
+              "statutes": 5,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:cross_cutting:cross_border_contracts",
+            "module_id": "module:cross_cutting",
+            "slug": "cross_border_contracts",
+            "type": "subground",
+            "label_en": "Cross-Border Contracts",
+            "label_zh": "跨境合同",
+            "label": "Cross-Border Contracts / 跨境合同",
+            "secondary_label": "跨境合同",
+            "summary_en": "Choice of law, jurisdiction, and foreign illegality treatment.",
+            "summary_zh": "法律选择、管辖权与外国法下非法性的处理。",
+            "summary": "Choice of law, jurisdiction, and foreign illegality treatment.",
+            "children": [],
+            "topic_ids": [
+              "topic:conflict_of_laws_cross_border_contracts:01:choice_of_law",
+              "topic:conflict_of_laws_cross_border_contracts:02:long_arm_jurisdiction",
+              "topic:conflict_of_laws_cross_border_contracts:03:foreign_illegality"
+            ],
+            "topic_labels": [
+              "Choice of Law",
+              "Long-Arm Jurisdiction",
+              "Foreign Illegality"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:bonython_v_commonwealth_of_australia",
+              "case:combe_v_combe",
+              "case:darton_ltd_v_hong_kong_island_development_ltd",
+              "case:hadley_v_baxendale",
+              "case:hong_kong_fir_shipping_co_ltd_v_kawasaki_kisen_kaisha_ltd",
+              "case:leaf_v_international_galleries",
+              "case:ltd_v_fung_chin_kan",
+              "case:ltd_v_gold_king_consolidator_ltd",
+              "case:sky_petroleum_ltd_v_vip_petroleum_ltd",
+              "case:thompson_v_t_lohan",
+              "case:williams_v_roffey",
+              "case:world_food_fair_ltd_v_hong_kong_island_development_ltd"
+            ],
+            "statute_ids": [],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 3,
+              "cases": 12,
+              "statutes": 0,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          },
+          {
+            "id": "subground:cross_cutting:dispute_resolution",
+            "module_id": "module:cross_cutting",
+            "slug": "dispute_resolution",
+            "type": "subground",
+            "label_en": "Dispute Resolution",
+            "label_zh": "争议解决",
+            "label": "Dispute Resolution / 争议解决",
+            "secondary_label": "争议解决",
+            "summary_en": "Arbitration and mediation as contract-related dispute mechanisms.",
+            "summary_zh": "以仲裁与调解处理合同争议。",
+            "summary": "Arbitration and mediation as contract-related dispute mechanisms.",
+            "children": [],
+            "topic_ids": [
+              "topic:dispute_resolution:01:arbitration",
+              "topic:dispute_resolution:02:mediation"
+            ],
+            "topic_labels": [
+              "Arbitration",
+              "Mediation"
+            ],
+            "lineage_ids": [],
+            "lineage_titles": [],
+            "case_ids": [
+              "case:davis_contractors_v_fareham_udc",
+              "case:derry_v_peek",
+              "case:foley_v_classique_coaches_ltd",
+              "case:gee_tai_trading_co_ltd_v_sun_wah_oil_cereal_ltd",
+              "case:hedley_byrne_v_heller",
+              "case:lo_wo_v_cheung_chan_ka",
+              "case:ma_ip_hung_v_lai_chuen",
+              "case:pearce_v_brooks",
+              "case:pharmaceutical_society_of_great_britain_v_boots_cash_chemists",
+              "case:taylor_v_caldwell",
+              "case:tweddle_v_atkinson"
+            ],
+            "statute_ids": [
+              "statute:arbitration_ordinance_cap_609",
+              "statute:contracts_rights_of_third_parties_ordinance_cap_623",
+              "statute:differentiate_between_mortgages_charges_fixed_and_floating_pledg",
+              "statute:governed_by_the_mediation_ordinance_cap_620",
+              "statute:law_amendment_and_reform_consolidation_ordinance_cap_23",
+              "statute:map_how_offer_and_acceptance_apply_to_clickwrap_and_browsewrap_a",
+              "statute:map_the_arbitration_ordinance_cap_609",
+              "statute:misrepresentation_ordinance_cap_284",
+              "statute:unconscionable_contracts_ordinance_cap_458"
+            ],
+            "source_ids": [
+              "source:butterworths_hong_kong_contract_law_handbook_fourth_edition_astina_au_cindy_li_elliot_fung_adrian_lai_etc",
+              "source:contract_law_in_hong_kong_michael_j_fisher_desmond_g_greenwood",
+              "source:contract_big",
+              "source:ho_halls_hong_kong_contract_law_sixth_edition_stephen_hall"
+            ],
+            "metrics": {
+              "topics": 2,
+              "cases": 11,
+              "statutes": 9,
+              "sources": 4,
+              "lineages": 0
+            },
+            "coverage": "mapped"
+          }
+        ],
+        "metrics": {
+          "subgrounds": 3,
+          "topics": 8,
+          "cases": 26,
+          "statutes": 11,
+          "sources": 4,
+          "lineages": 0
+        }
+      }
+    ]
   }
 }

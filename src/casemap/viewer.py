@@ -1874,8 +1874,6 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     :root {
       --bg: #edf0f4;
       --bg-deep: #dfe4ea;
-      --panel: rgba(255, 255, 255, 0.78);
-      --panel-strong: rgba(255, 255, 255, 0.9);
       --ink: #101216;
       --muted: #6c727c;
       --line: rgba(16, 18, 22, 0.1);
@@ -1884,9 +1882,6 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       --shadow-soft: 0 14px 32px rgba(16, 18, 22, 0.06);
       --glass: blur(22px);
       --root: #0f1114;
-      --silver: #c7cdd6;
-      --silver-deep: #959da8;
-      --silver-soft: #f5f7fa;
     }
 
     * { box-sizing: border-box; }
@@ -1897,8 +1892,8 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       color: var(--ink);
       font-family: "Avenir Next", "Helvetica Neue", sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(255, 255, 255, 0.78), transparent 28%),
-        radial-gradient(circle at top right, rgba(199, 205, 214, 0.38), transparent 24%),
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.8), transparent 28%),
+        radial-gradient(circle at top right, rgba(199, 205, 214, 0.34), transparent 24%),
         linear-gradient(180deg, #f8f9fb 0%, var(--bg) 48%, var(--bg-deep) 100%);
     }
 
@@ -1915,7 +1910,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
 
     .detail-panel {
       border-left: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(242, 244, 247, 0.92));
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(242, 244, 247, 0.94));
       backdrop-filter: var(--glass);
       -webkit-backdrop-filter: var(--glass);
       padding: 24px 22px 32px;
@@ -2084,8 +2079,8 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     }
 
     .tree-node {
-      min-width: 190px;
-      max-width: 280px;
+      min-width: 200px;
+      max-width: 300px;
       border: 1px solid rgba(16, 18, 22, 0.1);
       border-radius: 24px;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.84));
@@ -2106,23 +2101,24 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     }
 
     .tree-node.root {
-      min-width: 300px;
+      min-width: 320px;
       background: linear-gradient(180deg, #14171b, #0f1114);
       color: white;
       border-color: rgba(15, 17, 20, 0.66);
     }
 
-    .tree-node.domain {
+    .tree-node.module {
       background: linear-gradient(180deg, rgba(248, 249, 251, 0.94), rgba(229, 233, 239, 0.88));
     }
 
-    .tree-node.topic {
+    .tree-node.subground {
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(239, 242, 246, 0.88));
     }
 
     .tree-node.case,
     .tree-node.statute,
-    .tree-node.source {
+    .tree-node.source,
+    .tree-node.topic {
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(245, 247, 250, 0.92));
     }
 
@@ -2152,8 +2148,21 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       letter-spacing: -0.02em;
     }
 
+    .node-subtitle {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+    }
+
     .tree-node.root .node-name {
       font-size: 20px;
+    }
+
+    .tree-node.root .node-subtitle {
+      color: rgba(255, 255, 255, 0.78);
     }
 
     .chip-row {
@@ -2304,6 +2313,25 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       margin: 0 0 16px;
     }
 
+    .detail-summary .secondary-copy,
+    .detail-title-sub {
+      display: block;
+      color: var(--muted);
+    }
+
+    .detail-summary .secondary-copy {
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .detail-title-sub {
+      margin-top: 5px;
+      font-size: 15px;
+      line-height: 1.5;
+      letter-spacing: 0.01em;
+    }
+
     .signal-panel {
       border: 1px solid var(--line);
       border-radius: 20px;
@@ -2393,7 +2421,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     <section class="workspace">
       <div class="meta">Casemap Vertical Tree</div>
       <h1>Hong Kong Contract Law Authority Tree</h1>
-      <p class="intro">A top-down doctrine tree for Hong Kong contract law. The node faces stay compact so the full structure remains readable. Hover a ground, sub-ground, or authority to preview its details in the side panel, and click to lock the selection and open the next branch.</p>
+      <p class="intro">A top-down lifecycle tree for Hong Kong contract law. The structural cards stay compact so the full map remains readable. Hover or click a ground, sub-ground, topic, case, or statute to open bilingual summaries, mapped topics, and authority paths in the side panel.</p>
       <div class="toolbar">
         <nav class="nav">
           <a href="/" class="active">Authority Tree</a>
@@ -2402,7 +2430,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
         </nav>
         <label class="search-box">
           <span class="meta">Jump To Node</span>
-          <input id="searchInput" type="search" placeholder="Case, topic, statute, source">
+          <input id="searchInput" type="search" placeholder="Module, sub-ground, case, statute, source">
         </label>
       </div>
       <div id="breadcrumbs" class="breadcrumbs"></div>
@@ -2413,7 +2441,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       <div class="meta">Selection</div>
       <h2 id="detailTitle">Overview</h2>
       <div id="detailType" class="detail-type">Root</div>
-      <p id="detailSummary" class="detail-summary">Hover or click a branch to inspect case treatment, lineage codes, public notes, references, and linked authorities.</p>
+      <div id="detailSummary" class="detail-summary">Hover or click a branch to inspect bilingual summaries, lineage paths, mapped topics, public notes, and linked authorities.</div>
       <div id="detailSignal" class="signal-panel empty-state">Treatment notes and short quotations appear here when a node carries them.</div>
       <div class="meta">Metrics</div>
       <ul id="metricList" class="data-list"><li class="empty">Choose a node to view metrics.</li></ul>
@@ -2421,9 +2449,11 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       <ul id="linkList" class="data-list"><li class="empty">No node selected.</li></ul>
       <div class="meta">Lineage Paths</div>
       <ul id="lineageList" class="data-list"><li class="empty">No lineage path selected.</li></ul>
+      <div class="meta">Topic Mapping</div>
+      <ul id="topicList" class="data-list"><li class="empty">No mapping selected.</li></ul>
       <div class="meta">References</div>
       <ul id="referenceList" class="data-list"><li class="empty">No references attached.</li></ul>
-      <div class="meta">Related Nodes</div>
+      <div class="meta">Related Authorities</div>
       <ul id="neighborList" class="data-list"><li class="empty">No related nodes.</li></ul>
     </aside>
   </div>
@@ -2432,13 +2462,50 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     const nodes = payload.nodes || [];
     const edges = payload.edges || [];
     const nodeMap = new Map(nodes.map((node) => [node.id, node]));
-    const adjacency = new Map(nodes.map((node) => [node.id, new Set()]));
+    const adjacency = new Map();
     edges.forEach((edge) => {
       if (!adjacency.has(edge.source)) adjacency.set(edge.source, new Set());
       if (!adjacency.has(edge.target)) adjacency.set(edge.target, new Set());
       adjacency.get(edge.source).add(edge.target);
       adjacency.get(edge.target).add(edge.source);
     });
+
+    const authorityTree = payload.meta.authority_tree || {};
+    const modules = (authorityTree.modules || []).map((module) => ({
+      ...module,
+      type: "module",
+      subgrounds: (module.subgrounds || []).map((subground) => ({
+        ...subground,
+        type: "subground",
+        module_id: module.id,
+      })),
+    }));
+    const moduleMap = new Map(modules.map((module) => [module.id, module]));
+    const subgrounds = modules.flatMap((module) => module.subgrounds);
+    const subgroundMap = new Map(subgrounds.map((subground) => [subground.id, subground]));
+
+    const lineages = (payload.meta.lineages || [])
+      .map((lineage) => ({
+        ...lineage,
+        members: (lineage.members || []).filter((member) => nodeMap.has(member.node_id)),
+      }))
+      .sort((left, right) => left.title.localeCompare(right.title));
+    const lineageMap = new Map(lineages.map((lineage) => [lineage.id, lineage]));
+
+    const subgroundsByTopic = new Map();
+    subgrounds.forEach((subground) => {
+      (subground.topic_ids || []).forEach((topicId) => {
+        const current = subgroundsByTopic.get(topicId) || [];
+        current.push(subground);
+        subgroundsByTopic.set(topicId, current);
+      });
+    });
+
+    const searchables = [
+      ...modules,
+      ...subgrounds,
+      ...nodes.filter((node) => node.type !== "domain"),
+    ];
 
     const treeStack = document.getElementById("treeStack");
     const breadcrumbsEl = document.getElementById("breadcrumbs");
@@ -2451,38 +2518,21 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     const metricList = document.getElementById("metricList");
     const linkList = document.getElementById("linkList");
     const lineageList = document.getElementById("lineageList");
+    const topicList = document.getElementById("topicList");
     const referenceList = document.getElementById("referenceList");
     const neighborList = document.getElementById("neighborList");
     const hoverPreviewEnabled = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-    const domains = nodes
-      .filter((node) => node.type === "domain")
-      .sort((left, right) => left.label.localeCompare(right.label));
-
-    const lineages = (payload.meta.lineages || [])
-      .map((lineage) => ({
-        ...lineage,
-        members: (lineage.members || []).filter((member) => nodeMap.has(member.node_id)),
-      }))
-      .sort((left, right) => left.title.localeCompare(right.title));
-
-    const topicLineages = new Map();
-    const lineageMap = new Map(lineages.map((lineage) => [lineage.id, lineage]));
-    lineages.forEach((lineage) => {
-      (lineage.topic_ids || []).forEach((topicId) => {
-        const current = topicLineages.get(topicId) || [];
-        current.push(lineage);
-        topicLineages.set(topicId, current);
-      });
-    });
-
     const rootNode = {
       id: "__root__",
-      label: payload.meta.title || "Hong Kong Contract Law",
+      label: authorityTree.label_en || payload.meta.title || "Hong Kong Contract Law",
+      secondary_label: authorityTree.label_zh || "香港合同法知识图谱",
       type: "root",
-      summary: "Top-level doctrinal overview. Choose a domain, then a topic, then an authority branch. The right panel shows the detail only when you hover or click.",
+      summary: authorityTree.summary_en || "Lifecycle-based doctrinal overview. Choose a module, then a sub-ground, then an authority branch.",
+      summary_zh: authorityTree.summary_zh || "按合同生命周期组织的总览。先选模块，再选子议题，再展开权威路径。",
       metrics: {
-        domains: domains.length,
+        modules: modules.length,
+        subgrounds: subgrounds.length,
         topics: nodes.filter((node) => node.type === "topic").length,
         authorities: nodes.filter((node) => node.type === "case" || node.type === "statute").length,
         lineages: payload.meta.curated_lineage_count || lineages.length,
@@ -2493,9 +2543,9 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     };
 
     const state = {
-      domainId: null,
-      topicId: null,
-      selectedNodeId: rootNode.id,
+      moduleId: null,
+      subgroundId: null,
+      selectedId: rootNode.id,
     };
 
     function escapeHtml(value) {
@@ -2510,14 +2560,17 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
 
     function getNode(nodeId) {
       if (nodeId === rootNode.id) return rootNode;
+      if (moduleMap.has(nodeId)) return moduleMap.get(nodeId);
+      if (subgroundMap.has(nodeId)) return subgroundMap.get(nodeId);
       return nodeMap.get(nodeId) || null;
     }
 
     function labelForType(type) {
       const labels = {
         root: "Root",
-        domain: "Ground",
-        topic: "Sub-ground",
+        module: "Ground",
+        subground: "Sub-ground",
+        topic: "Mapped Topic",
         case: "Case",
         statute: "Statute",
         source: "Source",
@@ -2530,7 +2583,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     }
 
     function sortByLabel(items) {
-      return items.slice().sort((left, right) => left.label.localeCompare(right.label));
+      return items.slice().sort((left, right) => (left.label || "").localeCompare(right.label || ""));
     }
 
     function neighborsByType(nodeId, type) {
@@ -2541,32 +2594,64 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       );
     }
 
-    function childrenOfDomain(domainId) {
-      return sortByLabel(
-        edges
-          .filter((edge) => edge.type === "contains" && edge.source === domainId)
-          .map((edge) => getNode(edge.target))
-          .filter(Boolean)
-      );
+    function relatedLineagesForIds(lineageIds) {
+      return [...new Set(lineageIds || [])]
+        .map((lineageId) => lineageMap.get(lineageId))
+        .filter(Boolean)
+        .sort((left, right) => left.title.localeCompare(right.title));
     }
 
-    function preferredTopicForNode(node) {
-      if (!node || node.type === "root") return null;
-      if (node.type === "topic") return node;
-      const connectedTopics = neighborsByType(node.id, "topic");
-      if (state.topicId && connectedTopics.some((topic) => topic.id === state.topicId)) {
-        return getNode(state.topicId);
+    function preferredSubgroundForNode(node) {
+      if (!node || node.type === "root" || node.type === "module" || node.type === "subground") {
+        return null;
       }
-      for (const membership of node.lineage_memberships || []) {
-        for (const topicId of membership.topic_ids || []) {
-          const topic = getNode(topicId);
-          if (topic) return topic;
+
+      const topicIds = new Set();
+      if (node.type === "topic") {
+        topicIds.add(node.id);
+      }
+      neighborsByType(node.id, "topic").forEach((topic) => topicIds.add(topic.id));
+      (node.lineage_memberships || []).forEach((membership) => {
+        (membership.topic_ids || []).forEach((topicId) => topicIds.add(topicId));
+      });
+
+      if (state.subgroundId) {
+        const current = subgroundMap.get(state.subgroundId);
+        if (current && (current.topic_ids || []).some((topicId) => topicIds.has(topicId))) {
+          return current;
         }
       }
-      return connectedTopics[0] || null;
+
+      const scored = subgrounds
+        .map((subground) => {
+          let score = 0;
+          (subground.topic_ids || []).forEach((topicId) => {
+            if (topicIds.has(topicId)) score += 3;
+          });
+          (node.lineage_memberships || []).forEach((membership) => {
+            if ((subground.lineage_ids || []).includes(membership.lineage_id)) score += 2;
+          });
+          if (node.type === "topic" && (subground.topic_ids || []).includes(node.id)) score += 2;
+          return { subground, score };
+        })
+        .filter((item) => item.score > 0)
+        .sort((left, right) => right.score - left.score || left.subground.label.localeCompare(right.subground.label));
+      return scored.length ? scored[0].subground : null;
     }
 
     function relatedLineagesForNode(node) {
+      if (!node) return [];
+      if (node.type === "module") {
+        return relatedLineagesForIds(node.subgrounds.flatMap((subground) => subground.lineage_ids || []));
+      }
+      if (node.type === "subground") {
+        return relatedLineagesForIds(node.lineage_ids || []);
+      }
+      if (node.type === "topic") {
+        return relatedLineagesForIds(
+          ((subgroundsByTopic.get(node.id) || []).flatMap((subground) => subground.lineage_ids || []))
+        );
+      }
       const lineageIds = new Set((node.lineage_memberships || []).map((membership) => membership.lineage_id));
       return [...lineageIds]
         .map((lineageId) => lineageMap.get(lineageId))
@@ -2577,29 +2662,29 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     function setSelection(node) {
       if (!node) return;
       if (node.type === "root") {
-        state.domainId = null;
-        state.topicId = null;
-        state.selectedNodeId = rootNode.id;
+        state.moduleId = null;
+        state.subgroundId = null;
+        state.selectedId = rootNode.id;
         return;
       }
-      if (node.type === "domain") {
-        state.domainId = node.id;
-        state.topicId = null;
-        state.selectedNodeId = node.id;
+      if (node.type === "module") {
+        state.moduleId = node.id;
+        state.subgroundId = null;
+        state.selectedId = node.id;
         return;
       }
-      if (node.type === "topic") {
-        state.domainId = node.domain_id || state.domainId;
-        state.topicId = node.id;
-        state.selectedNodeId = node.id;
+      if (node.type === "subground") {
+        state.moduleId = node.module_id;
+        state.subgroundId = node.id;
+        state.selectedId = node.id;
         return;
       }
-      const topic = preferredTopicForNode(node);
-      if (topic) {
-        state.topicId = topic.id;
-        state.domainId = topic.domain_id || state.domainId;
+      const subground = preferredSubgroundForNode(node);
+      if (subground) {
+        state.moduleId = subground.module_id;
+        state.subgroundId = subground.id;
       }
-      state.selectedNodeId = node.id;
+      state.selectedId = node.id;
     }
 
     function makeSection(title, caption) {
@@ -2615,7 +2700,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     function bindNodeInteractions(element, node) {
       if (hoverPreviewEnabled) {
         element.addEventListener("mouseenter", () => renderDetails(node, true));
-        element.addEventListener("mouseleave", () => renderDetails(getNode(state.selectedNodeId) || rootNode));
+        element.addEventListener("mouseleave", () => renderDetails(getNode(state.selectedId) || rootNode));
       }
       element.addEventListener("click", () => {
         setSelection(node);
@@ -2627,7 +2712,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       const button = document.createElement("button");
       button.type = "button";
       button.className = `tree-node ${node.type}`;
-      if (state.selectedNodeId === node.id) {
+      if (state.selectedId === node.id) {
         button.classList.add("active");
       }
 
@@ -2635,11 +2720,13 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       if (extra.countLabel) chips.push(`<span class="micro-chip">${escapeHtml(extra.countLabel)}</span>`);
       if (extra.code) chips.push(`<span class="micro-chip code">${escapeHtml(extra.code)}</span>`);
       if (extra.treatment) chips.push(`<span class="signal-chip ${statusClass(extra.treatment)}">${escapeHtml(extra.treatment)}</span>`);
+      if (extra.coverage === "placeholder") chips.push(`<span class="micro-chip code">HKLII refine</span>`);
 
       button.title = extra.preview || node.summary || node.label;
       button.innerHTML = `
         <span class="node-kicker">${escapeHtml(extra.kicker || labelForType(node.type))}</span>
         <span class="node-name">${escapeHtml(node.label)}</span>
+        ${(extra.secondaryLabel || node.secondary_label || node.label_zh) ? `<span class="node-subtitle">${escapeHtml(extra.secondaryLabel || node.secondary_label || node.label_zh)}</span>` : ""}
         <span class="chip-row">${chips.join("")}</span>
       `;
       bindNodeInteractions(button, node);
@@ -2655,39 +2742,49 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       items.forEach((item) => listEl.appendChild(item));
     }
 
+    function dualSummary(node) {
+      const en = node.summary_en || node.summary || "";
+      const zh = node.summary_zh || "";
+      if (!zh) return `<span>${escapeHtml(en || "No summary available.")}</span>`;
+      return `<span>${escapeHtml(en || "No summary available.")}</span><span class="secondary-copy">${escapeHtml(zh)}</span>`;
+    }
+
     function renderDetails(node, preview = false) {
       const target = node || rootNode;
       const profile = target.case_profile || {};
       const memberships = target.lineage_memberships || [];
 
-      detailTitle.textContent = target.label;
+      detailTitle.innerHTML = `${escapeHtml(target.label)}${target.secondary_label ? `<span class="detail-title-sub">${escapeHtml(target.secondary_label)}</span>` : ""}`;
       detailType.textContent = preview ? `${labelForType(target.type)} Preview` : labelForType(target.type);
-      detailSummary.textContent = profile.note || profile.quote || target.summary || "No summary available.";
+      if (target.type === "case" || target.type === "statute" || target.type === "source" || target.type === "topic") {
+        detailSummary.innerHTML = `<span>${escapeHtml(profile.note || profile.quote || target.summary || "No summary available.")}</span>`;
+      } else {
+        detailSummary.innerHTML = dualSummary(target);
+      }
 
       const signalBits = [];
-      if (profile.treatment) {
-        signalBits.push(`<span class="signal-chip ${statusClass(profile.treatment)}">${escapeHtml(profile.treatment)}</span>`);
-      }
-      if (profile.code) {
-        signalBits.push(`<span class="signal-chip code">${escapeHtml(profile.code)}</span>`);
-      }
-      if (memberships.length) {
-        signalBits.push(`<span class="signal-chip code">${memberships.length} lineage path(s)</span>`);
-      }
+      if (profile.treatment) signalBits.push(`<span class="signal-chip ${statusClass(profile.treatment)}">${escapeHtml(profile.treatment)}</span>`);
+      if (profile.code) signalBits.push(`<span class="signal-chip code">${escapeHtml(profile.code)}</span>`);
+      if (memberships.length) signalBits.push(`<span class="signal-chip code">${memberships.length} lineage path(s)</span>`);
+      if (target.type === "subground" && target.coverage === "placeholder") signalBits.push(`<span class="signal-chip code">HKLII refinement suggested</span>`);
       const noteText = profile.quote || profile.note || "";
-      if (!signalBits.length && !noteText) {
+      const childText = (target.children || []).map((child) => `${child.en} / ${child.zh}`).join(" · ");
+
+      if (!signalBits.length && !noteText && !childText) {
         detailSignal.className = "signal-panel empty-state";
-        detailSignal.textContent = "Hover or click a node to surface treatment notes, short quotations, and lineage codes.";
+        detailSignal.textContent = "Hover or click a node to surface treatment notes, short quotations, mapped sub-branches, and lineage codes.";
       } else {
         detailSignal.className = "signal-panel";
-        detailSignal.innerHTML = `${signalBits.join("")}${noteText ? `<p>${escapeHtml(noteText)}</p>` : ""}`;
+        detailSignal.innerHTML = `${signalBits.join("")}${noteText ? `<p>${escapeHtml(noteText)}</p>` : ""}${childText ? `<p>${escapeHtml(childText)}</p>` : ""}`;
       }
 
       const metricItems = [];
-      const degree = target.id === rootNode.id ? 0 : (target.degree || 0);
-      const degreeItem = document.createElement("li");
-      degreeItem.textContent = `degree: ${degree}`;
-      metricItems.push(degreeItem);
+      if (!["module", "subground"].includes(target.type)) {
+        const degree = target.id === rootNode.id ? 0 : (target.degree || 0);
+        const degreeItem = document.createElement("li");
+        degreeItem.textContent = `degree: ${degree}`;
+        metricItems.push(degreeItem);
+      }
       Object.entries(target.metrics || {}).forEach(([key, value]) => {
         const item = document.createElement("li");
         item.textContent = `${key}: ${value}`;
@@ -2709,6 +2806,12 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
           item.innerHTML = `<div class="list-meta">${escapeHtml(code)}</div><div>${escapeHtml(meaning)}</div>`;
           lineageItems.push(item);
         });
+      } else if (target.type === "module" || target.type === "subground" || target.type === "topic") {
+        relatedLineagesForNode(target).forEach((lineage) => {
+          const item = document.createElement("li");
+          item.innerHTML = `<div class="list-meta">${escapeHtml((lineage.codes || []).join(" · ") || "authority path")}</div><strong>${escapeHtml(lineage.title)}</strong>`;
+          lineageItems.push(item);
+        });
       } else {
         memberships.forEach((membership) => {
           const item = document.createElement("li");
@@ -2719,9 +2822,11 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
             <div>${escapeHtml(membership.note || "No additional note attached.")}</div>
           `;
           item.addEventListener("click", () => {
-            const topicId = (membership.topic_ids || [])[0];
-            if (topicId && getNode(topicId)) {
-              setSelection(getNode(topicId));
+            const subground = (membership.topic_ids || [])
+              .flatMap((topicId) => subgroundsByTopic.get(topicId) || [])
+              .find(Boolean);
+            if (subground) {
+              setSelection(subground);
               render();
             }
           });
@@ -2730,18 +2835,70 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       }
       fillList(lineageList, lineageItems, "No lineage path attached.");
 
+      const topicItems = [];
+      if (target.type === "module") {
+        target.subgrounds.forEach((subground) => {
+          const item = document.createElement("li");
+          item.className = "clickable";
+          item.innerHTML = `<div class="list-meta">Sub-ground / 子议题</div><strong>${escapeHtml(subground.label)}</strong><div>${escapeHtml((subground.topic_labels || []).join(" · ") || "Awaiting mapped topic refinement.")}</div>`;
+          bindNodeInteractions(item, subground);
+          topicItems.push(item);
+        });
+      } else if (target.type === "subground") {
+        (target.topic_ids || []).map((topicId) => getNode(topicId)).filter(Boolean).forEach((topic) => {
+          const item = document.createElement("li");
+          item.className = "clickable";
+          item.innerHTML = `<div class="list-meta">Mapped topic</div><strong>${escapeHtml(topic.label)}</strong>`;
+          bindNodeInteractions(item, topic);
+          topicItems.push(item);
+        });
+      } else if (target.type === "topic") {
+        (subgroundsByTopic.get(target.id) || []).forEach((subground) => {
+          const item = document.createElement("li");
+          item.className = "clickable";
+          item.innerHTML = `<div class="list-meta">Lifecycle branch</div><strong>${escapeHtml(subground.label)}</strong>`;
+          bindNodeInteractions(item, subground);
+          topicItems.push(item);
+        });
+      } else if (target.type !== "root") {
+        neighborsByType(target.id, "topic").forEach((topic) => {
+          const item = document.createElement("li");
+          item.className = "clickable";
+          item.innerHTML = `<div class="list-meta">Mapped topic</div><strong>${escapeHtml(topic.label)}</strong>`;
+          bindNodeInteractions(item, topic);
+          topicItems.push(item);
+        });
+      }
+      fillList(topicList, topicItems, "No mapped topic information.");
+
       const referenceItems = (target.references || []).map((reference) => {
         const item = document.createElement("li");
-        item.innerHTML = `
-          <div class="list-meta">${escapeHtml(reference.source_label)} · ${escapeHtml(reference.location)}</div>
-          <div>${escapeHtml(reference.snippet)}</div>
-        `;
+        item.innerHTML = `<div class="list-meta">${escapeHtml(reference.source_label)} · ${escapeHtml(reference.location)}</div><div>${escapeHtml(reference.snippet)}</div>`;
         return item;
       });
+      if (!referenceItems.length && target.type === "subground" && (target.children || []).length) {
+        target.children.forEach((child) => {
+          const item = document.createElement("li");
+          item.innerHTML = `<div class="list-meta">Doctrinal branch</div><div>${escapeHtml(child.en)} / ${escapeHtml(child.zh)}</div>`;
+          referenceItems.push(item);
+        });
+      }
       fillList(referenceList, referenceItems, "No references attached.");
 
       const neighborItems = [];
-      if (target.id !== rootNode.id) {
+      if (target.type === "subground") {
+        [...(target.case_ids || []), ...(target.statute_ids || []), ...(target.source_ids || [])]
+          .map((nodeId) => getNode(nodeId))
+          .filter(Boolean)
+          .slice(0, 16)
+          .forEach((neighbor) => {
+            const item = document.createElement("li");
+            item.className = "clickable";
+            item.innerHTML = `<div class="list-meta">${escapeHtml(labelForType(neighbor.type))}</div><strong>${escapeHtml(neighbor.label)}</strong>`;
+            bindNodeInteractions(item, neighbor);
+            neighborItems.push(item);
+          });
+      } else if (target.id !== rootNode.id && target.type !== "module") {
         neighborsByType(target.id, "topic")
           .concat(neighborsByType(target.id, "case"))
           .concat(neighborsByType(target.id, "statute"))
@@ -2762,15 +2919,10 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     function renderBreadcrumbs() {
       breadcrumbsEl.innerHTML = "";
       const trail = [rootNode];
-      if (state.domainId) trail.push(getNode(state.domainId));
-      if (state.topicId) trail.push(getNode(state.topicId));
-      const selectedNode = getNode(state.selectedNodeId);
-      if (
-        selectedNode &&
-        selectedNode.id !== rootNode.id &&
-        selectedNode.id !== state.domainId &&
-        selectedNode.id !== state.topicId
-      ) {
+      if (state.moduleId) trail.push(getNode(state.moduleId));
+      if (state.subgroundId) trail.push(getNode(state.subgroundId));
+      const selectedNode = getNode(state.selectedId);
+      if (selectedNode && ![rootNode.id, state.moduleId, state.subgroundId].includes(selectedNode.id)) {
         trail.push(selectedNode);
       }
 
@@ -2788,9 +2940,9 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       const lowered = query.trim().toLowerCase();
       resultsEl.innerHTML = "";
       if (!lowered) return;
-      const matches = nodes
-        .filter((node) => `${node.label} ${node.summary || ""}`.toLowerCase().includes(lowered))
-        .sort((left, right) => (right.degree || 0) - (left.degree || 0))
+      const matches = searchables
+        .filter((node) => `${node.label || ""} ${node.secondary_label || ""} ${node.summary || ""} ${node.summary_zh || ""}`.toLowerCase().includes(lowered))
+        .sort((left, right) => (right.degree || 0) - (left.degree || 0) || (left.label || "").localeCompare(right.label || ""))
         .slice(0, 12);
 
       if (!matches.length) {
@@ -2811,12 +2963,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     function renderAuthorityLineage(lineage) {
       const panel = document.createElement("article");
       panel.className = "lineage-panel";
-      panel.innerHTML = `
-        <div class="branch-head">
-          <h3>${escapeHtml(lineage.title)}</h3>
-          <div class="branch-meta">${escapeHtml((lineage.codes || []).join(" · ") || "authority path")}</div>
-        </div>
-      `;
+      panel.innerHTML = `<div class="branch-head"><h3>${escapeHtml(lineage.title)}</h3><div class="branch-meta">${escapeHtml((lineage.codes || []).join(" · ") || "authority path")}</div></div>`;
       const track = document.createElement("div");
       track.className = "lineage-track";
       (lineage.members || []).forEach((member) => {
@@ -2842,17 +2989,16 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       if (!items.length) return null;
       const panel = document.createElement("article");
       panel.className = "aux-panel";
-      panel.innerHTML = `
-        <div class="branch-head">
-          <h3>${escapeHtml(title)}</h3>
-          <div class="branch-meta">${escapeHtml(caption)}</div>
-        </div>
-      `;
+      panel.innerHTML = `<div class="branch-head"><h3>${escapeHtml(title)}</h3><div class="branch-meta">${escapeHtml(caption)}</div></div>`;
       const grid = document.createElement("div");
       grid.className = "aux-grid";
       items.forEach((item) => grid.appendChild(cardBuilder(item)));
       panel.appendChild(grid);
       return panel;
+    }
+
+    function selectedSubground() {
+      return state.subgroundId ? getNode(state.subgroundId) : null;
     }
 
     function renderTree() {
@@ -2864,56 +3010,55 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       rootWrap.appendChild(
         createNodeCard(rootNode, {
           kicker: "root",
-          countLabel: `${domains.length} domains · ${lineages.length} lineages`,
+          countLabel: `${modules.length} modules · ${subgrounds.length} sub-grounds · ${lineages.length} lineages`,
           preview: rootNode.summary,
+          secondaryLabel: rootNode.secondary_label,
         })
       );
       rootSection.appendChild(rootWrap);
       treeStack.appendChild(rootSection);
 
-      const domainSection = makeSection("Doctrinal Grounds", "top-level branches");
-      const domainRow = document.createElement("div");
-      domainRow.className = "domain-row";
-      domains.forEach((domain) => {
-        domainRow.appendChild(
-          createNodeCard(domain, {
-            countLabel: `${childrenOfDomain(domain.id).length} topics`,
+      const moduleSection = makeSection("Lifecycle Modules", "合同生命周期模块");
+      const moduleRow = document.createElement("div");
+      moduleRow.className = "domain-row";
+      modules.forEach((module) => {
+        moduleRow.appendChild(
+          createNodeCard(module, {
+            countLabel: `${module.metrics.subgrounds} sub-grounds · ${module.metrics.lineages} lineages`,
+            secondaryLabel: module.label_zh,
           })
         );
       });
-      domainSection.appendChild(domainRow);
-      treeStack.appendChild(domainSection);
+      moduleSection.appendChild(moduleRow);
+      treeStack.appendChild(moduleSection);
 
-      if (!state.domainId || !getNode(state.domainId)) return;
-      const selectedDomain = getNode(state.domainId);
-      const topics = childrenOfDomain(selectedDomain.id);
-      const topicSection = makeSection(selectedDomain.label, "sub-grounds");
-      const topicGrid = document.createElement("div");
-      topicGrid.className = "topic-grid";
-      topics.forEach((topic) => {
-        const topicCases = neighborsByType(topic.id, "case").length;
-        const topicStatutes = neighborsByType(topic.id, "statute").length;
-        const topicLineageCount = (topicLineages.get(topic.id) || []).length;
-        topicGrid.appendChild(
-          createNodeCard(topic, {
-            countLabel: `${topicCases} cases · ${topicStatutes} statutes · ${topicLineageCount} lineages`,
+      if (!state.moduleId || !getNode(state.moduleId)) return;
+      const selectedModule = getNode(state.moduleId);
+      const subgroundSection = makeSection(selectedModule.label, "子议题 / sub-grounds");
+      const subgroundGrid = document.createElement("div");
+      subgroundGrid.className = "topic-grid";
+      selectedModule.subgrounds.forEach((subground) => {
+        subgroundGrid.appendChild(
+          createNodeCard(subground, {
+            countLabel: `${subground.metrics.cases} cases · ${subground.metrics.statutes} statutes · ${subground.metrics.lineages} lineages`,
+            secondaryLabel: subground.label_zh,
+            coverage: subground.coverage,
           })
         );
       });
-      topicSection.appendChild(topicGrid);
-      treeStack.appendChild(topicSection);
+      subgroundSection.appendChild(subgroundGrid);
+      treeStack.appendChild(subgroundSection);
 
-      if (!state.topicId || !getNode(state.topicId)) return;
-      const selectedTopic = getNode(state.topicId);
-      const cases = neighborsByType(selectedTopic.id, "case");
-      const statutes = neighborsByType(selectedTopic.id, "statute");
-      const sources = neighborsByType(selectedTopic.id, "source");
-      const matchedLineages = (topicLineages.get(selectedTopic.id) || []).slice().sort((left, right) => left.title.localeCompare(right.title));
-      const lineageNodeIds = new Set(
-        matchedLineages.flatMap((lineage) => (lineage.members || []).map((member) => member.node_id))
-      );
+      const currentSubground = selectedSubground();
+      if (!currentSubground) return;
 
-      const authoritySection = makeSection(selectedTopic.label, "authority branches");
+      const cases = (currentSubground.case_ids || []).map((nodeId) => getNode(nodeId)).filter(Boolean);
+      const statutes = (currentSubground.statute_ids || []).map((nodeId) => getNode(nodeId)).filter(Boolean);
+      const sources = (currentSubground.source_ids || []).map((nodeId) => getNode(nodeId)).filter(Boolean);
+      const matchedLineages = relatedLineagesForIds(currentSubground.lineage_ids || []);
+      const lineageNodeIds = new Set(matchedLineages.flatMap((lineage) => (lineage.members || []).map((member) => member.node_id)));
+
+      const authoritySection = makeSection(currentSubground.label, "authority branches");
       const authorityStack = document.createElement("div");
       authorityStack.className = "authority-stack";
 
@@ -2927,9 +3072,8 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       const auxPanels = [];
       const extraCases = cases.filter((node) => !lineageNodeIds.has(node.id));
       const extraStatutes = statutes.filter((node) => !lineageNodeIds.has(node.id));
-      const extraSources = sources;
 
-      const otherCasesPanel = renderAuxPanel("Other Cases", "same topic but outside the curated lineage", extraCases, (caseNode) =>
+      const otherCasesPanel = renderAuxPanel("Other Cases", "same branch but outside the curated lineage", extraCases, (caseNode) =>
         createNodeCard(caseNode, {
           kicker: "case",
           treatment: (caseNode.case_profile || {}).treatment,
@@ -2943,7 +3087,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       );
       if (statutePanel) auxPanels.push(statutePanel);
 
-      const sourcePanel = renderAuxPanel("Sources", "supporting books, notes, and structure", extraSources, (sourceNode) =>
+      const sourcePanel = renderAuxPanel("Sources", "supporting materials and bibliography", sources, (sourceNode) =>
         createNodeCard(sourceNode, { kicker: "source" })
       );
       if (sourcePanel) auxPanels.push(sourcePanel);
@@ -2958,12 +3102,14 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       authoritySection.appendChild(authorityStack);
       treeStack.appendChild(authoritySection);
 
-      const selectedNode = getNode(state.selectedNodeId);
-      if (!selectedNode || selectedNode.id === rootNode.id) return;
-      const focusedLineages = relatedLineagesForNode(selectedNode).filter((lineage) =>
-        (lineage.topic_ids || []).includes(selectedTopic.id) || selectedNode.id === state.selectedNodeId
-      );
-      if (!focusedLineages.length && (selectedNode.type === "domain" || selectedNode.type === "topic")) return;
+      const selectedNode = getNode(state.selectedId);
+      if (!selectedNode || [rootNode.id, state.moduleId, state.subgroundId].includes(selectedNode.id)) return;
+      const focusedLineages = relatedLineagesForNode(selectedNode).filter((lineage) => {
+        const lineageTopicIds = lineage.topic_ids || [];
+        return (currentSubground.topic_ids || []).some((topicId) => lineageTopicIds.includes(topicId))
+          || (lineage.members || []).some((member) => member.node_id === selectedNode.id);
+      });
+      if (!focusedLineages.length && selectedNode.type === "topic") return;
 
       const focusSection = makeSection("Focused Authority Path", "zoomed branch");
       if (focusedLineages.length) {
@@ -2979,12 +3125,11 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
             .concat(neighborsByType(selectedNode.id, "statute"))
             .filter((neighbor, index, values) => values.findIndex((item) => item.id === neighbor.id) === index)
             .slice(0, 12),
-          (neighbor) =>
-            createNodeCard(neighbor, {
-              kicker: labelForType(neighbor.type).toLowerCase(),
-              treatment: (neighbor.case_profile || {}).treatment,
-              code: (neighbor.case_profile || {}).code,
-            })
+          (neighbor) => createNodeCard(neighbor, {
+            kicker: labelForType(neighbor.type).toLowerCase(),
+            treatment: (neighbor.case_profile || {}).treatment,
+            code: (neighbor.case_profile || {}).code,
+          })
         );
         if (relatedPanel) focusSection.appendChild(relatedPanel);
       }
@@ -2994,7 +3139,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     function render() {
       renderBreadcrumbs();
       renderTree();
-      renderDetails(getNode(state.selectedNodeId) || rootNode);
+      renderDetails(getNode(state.selectedId) || rootNode);
       renderResults(searchInput.value);
     }
 

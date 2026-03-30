@@ -9,6 +9,7 @@ import json
 import math
 import re
 
+from .authority_tree_data import CURATED_AUTHORITY_TREE
 from .docx_parser import extract_paragraphs
 from .graphrag import (
     CASE_RE,
@@ -660,6 +661,193 @@ def _augment_public_payload_with_lineages(public_payload: dict) -> None:
     _recompute_public_connectivity(public_payload)
 
 
+def _normalized_public_label(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
+
+
+def _resolve_curated_topic_ids(topic_labels: list[str], topic_nodes: list[dict]) -> list[str]:
+    normalized_lookup: defaultdict[str, list[dict]] = defaultdict(list)
+    token_lookup = {topic["id"]: set(tokenize(topic["label"])) for topic in topic_nodes}
+    for topic in topic_nodes:
+        normalized_lookup[_normalized_public_label(topic["label"])].append(topic)
+
+    matched_ids: list[str] = []
+    seen: set[str] = set()
+    for label in topic_labels:
+        normalized = _normalized_public_label(label)
+        direct_matches = normalized_lookup.get(normalized, [])
+        candidates = list(direct_matches)
+        if not candidates and normalized:
+            for topic in topic_nodes:
+                topic_normalized = _normalized_public_label(topic["label"])
+                if normalized in topic_normalized or topic_normalized in normalized:
+                    candidates.append(topic)
+        if not candidates:
+            label_tokens = set(tokenize(label))
+            scored: list[tuple[float, dict]] = []
+            for topic in topic_nodes:
+                overlap = label_tokens & token_lookup[topic["id"]]
+                if not overlap:
+                    continue
+                score = len(overlap) / max(len(label_tokens | token_lookup[topic["id"]]), 1)
+                if score >= 0.32:
+                    scored.append((score, topic))
+            candidates = [topic for _, topic in sorted(scored, key=lambda item: item[0], reverse=True)]
+
+        if candidates:
+            topic = candidates[0]
+            if topic["id"] not in seen:
+                seen.add(topic["id"])
+                matched_ids.append(topic["id"])
+    return matched_ids
+
+
+def _augment_public_payload_with_authority_tree(public_payload: dict) -> None:
+    node_lookup = {node["id"]: node for node in public_payload["nodes"]}
+    topic_nodes = [node for node in public_payload["nodes"] if node["type"] == "topic"]
+    adjacency: defaultdict[str, set[str]] = defaultdict(set)
+    for edge in public_payload["edges"]:
+        adjacency[edge["source"]].add(edge["target"])
+        adjacency[edge["target"]].add(edge["source"])
+
+    lineage_lookup = {
+        lineage["id"]: dict(lineage)
+        for lineage in public_payload["meta"].get("lineages", [])
+    }
+    topic_lineages: defaultdict[str, set[str]] = defaultdict(set)
+    for lineage in lineage_lookup.values():
+        for topic_id in lineage.get("topic_ids", []):
+            topic_lineages[topic_id].add(lineage["id"])
+
+    modules: list[dict] = []
+    module_index: dict[str, dict] = {}
+    subground_index: dict[str, dict] = {}
+
+    for module in CURATED_AUTHORITY_TREE:
+        module_topics: set[str] = set()
+        module_cases: set[str] = set()
+        module_statutes: set[str] = set()
+        module_sources: set[str] = set()
+        module_lineages: set[str] = set()
+        curated_subgrounds: list[dict] = []
+
+        for subground in module.get("subgrounds", []):
+            topic_ids = _resolve_curated_topic_ids(subground.get("topic_labels", []), topic_nodes)
+            topic_labels = [node_lookup[topic_id]["label"] for topic_id in topic_ids if topic_id in node_lookup]
+            lineage_ids = list(dict.fromkeys(subground.get("lineage_ids", [])))
+            for topic_id in topic_ids:
+                for lineage_id in sorted(topic_lineages.get(topic_id, set())):
+                    if lineage_id not in lineage_ids:
+                        lineage_ids.append(lineage_id)
+
+            case_ids: set[str] = set()
+            statute_ids: set[str] = set()
+            source_ids: set[str] = set()
+            for topic_id in topic_ids:
+                for neighbor_id in adjacency.get(topic_id, set()):
+                    neighbor = node_lookup.get(neighbor_id)
+                    if not neighbor:
+                        continue
+                    if neighbor["type"] == "case":
+                        case_ids.add(neighbor_id)
+                    elif neighbor["type"] == "statute":
+                        statute_ids.add(neighbor_id)
+                    elif neighbor["type"] == "source":
+                        source_ids.add(neighbor_id)
+
+            for lineage_id in lineage_ids:
+                lineage = lineage_lookup.get(lineage_id)
+                if not lineage:
+                    continue
+                for member in lineage.get("members", []):
+                    member_node = node_lookup.get(member["node_id"])
+                    if not member_node:
+                        continue
+                    if member_node["type"] == "case":
+                        case_ids.add(member_node["id"])
+                    elif member_node["type"] == "statute":
+                        statute_ids.add(member_node["id"])
+
+            subground_payload = {
+                "id": f"subground:{module['id']}:{subground['id']}",
+                "module_id": f"module:{module['id']}",
+                "slug": subground["id"],
+                "type": "subground",
+                "label_en": subground["label_en"],
+                "label_zh": subground["label_zh"],
+                "label": f"{subground['label_en']} / {subground['label_zh']}",
+                "secondary_label": subground["label_zh"],
+                "summary_en": subground["summary_en"],
+                "summary_zh": subground["summary_zh"],
+                "summary": subground["summary_en"],
+                "children": list(subground.get("children", [])),
+                "topic_ids": topic_ids,
+                "topic_labels": topic_labels,
+                "lineage_ids": [lineage_id for lineage_id in lineage_ids if lineage_id in lineage_lookup],
+                "lineage_titles": [
+                    lineage_lookup[lineage_id]["title"]
+                    for lineage_id in lineage_ids
+                    if lineage_id in lineage_lookup
+                ],
+                "case_ids": sorted(case_ids, key=lambda node_id: node_lookup[node_id]["label"]),
+                "statute_ids": sorted(statute_ids, key=lambda node_id: node_lookup[node_id]["label"]),
+                "source_ids": sorted(source_ids, key=lambda node_id: node_lookup[node_id]["label"]),
+                "metrics": {
+                    "topics": len(topic_ids),
+                    "cases": len(case_ids),
+                    "statutes": len(statute_ids),
+                    "sources": len(source_ids),
+                    "lineages": len([lineage_id for lineage_id in lineage_ids if lineage_id in lineage_lookup]),
+                },
+                "coverage": "mapped" if topic_ids or lineage_ids else "placeholder",
+            }
+            curated_subgrounds.append(subground_payload)
+            subground_index[subground_payload["id"]] = subground_payload
+
+            module_topics.update(topic_ids)
+            module_cases.update(case_ids)
+            module_statutes.update(statute_ids)
+            module_sources.update(source_ids)
+            module_lineages.update(subground_payload["lineage_ids"])
+
+        module_payload = {
+            "id": f"module:{module['id']}",
+            "slug": module["id"],
+            "type": "module",
+            "label_en": module["label_en"],
+            "label_zh": module["label_zh"],
+            "label": f"{module['label_en']} / {module['label_zh']}",
+            "secondary_label": module["label_zh"],
+            "summary_en": module["summary_en"],
+            "summary_zh": module["summary_zh"],
+            "summary": module["summary_en"],
+            "subgrounds": curated_subgrounds,
+            "metrics": {
+                "subgrounds": len(curated_subgrounds),
+                "topics": len(module_topics),
+                "cases": len(module_cases),
+                "statutes": len(module_statutes),
+                "sources": len(module_sources),
+                "lineages": len(module_lineages),
+            },
+        }
+        modules.append(module_payload)
+        module_index[module_payload["id"]] = module_payload
+
+    notes = public_payload["meta"].setdefault("notes", [])
+    authority_note = "The authority tree is arranged by the contract lifecycle: formation, contents, vitiating factors, termination, remedies, privity, special contracts, and cross-cutting issues."
+    if authority_note not in notes:
+        notes.append(authority_note)
+    public_payload["meta"]["authority_tree"] = {
+        "id": "authority_tree:hk_contract_lifecycle",
+        "label_en": "Hong Kong Contract Law Knowledge Graph",
+        "label_zh": "香港合同法知识图谱",
+        "summary_en": "Lifecycle-structured authority tree: formation, contents, vitiating factors, termination, remedies, privity, special contracts, and cross-cutting issues.",
+        "summary_zh": "按合同生命周期整理的权威树：形成、内容、效力瑕疵、终止、救济、相对性、特殊合同类型与跨界议题。",
+        "modules": modules,
+    }
+
+
 def export_public_relationship_payload(payload: dict, title: str | None = None) -> dict:
     source_id_map: dict[str, str] = {}
     source_label_map: dict[str, str] = {}
@@ -757,6 +945,7 @@ def export_public_relationship_payload(payload: dict, title: str | None = None) 
         public_payload["nodes"].append(public_node)
 
     _augment_public_payload_with_lineages(public_payload)
+    _augment_public_payload_with_authority_tree(public_payload)
     return public_payload
 
 
