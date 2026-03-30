@@ -486,11 +486,11 @@ def render_relationship_map(graph_payload: dict) -> str:
       --line-strong: rgba(15, 18, 22, 0.16);
       --ink: #101317;
       --muted: #69727d;
-      --domain: #121418;
-      --topic: #39414b;
-      --case: #5b6470;
-      --statute: #8c96a2;
-      --source: #c2cad4;
+      --domain: #0f4c5c;
+      --topic: #d28d2d;
+      --case: #7f5539;
+      --statute: #bc4749;
+      --source: #52796f;
       --accent: #0f1216;
       --shadow: 0 26px 80px rgba(15, 18, 22, 0.09);
       --shadow-soft: 0 16px 38px rgba(15, 18, 22, 0.06);
@@ -675,6 +675,7 @@ def render_relationship_map(graph_payload: dict) -> str:
       text-align: left;
       padding: 12px 14px;
       border: 1px solid var(--line);
+      border-left-width: 4px;
       border-radius: 16px;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(245, 247, 250, 0.84));
       cursor: pointer;
@@ -682,6 +683,12 @@ def render_relationship_map(graph_payload: dict) -> str:
       color: inherit;
       box-shadow: var(--shadow-soft);
     }}
+
+    .result-btn.domain {{ border-left-color: var(--domain); }}
+    .result-btn.topic {{ border-left-color: var(--topic); }}
+    .result-btn.case {{ border-left-color: var(--case); }}
+    .result-btn.statute {{ border-left-color: var(--statute); }}
+    .result-btn.source {{ border-left-color: var(--source); }}
 
     .result-btn small {{
       display: block;
@@ -819,6 +826,36 @@ def render_relationship_map(graph_payload: dict) -> str:
       margin-bottom: 14px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
+    }}
+
+    .pill.domain {{
+      background: rgba(15, 76, 92, 0.12);
+      color: var(--domain);
+      border-color: rgba(15, 76, 92, 0.18);
+    }}
+
+    .pill.topic {{
+      background: rgba(210, 141, 45, 0.14);
+      color: #8a5a11;
+      border-color: rgba(210, 141, 45, 0.2);
+    }}
+
+    .pill.case {{
+      background: rgba(127, 85, 57, 0.14);
+      color: var(--case);
+      border-color: rgba(127, 85, 57, 0.2);
+    }}
+
+    .pill.statute {{
+      background: rgba(188, 71, 73, 0.12);
+      color: var(--statute);
+      border-color: rgba(188, 71, 73, 0.18);
+    }}
+
+    .pill.source {{
+      background: rgba(82, 121, 111, 0.12);
+      color: var(--source);
+      border-color: rgba(82, 121, 111, 0.18);
     }}
 
     .summary {{
@@ -1147,7 +1184,7 @@ def render_relationship_map(graph_payload: dict) -> str:
       }}
       matches.forEach((node) => {{
         const button = document.createElement("button");
-        button.className = "result-btn";
+        button.className = `result-btn ${{node.type}}`;
         button.type = "button";
         button.innerHTML = `<strong>${{node.label}}</strong><small>${{node.type}} · degree ${{node.degree || 0}}</small>`;
         button.addEventListener("click", () => selectNode(node.id));
@@ -1216,6 +1253,7 @@ def render_relationship_map(graph_payload: dict) -> str:
     function resetDetail() {{
       titleEl.textContent = "Overview";
       typeEl.textContent = "Authority Network";
+      typeEl.className = "pill";
       summaryEl.textContent = "Select a node to inspect its role in the network, linked authorities, supporting source passages, and any available public-facing links.";
       metricList.innerHTML = "<li>Choose a node to view counts and metadata.</li>";
       linkList.innerHTML = "<li>No node selected.</li>";
@@ -1246,6 +1284,7 @@ def render_relationship_map(graph_payload: dict) -> str:
       selectedNodeId = nodeId;
       titleEl.textContent = node.label;
       typeEl.textContent = node.type;
+      typeEl.className = `pill ${{node.type}}`;
       summaryEl.textContent = node.summary || "No summary available.";
       renderMetrics(node.metrics || {{}});
       renderLinks(node.links || []);
