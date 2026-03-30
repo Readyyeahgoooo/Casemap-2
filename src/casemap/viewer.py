@@ -2526,10 +2526,10 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     const rootNode = {
       id: "__root__",
       label: authorityTree.label_en || payload.meta.title || "Hong Kong Contract Law",
-      secondary_label: authorityTree.label_zh || "香港合同法知识图谱",
+      secondary_label: authorityTree.label_zh || "香港合同法知識圖譜",
       type: "root",
       summary: authorityTree.summary_en || "Lifecycle-based doctrinal overview. Choose a module, then a sub-ground, then an authority branch.",
-      summary_zh: authorityTree.summary_zh || "按合同生命周期组织的总览。先选模块，再选子议题，再展开权威路径。",
+      summary_zh: authorityTree.summary_zh || "按合同生命週期組織的總覽。先選模組，再選子議題，再展開權威路徑。",
       metrics: {
         modules: modules.length,
         subgrounds: subgrounds.length,
@@ -2840,7 +2840,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
         target.subgrounds.forEach((subground) => {
           const item = document.createElement("li");
           item.className = "clickable";
-          item.innerHTML = `<div class="list-meta">Sub-ground / 子议题</div><strong>${escapeHtml(subground.label)}</strong><div>${escapeHtml((subground.topic_labels || []).join(" · ") || "Awaiting mapped topic refinement.")}</div>`;
+          item.innerHTML = `<div class="list-meta">Sub-ground / 子議題</div><strong>${escapeHtml(subground.label)}</strong><div>${escapeHtml((subground.topic_labels || []).join(" · ") || "Awaiting mapped topic refinement.")}</div>`;
           bindNodeInteractions(item, subground);
           topicItems.push(item);
         });
@@ -3018,7 +3018,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
       rootSection.appendChild(rootWrap);
       treeStack.appendChild(rootSection);
 
-      const moduleSection = makeSection("Lifecycle Modules", "合同生命周期模块");
+      const moduleSection = makeSection("Lifecycle Modules", "合同生命週期模組");
       const moduleRow = document.createElement("div");
       moduleRow.className = "domain-row";
       modules.forEach((module) => {
@@ -3034,7 +3034,7 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
 
       if (!state.moduleId || !getNode(state.moduleId)) return;
       const selectedModule = getNode(state.moduleId);
-      const subgroundSection = makeSection(selectedModule.label, "子议题 / sub-grounds");
+      const subgroundSection = makeSection(selectedModule.label, "子議題 / sub-grounds");
       const subgroundGrid = document.createElement("div");
       subgroundGrid.className = "topic-grid";
       selectedModule.subgrounds.forEach((subground) => {

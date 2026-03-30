@@ -360,9 +360,9 @@
     "authority_tree": {
       "id": "authority_tree:hk_contract_lifecycle",
       "label_en": "Hong Kong Contract Law Knowledge Graph",
-      "label_zh": "香港合同法知识图谱",
+      "label_zh": "香港合同法知識圖譜",
       "summary_en": "Lifecycle-structured authority tree: formation, contents, vitiating factors, termination, remedies, privity, special contracts, and cross-cutting issues.",
-      "summary_zh": "按合同生命周期整理的权威树：形成、内容、效力瑕疵、终止、救济、相对性、特殊合同类型与跨界议题。",
+      "summary_zh": "按合同生命週期整理的權威樹：形成、內容、效力瑕疵、終止、救濟、相對性、特殊合同類型與跨界議題。",
       "modules": [
         {
           "id": "module:formation",
@@ -373,7 +373,7 @@
           "label": "Formation / 形成",
           "secondary_label": "形成",
           "summary_en": "Contract coming into existence: agreement, consideration, intention, capacity, and formality.",
-          "summary_zh": "合同从无到有的阶段：协议、约因、法律约束意图、行为能力与形式要求。",
+          "summary_zh": "合同從無到有的階段：協議、約因、法律約束意圖、行為能力與形式要求。",
           "summary": "Contract coming into existence: agreement, consideration, intention, capacity, and formality.",
           "subgrounds": [
             {
@@ -382,24 +382,24 @@
               "slug": "agreement",
               "type": "subground",
               "label_en": "Agreement",
-              "label_zh": "协议",
-              "label": "Agreement / 协议",
-              "secondary_label": "协议",
+              "label_zh": "協議",
+              "label": "Agreement / 協議",
+              "secondary_label": "協議",
               "summary_en": "Objective consensus, including offer, acceptance, and certainty.",
-              "summary_zh": "客观合意，包括要约、接受与协议确定性。",
+              "summary_zh": "客觀合意，包括要約、接受與協議確定性。",
               "summary": "Objective consensus, including offer, acceptance, and certainty.",
               "children": [
                 {
                   "en": "Offer vs. invitation to treat",
-                  "zh": "要约与邀请要约的区分"
+                  "zh": "要約與邀請要約的區分"
                 },
                 {
                   "en": "Rules of acceptance",
-                  "zh": "接受的规则"
+                  "zh": "接受的規則"
                 },
                 {
                   "en": "Certainty of agreement",
-                  "zh": "协议确定性"
+                  "zh": "協議確定性"
                 }
               ],
               "topic_ids": [
@@ -470,11 +470,11 @@
               "slug": "consideration",
               "type": "subground",
               "label_en": "Consideration",
-              "label_zh": "约因",
-              "label": "Consideration / 约因",
-              "secondary_label": "约因",
+              "label_zh": "約因",
+              "label": "Consideration / 約因",
+              "secondary_label": "約因",
               "summary_en": "Exchange of value and the enforceability of variations.",
-              "summary_zh": "价值交换与合同变更可执行性。",
+              "summary_zh": "價值交換與合同變更可執行性。",
               "summary": "Exchange of value and the enforceability of variations.",
               "children": [],
               "topic_ids": [
@@ -583,11 +583,11 @@
               "slug": "intention",
               "type": "subground",
               "label_en": "Intention to Create Legal Relations",
-              "label_zh": "法律约束意图",
-              "label": "Intention to Create Legal Relations / 法律约束意图",
-              "secondary_label": "法律约束意图",
+              "label_zh": "法律約束意圖",
+              "label": "Intention to Create Legal Relations / 法律約束意圖",
+              "secondary_label": "法律約束意圖",
               "summary_en": "Whether the parties objectively intended legal enforceability.",
-              "summary_zh": "当事人是否客观上意图产生法律约束力。",
+              "summary_zh": "當事人是否客觀上意圖產生法律約束力。",
               "summary": "Whether the parties objectively intended legal enforceability.",
               "children": [],
               "topic_ids": [
@@ -634,11 +634,11 @@
               "slug": "capacity",
               "type": "subground",
               "label_en": "Capacity",
-              "label_zh": "行为能力",
-              "label": "Capacity / 行为能力",
-              "secondary_label": "行为能力",
+              "label_zh": "行為能力",
+              "label": "Capacity / 行為能力",
+              "secondary_label": "行為能力",
               "summary_en": "Who may contract and on what terms.",
-              "summary_zh": "谁有能力订立合同，以及能力限制如何影响效力。",
+              "summary_zh": "誰有能力訂立合同，以及能力限制如何影響效力。",
               "summary": "Who may contract and on what terms.",
               "children": [],
               "topic_ids": [
@@ -695,7 +695,7 @@
               "label": "Formality / 形式要求",
               "secondary_label": "形式要求",
               "summary_en": "Writing, signature, and formal validity requirements.",
-              "summary_zh": "书面、签署与形式有效性要求。",
+              "summary_zh": "書面、簽署與形式有效性要求。",
               "summary": "Writing, signature, and formal validity requirements.",
               "children": [],
               "topic_ids": [
@@ -756,11 +756,11 @@
           "slug": "contents",
           "type": "module",
           "label_en": "Contents",
-          "label_zh": "内容",
-          "label": "Contents / 内容",
-          "secondary_label": "内容",
+          "label_zh": "內容",
+          "label": "Contents / 內容",
+          "secondary_label": "內容",
           "summary_en": "What the contract says, how its terms are identified, interpreted, implied, classified, and controlled.",
-          "summary_zh": "合同内容为何：条款如何识别、解释、默示、分类与控制。",
+          "summary_zh": "合同內容為何：條款如何識別、解釋、默示、分類與控制。",
           "summary": "What the contract says, how its terms are identified, interpreted, implied, classified, and controlled.",
           "subgrounds": [
             {
@@ -769,20 +769,20 @@
               "slug": "term_identification",
               "type": "subground",
               "label_en": "Term Identification",
-              "label_zh": "条款识别",
-              "label": "Term Identification / 条款识别",
-              "secondary_label": "条款识别",
+              "label_zh": "條款識別",
+              "label": "Term Identification / 條款識別",
+              "secondary_label": "條款識別",
               "summary_en": "Express terms, representations, and the parol evidence rule.",
-              "summary_zh": "明示条款、陈述与口头证据规则。",
+              "summary_zh": "明示條款、陳述與口頭證據規則。",
               "summary": "Express terms, representations, and the parol evidence rule.",
               "children": [
                 {
                   "en": "Express terms vs representations",
-                  "zh": "明示条款与陈述的区分"
+                  "zh": "明示條款與陳述的區分"
                 },
                 {
                   "en": "Parol evidence rule",
-                  "zh": "口头证据规则"
+                  "zh": "口頭證據規則"
                 }
               ],
               "topic_ids": [
@@ -835,20 +835,20 @@
               "slug": "interpretation",
               "type": "subground",
               "label_en": "Interpretation",
-              "label_zh": "条款解释",
-              "label": "Interpretation / 条款解释",
-              "secondary_label": "条款解释",
+              "label_zh": "條款解釋",
+              "label": "Interpretation / 條款解釋",
+              "secondary_label": "條款解釋",
               "summary_en": "Objective interpretation and the context-versus-text lineage.",
-              "summary_zh": "客观解释原则，以及文本与语境之间的权威发展路径。",
+              "summary_zh": "客觀解釋原則，以及文本與語境之間的權威發展路徑。",
               "summary": "Objective interpretation and the context-versus-text lineage.",
               "children": [
                 {
                   "en": "Objective interpretation",
-                  "zh": "客观解释原则"
+                  "zh": "客觀解釋原則"
                 },
                 {
                   "en": "ICS / Sinoearn / Arnold / Wood line",
-                  "zh": "ICS / Sinoearn / Arnold / Wood 发展脉络"
+                  "zh": "ICS / Sinoearn / Arnold / Wood 發展脈絡"
                 }
               ],
               "topic_ids": [
@@ -901,16 +901,16 @@
               "slug": "implied_terms",
               "type": "subground",
               "label_en": "Implied Terms",
-              "label_zh": "默示条款",
-              "label": "Implied Terms / 默示条款",
-              "secondary_label": "默示条款",
+              "label_zh": "默示條款",
+              "label": "Implied Terms / 默示條款",
+              "secondary_label": "默示條款",
               "summary_en": "Terms implied in fact, in law, by statute, or by custom.",
-              "summary_zh": "事实默示、法律默示、成文法默示与惯例默示。",
+              "summary_zh": "事實默示、法律默示、成文法默示與慣例默示。",
               "summary": "Terms implied in fact, in law, by statute, or by custom.",
               "children": [
                 {
                   "en": "Implied in fact",
-                  "zh": "事实默示"
+                  "zh": "事實默示"
                 },
                 {
                   "en": "Implied in law",
@@ -922,7 +922,7 @@
                 },
                 {
                   "en": "Implied by custom",
-                  "zh": "惯例默示"
+                  "zh": "慣例默示"
                 }
               ],
               "topic_ids": [
@@ -993,24 +993,24 @@
               "slug": "classification",
               "type": "subground",
               "label_en": "Term Classification",
-              "label_zh": "条款分类",
-              "label": "Term Classification / 条款分类",
-              "secondary_label": "条款分类",
+              "label_zh": "條款分類",
+              "label": "Term Classification / 條款分類",
+              "secondary_label": "條款分類",
               "summary_en": "Condition, warranty, and innominate term analysis.",
-              "summary_zh": "条件、保证与中间条款分析。",
+              "summary_zh": "條件、保證與中間條款分析。",
               "summary": "Condition, warranty, and innominate term analysis.",
               "children": [
                 {
                   "en": "Conditions",
-                  "zh": "条件"
+                  "zh": "條件"
                 },
                 {
                   "en": "Warranties",
-                  "zh": "保证"
+                  "zh": "保證"
                 },
                 {
                   "en": "Innominate terms",
-                  "zh": "中间条款"
+                  "zh": "中間條款"
                 }
               ],
               "topic_ids": [
@@ -1106,16 +1106,16 @@
               "slug": "exemption_clauses",
               "type": "subground",
               "label_en": "Exemption Clauses",
-              "label_zh": "免责条款",
-              "label": "Exemption Clauses / 免责条款",
-              "secondary_label": "免责条款",
+              "label_zh": "免責條款",
+              "label": "Exemption Clauses / 免責條款",
+              "secondary_label": "免責條款",
               "summary_en": "Construction, contra proferentem, and statutory control.",
-              "summary_zh": "解释原则、不利起草者解释规则与成文法控制。",
+              "summary_zh": "解釋原則、不利起草者解釋規則與成文法控制。",
               "summary": "Construction, contra proferentem, and statutory control.",
               "children": [
                 {
                   "en": "Common law construction",
-                  "zh": "普通法解释原则"
+                  "zh": "普通法解釋原則"
                 },
                 {
                   "en": "Statutory control",
@@ -1195,7 +1195,7 @@
           "label": "Vitiating Factors / 效力瑕疵",
           "secondary_label": "效力瑕疵",
           "summary_en": "Reasons why an apparent contract may be void, voidable, or unenforceable.",
-          "summary_zh": "为何表面成立的合同可能无效、可撤销或不可执行。",
+          "summary_zh": "為何表面成立的合同可能無效、可撤銷或不可執行。",
           "summary": "Reasons why an apparent contract may be void, voidable, or unenforceable.",
           "subgrounds": [
             {
@@ -1204,11 +1204,11 @@
               "slug": "misrepresentation",
               "type": "subground",
               "label_en": "Misrepresentation",
-              "label_zh": "失实陈述",
-              "label": "Misrepresentation / 失实陈述",
-              "secondary_label": "失实陈述",
+              "label_zh": "失實陳述",
+              "label": "Misrepresentation / 失實陳述",
+              "secondary_label": "失實陳述",
               "summary_en": "False statements inducing entry into contract.",
-              "summary_zh": "引致订约的虚假陈述。",
+              "summary_zh": "引致訂約的虛假陳述。",
               "summary": "False statements inducing entry into contract.",
               "children": [],
               "topic_ids": [
@@ -1278,11 +1278,11 @@
               "slug": "mistake",
               "type": "subground",
               "label_en": "Mistake",
-              "label_zh": "错误",
-              "label": "Mistake / 错误",
-              "secondary_label": "错误",
+              "label_zh": "錯誤",
+              "label": "Mistake / 錯誤",
+              "secondary_label": "錯誤",
               "summary_en": "Common, mutual, and unilateral mistake.",
-              "summary_zh": "共同错误、相互错误与单方错误。",
+              "summary_zh": "共同錯誤、相互錯誤與單方錯誤。",
               "summary": "Common, mutual, and unilateral mistake.",
               "children": [],
               "topic_ids": [
@@ -1360,11 +1360,11 @@
               "slug": "duress",
               "type": "subground",
               "label_en": "Duress",
-              "label_zh": "胁迫",
-              "label": "Duress / 胁迫",
-              "secondary_label": "胁迫",
+              "label_zh": "脅迫",
+              "label": "Duress / 脅迫",
+              "secondary_label": "脅迫",
               "summary_en": "Physical and economic pressure undermining consent.",
-              "summary_zh": "人身或经济压力导致同意受损。",
+              "summary_zh": "人身或經濟壓力導致同意受損。",
               "summary": "Physical and economic pressure undermining consent.",
               "children": [],
               "topic_ids": [
@@ -1417,11 +1417,11 @@
               "slug": "undue_influence",
               "type": "subground",
               "label_en": "Undue Influence",
-              "label_zh": "不当影响",
-              "label": "Undue Influence / 不当影响",
-              "secondary_label": "不当影响",
+              "label_zh": "不當影響",
+              "label": "Undue Influence / 不當影響",
+              "secondary_label": "不當影響",
               "summary_en": "Improper influence and the Etridge adoption line.",
-              "summary_zh": "不当影响与 Etridge 在香港的采纳路径。",
+              "summary_zh": "不當影響與 Etridge 在香港的採納路徑。",
               "summary": "Improper influence and the Etridge adoption line.",
               "children": [],
               "topic_ids": [
@@ -1475,7 +1475,7 @@
               "label": "Unconscionability / 不合情理",
               "secondary_label": "不合情理",
               "summary_en": "Common law and statutory unfairness control.",
-              "summary_zh": "普通法与成文法下的不公控制。",
+              "summary_zh": "普通法與成文法下的不公控制。",
               "summary": "Common law and statutory unfairness control.",
               "children": [],
               "topic_ids": [
@@ -1530,7 +1530,7 @@
               "label": "Illegality / 非法性",
               "secondary_label": "非法性",
               "summary_en": "Illegality in formation or performance.",
-              "summary_zh": "订立时非法或履行时非法。",
+              "summary_zh": "訂立時非法或履行時非法。",
               "summary": "Illegality in formation or performance.",
               "children": [],
               "topic_ids": [
@@ -1586,11 +1586,11 @@
           "slug": "termination",
           "type": "module",
           "label_en": "Termination",
-          "label_zh": "终止",
-          "label": "Termination / 终止",
-          "secondary_label": "终止",
+          "label_zh": "終止",
+          "label": "Termination / 終止",
+          "secondary_label": "終止",
           "summary_en": "When and how contractual obligations come to an end.",
-          "summary_zh": "合同义务何时以及如何终止。",
+          "summary_zh": "合同義務何時以及如何終止。",
           "summary": "When and how contractual obligations come to an end.",
           "subgrounds": [
             {
@@ -1599,9 +1599,9 @@
               "slug": "performance",
               "type": "subground",
               "label_en": "Performance",
-              "label_zh": "履行完毕",
-              "label": "Performance / 履行完毕",
-              "secondary_label": "履行完毕",
+              "label_zh": "履行完畢",
+              "label": "Performance / 履行完畢",
+              "secondary_label": "履行完畢",
               "summary_en": "Discharge by full or sufficient performance.",
               "summary_zh": "因完全或充分履行而解除。",
               "summary": "Discharge by full or sufficient performance.",
@@ -1648,11 +1648,11 @@
               "slug": "agreement_termination",
               "type": "subground",
               "label_en": "Termination by Agreement",
-              "label_zh": "协议终止",
-              "label": "Termination by Agreement / 协议终止",
-              "secondary_label": "协议终止",
+              "label_zh": "協議終止",
+              "label": "Termination by Agreement / 協議終止",
+              "secondary_label": "協議終止",
               "summary_en": "Current graph placeholder. Refine with HKLII if distinct rescission or mutual discharge authorities are needed.",
-              "summary_zh": "当前图谱中的占位结构；如需明确解除或双方同意终止的香港权威，可由 HKLII 补强。",
+              "summary_zh": "當前圖譜中的佔位結構；如需明確解除或雙方同意終止的香港權威，可由 HKLII 補強。",
               "summary": "Current graph placeholder. Refine with HKLII if distinct rescission or mutual discharge authorities are needed.",
               "children": [],
               "topic_ids": [],
@@ -1677,11 +1677,11 @@
               "slug": "repudiatory_breach",
               "type": "subground",
               "label_en": "Repudiatory Breach",
-              "label_zh": "违约终止",
-              "label": "Repudiatory Breach / 违约终止",
-              "secondary_label": "违约终止",
+              "label_zh": "違約終止",
+              "label": "Repudiatory Breach / 違約終止",
+              "secondary_label": "違約終止",
               "summary_en": "Termination for serious breach or renunciation.",
-              "summary_zh": "因根本违约或毁约表态而终止。",
+              "summary_zh": "因根本違約或毀約表態而終止。",
               "summary": "Termination for serious breach or renunciation.",
               "children": [],
               "topic_ids": [
@@ -1729,7 +1729,7 @@
               "label": "Frustration / 合同受挫",
               "secondary_label": "合同受挫",
               "summary_en": "Supervening events preventing or radically transforming performance.",
-              "summary_zh": "后发事件阻止履行或使履行发生根本变化。",
+              "summary_zh": "後發事件阻止履行或使履行發生根本變化。",
               "summary": "Supervening events preventing or radically transforming performance.",
               "children": [],
               "topic_ids": [
@@ -1792,11 +1792,11 @@
           "slug": "remedies",
           "type": "module",
           "label_en": "Remedies",
-          "label_zh": "救济",
-          "label": "Remedies / 救济",
-          "secondary_label": "救济",
+          "label_zh": "救濟",
+          "label": "Remedies / 救濟",
+          "secondary_label": "救濟",
           "summary_en": "Consequences of breach and the available legal or equitable responses.",
-          "summary_zh": "违约后的后果，以及普通法与衡平法下可获得的救济。",
+          "summary_zh": "違約後的後果，以及普通法與衡平法下可獲得的救濟。",
           "summary": "Consequences of breach and the available legal or equitable responses.",
           "subgrounds": [
             {
@@ -1805,24 +1805,24 @@
               "slug": "damages",
               "type": "subground",
               "label_en": "Damages",
-              "label_zh": "损害赔偿",
-              "label": "Damages / 损害赔偿",
-              "secondary_label": "损害赔偿",
+              "label_zh": "損害賠償",
+              "label": "Damages / 損害賠償",
+              "secondary_label": "損害賠償",
               "summary_en": "Expectation, reliance, remoteness, and liquidated damages versus penalties.",
-              "summary_zh": "预期利益、信赖利益、可预见性，以及约定赔偿金与罚金。",
+              "summary_zh": "預期利益、信賴利益、可預見性，以及約定賠償金與罰金。",
               "summary": "Expectation, reliance, remoteness, and liquidated damages versus penalties.",
               "children": [
                 {
                   "en": "Expectation vs reliance",
-                  "zh": "预期利益与信赖利益"
+                  "zh": "預期利益與信賴利益"
                 },
                 {
                   "en": "Hadley v Baxendale remoteness",
-                  "zh": "Hadley v Baxendale 可预见性规则"
+                  "zh": "Hadley v Baxendale 可預見性規則"
                 },
                 {
                   "en": "Liquidated damages vs penalties",
-                  "zh": "约定赔偿金与罚金"
+                  "zh": "約定賠償金與罰金"
                 }
               ],
               "topic_ids": [
@@ -1896,16 +1896,16 @@
               "slug": "equitable_remedies",
               "type": "subground",
               "label_en": "Equitable Remedies",
-              "label_zh": "衡平法救济",
-              "label": "Equitable Remedies / 衡平法救济",
-              "secondary_label": "衡平法救济",
+              "label_zh": "衡平法救濟",
+              "label": "Equitable Remedies / 衡平法救濟",
+              "secondary_label": "衡平法救濟",
               "summary_en": "Specific performance and injunctions.",
-              "summary_zh": "强制履行与禁制令。",
+              "summary_zh": "強制履行與禁制令。",
               "summary": "Specific performance and injunctions.",
               "children": [
                 {
                   "en": "Specific performance",
-                  "zh": "强制履行"
+                  "zh": "強制履行"
                 },
                 {
                   "en": "Injunctions",
@@ -1962,11 +1962,11 @@
           "slug": "privity",
           "type": "module",
           "label_en": "Privity",
-          "label_zh": "相对性",
-          "label": "Privity / 相对性",
-          "secondary_label": "相对性",
+          "label_zh": "相對性",
+          "label": "Privity / 相對性",
+          "secondary_label": "相對性",
           "summary_en": "Who may sue or rely on contractual rights.",
-          "summary_zh": "谁可以主张合同权利或依赖合同利益。",
+          "summary_zh": "誰可以主張合同權利或依賴合同利益。",
           "summary": "Who may sue or rely on contractual rights.",
           "subgrounds": [
             {
@@ -1975,11 +1975,11 @@
               "slug": "common_law_privity",
               "type": "subground",
               "label_en": "Common Law Principle",
-              "label_zh": "普通法原则",
-              "label": "Common Law Principle / 普通法原则",
-              "secondary_label": "普通法原则",
+              "label_zh": "普通法原則",
+              "label": "Common Law Principle / 普通法原則",
+              "secondary_label": "普通法原則",
               "summary_en": "Current graph placeholder for the privity baseline; refine with primary authorities.",
-              "summary_zh": "当前图谱中的相对性基线占位节点；可由主要判例进一步补强。",
+              "summary_zh": "當前圖譜中的相對性基線佔位節點；可由主要判例進一步補強。",
               "summary": "Current graph placeholder for the privity baseline; refine with primary authorities.",
               "children": [],
               "topic_ids": [],
@@ -2008,7 +2008,7 @@
               "label": "Statutory Exceptions / 成文法例外",
               "secondary_label": "成文法例外",
               "summary_en": "Contracts (Rights of Third Parties) Ordinance and related exceptions.",
-              "summary_zh": "《合约（第三者权利）条例》及相关例外。",
+              "summary_zh": "《合約（第三者權利）條例》及相關例外。",
               "summary": "Contracts (Rights of Third Parties) Ordinance and related exceptions.",
               "children": [
                 {
@@ -2070,11 +2070,11 @@
           "slug": "special_contracts",
           "type": "module",
           "label_en": "Special Contracts",
-          "label_zh": "特殊合同类型",
-          "label": "Special Contracts / 特殊合同类型",
-          "secondary_label": "特殊合同类型",
+          "label_zh": "特殊合同類型",
+          "label": "Special Contracts / 特殊合同類型",
+          "secondary_label": "特殊合同類型",
           "summary_en": "Contract doctrine applied in recurrent subject-matter areas.",
-          "summary_zh": "合同法在反复出现的特定交易领域中的适用。",
+          "summary_zh": "合同法在反覆出現的特定交易領域中的適用。",
           "summary": "Contract doctrine applied in recurrent subject-matter areas.",
           "subgrounds": [
             {
@@ -2083,11 +2083,11 @@
               "slug": "sale_of_goods",
               "type": "subground",
               "label_en": "Sale of Goods",
-              "label_zh": "货物买卖",
-              "label": "Sale of Goods / 货物买卖",
-              "secondary_label": "货物买卖",
+              "label_zh": "貨物買賣",
+              "label": "Sale of Goods / 貨物買賣",
+              "secondary_label": "貨物買賣",
               "summary_en": "Sale of goods, transfer of title, and statutory implied terms.",
-              "summary_zh": "货物买卖、所有权转移与成文法默示条款。",
+              "summary_zh": "貨物買賣、所有權轉移與成文法默示條款。",
               "summary": "Sale of goods, transfer of title, and statutory implied terms.",
               "children": [],
               "topic_ids": [
@@ -2132,11 +2132,11 @@
               "slug": "supply_of_services",
               "type": "subground",
               "label_en": "Supply of Services",
-              "label_zh": "服务提供",
-              "label": "Supply of Services / 服务提供",
-              "secondary_label": "服务提供",
+              "label_zh": "服務提供",
+              "label": "Supply of Services / 服務提供",
+              "secondary_label": "服務提供",
               "summary_en": "Reasonable skill, care, time, and charges in service contracts.",
-              "summary_zh": "服务合同中的合理技能、谨慎、时间与收费。",
+              "summary_zh": "服務合同中的合理技能、謹慎、時間與收費。",
               "summary": "Reasonable skill, care, time, and charges in service contracts.",
               "children": [],
               "topic_ids": [
@@ -2181,11 +2181,11 @@
               "slug": "sale_of_land",
               "type": "subground",
               "label_en": "Sale of Land",
-              "label_zh": "土地买卖",
-              "label": "Sale of Land / 土地买卖",
-              "secondary_label": "土地买卖",
+              "label_zh": "土地買賣",
+              "label": "Sale of Land / 土地買賣",
+              "secondary_label": "土地買賣",
               "summary_en": "Land sale formalities and interim sale agreements.",
-              "summary_zh": "土地交易的形式要求与临时买卖协议。",
+              "summary_zh": "土地交易的形式要求與臨時買賣協議。",
               "summary": "Land sale formalities and interim sale agreements.",
               "children": [],
               "topic_ids": [
@@ -2228,11 +2228,11 @@
               "slug": "employment",
               "type": "subground",
               "label_en": "Employment Contracts",
-              "label_zh": "雇佣合同",
-              "label": "Employment Contracts / 雇佣合同",
-              "secondary_label": "雇佣合同",
+              "label_zh": "僱傭合同",
+              "label": "Employment Contracts / 僱傭合同",
+              "secondary_label": "僱傭合同",
               "summary_en": "Service contracts, worker status, and relational obligations.",
-              "summary_zh": "服务合同、劳动者身份与关系性义务。",
+              "summary_zh": "服務合同、勞動者身分與關係性義務。",
               "summary": "Service contracts, worker status, and relational obligations.",
               "children": [],
               "topic_ids": [
@@ -2269,11 +2269,11 @@
               "slug": "construction",
               "type": "subground",
               "label_en": "Construction Contracts",
-              "label_zh": "建设工程合同",
-              "label": "Construction Contracts / 建设工程合同",
-              "secondary_label": "建设工程合同",
+              "label_zh": "建設工程合同",
+              "label": "Construction Contracts / 建設工程合同",
+              "secondary_label": "建設工程合同",
               "summary_en": "Standard forms, certification, and contractual variation in construction.",
-              "summary_zh": "标准格式、认证与建设工程中的合同变更。",
+              "summary_zh": "標準格式、認證與建設工程中的合同變更。",
               "summary": "Standard forms, certification, and contractual variation in construction.",
               "children": [],
               "topic_ids": [
@@ -2306,11 +2306,11 @@
               "slug": "credit_security",
               "type": "subground",
               "label_en": "Credit, Security, and Guarantees",
-              "label_zh": "信贷与担保",
-              "label": "Credit, Security, and Guarantees / 信贷与担保",
-              "secondary_label": "信贷与担保",
+              "label_zh": "信貸與擔保",
+              "label": "Credit, Security, and Guarantees / 信貸與擔保",
+              "secondary_label": "信貸與擔保",
               "summary_en": "Security devices, guarantees, and finance-related obligations.",
-              "summary_zh": "担保工具、保证与融资合同义务。",
+              "summary_zh": "擔保工具、保證與融資合同義務。",
               "summary": "Security devices, guarantees, and finance-related obligations.",
               "children": [],
               "topic_ids": [
@@ -2349,11 +2349,11 @@
               "slug": "insurance",
               "type": "subground",
               "label_en": "Insurance Contracts",
-              "label_zh": "保险合同",
-              "label": "Insurance Contracts / 保险合同",
-              "secondary_label": "保险合同",
+              "label_zh": "保險合同",
+              "label": "Insurance Contracts / 保險合同",
+              "secondary_label": "保險合同",
               "summary_en": "Utmost good faith and insurable interest issues.",
-              "summary_zh": "最高诚信义务与可保利益问题。",
+              "summary_zh": "最高誠信義務與可保利益問題。",
               "summary": "Utmost good faith and insurable interest issues.",
               "children": [],
               "topic_ids": [
@@ -2398,11 +2398,11 @@
           "slug": "cross_cutting",
           "type": "module",
           "label_en": "Cross-Cutting Issues",
-          "label_zh": "跨界议题",
-          "label": "Cross-Cutting Issues / 跨界议题",
-          "secondary_label": "跨界议题",
+          "label_zh": "跨界議題",
+          "label": "Cross-Cutting Issues / 跨界議題",
+          "secondary_label": "跨界議題",
           "summary_en": "Technology, cross-border, and procedure-focused overlays on contract doctrine.",
-          "summary_zh": "技术、跨境与程序性议题对合同法的横向覆盖。",
+          "summary_zh": "技術、跨境與程序性議題對合同法的橫向覆蓋。",
           "summary": "Technology, cross-border, and procedure-focused overlays on contract doctrine.",
           "subgrounds": [
             {
@@ -2411,11 +2411,11 @@
               "slug": "electronic_contracting",
               "type": "subground",
               "label_en": "Electronic Contracting and Emerging Technology",
-              "label_zh": "电子合同与新兴技术",
-              "label": "Electronic Contracting and Emerging Technology / 电子合同与新兴技术",
-              "secondary_label": "电子合同与新兴技术",
+              "label_zh": "電子合同與新興技術",
+              "label": "Electronic Contracting and Emerging Technology / 電子合同與新興技術",
+              "secondary_label": "電子合同與新興技術",
               "summary_en": "Clickwrap, browsewrap, smart contracts, and privacy-related contract issues.",
-              "summary_zh": "点击协议、浏览协议、智能合约与数据隐私相关合同问题。",
+              "summary_zh": "點擊協議、瀏覽協議、智能合約與數據隱私相關合同問題。",
               "summary": "Clickwrap, browsewrap, smart contracts, and privacy-related contract issues.",
               "children": [],
               "topic_ids": [
@@ -2467,7 +2467,7 @@
               "label": "Cross-Border Contracts / 跨境合同",
               "secondary_label": "跨境合同",
               "summary_en": "Choice of law, jurisdiction, and foreign illegality treatment.",
-              "summary_zh": "法律选择、管辖权与外国法下非法性的处理。",
+              "summary_zh": "法律選擇、管轄權與外國法下非法性的處理。",
               "summary": "Choice of law, jurisdiction, and foreign illegality treatment.",
               "children": [],
               "topic_ids": [
@@ -2518,11 +2518,11 @@
               "slug": "dispute_resolution",
               "type": "subground",
               "label_en": "Dispute Resolution",
-              "label_zh": "争议解决",
-              "label": "Dispute Resolution / 争议解决",
-              "secondary_label": "争议解决",
+              "label_zh": "爭議解決",
+              "label": "Dispute Resolution / 爭議解決",
+              "secondary_label": "爭議解決",
               "summary_en": "Arbitration and mediation as contract-related dispute mechanisms.",
-              "summary_zh": "以仲裁与调解处理合同争议。",
+              "summary_zh": "以仲裁與調解處理合同爭議。",
               "summary": "Arbitration and mediation as contract-related dispute mechanisms.",
               "children": [],
               "topic_ids": [

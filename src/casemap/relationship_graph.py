@@ -841,9 +841,9 @@ def _augment_public_payload_with_authority_tree(public_payload: dict) -> None:
     public_payload["meta"]["authority_tree"] = {
         "id": "authority_tree:hk_contract_lifecycle",
         "label_en": "Hong Kong Contract Law Knowledge Graph",
-        "label_zh": "香港合同法知识图谱",
+        "label_zh": "香港合同法知識圖譜",
         "summary_en": "Lifecycle-structured authority tree: formation, contents, vitiating factors, termination, remedies, privity, special contracts, and cross-cutting issues.",
-        "summary_zh": "按合同生命周期整理的权威树：形成、内容、效力瑕疵、终止、救济、相对性、特殊合同类型与跨界议题。",
+        "summary_zh": "按合同生命週期整理的權威樹：形成、內容、效力瑕疵、終止、救濟、相對性、特殊合同類型與跨界議題。",
         "modules": modules,
     }
 
