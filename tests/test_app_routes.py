@@ -39,6 +39,8 @@ class AppRouteTests(unittest.TestCase):
         self.assertEqual(headers["Content-Type"], "text/html; charset=utf-8")
         self.assertIn("Internal Explorer", body)
         self.assertIn("/api/tree", body)
+        self.assertIn('id="graphCanvas"', body)
+        self.assertIn("loadTopic(firstTopicId)", body)
 
 
 if __name__ == "__main__":
