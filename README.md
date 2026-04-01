@@ -4,6 +4,7 @@ Casemap- is a dependency-light MVP for turning Hong Kong contract-law materials 
 
 - a document-level GraphRAG build from `Contract big .docx`
 - a richer multi-source relationship graph that combines `Contract big .docx` with local `.pdf` textbooks
+- a hybrid hierarchical graph bundle for case-card APIs, focus-graph queries, and Neo4j export
 - a Vercel-ready read-only viewer for the committed sample artifact
 
 ## What It Produces
@@ -13,6 +14,8 @@ Casemap- is a dependency-light MVP for turning Hong Kong contract-law materials 
 - `manifest.json`: build summary
 - `sample_queries.json`: example reranked retrieval output
 - `knowledge_map.html`: interactive local viewer
+- `hierarchical_graph.json`: internal graph bundle with topic zoom, lineages, and case cards
+- `public_projection.json`: public-safe projection without private paragraph text or embeddings
 
 The repository also includes a Vercel-ready `app.py` WSGI entrypoint. When deployed, it serves the knowledge map at `/` and lightweight JSON endpoints such as `/api/manifest`, `/api/sample-queries`, and `/api/query?q=...`.
 
@@ -68,6 +71,47 @@ This produces:
 - `relationship_tree.html`: hierarchical tree view
 - `relationship_graph.json`: public-safe graph payload with bibliographic references only
 
+Build the hybrid hierarchical graph bundle from the relationship graph:
+
+```bash
+cd /Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-
+PYTHONPATH=src python3 -m casemap build-hybrid-graph \
+  --graph artifacts/public_relationship_graph/relationship_graph.json \
+  --output-dir artifacts/hybrid_graph
+```
+
+This produces:
+
+- `hierarchical_graph.json`: internal graph bundle with `Module`, `Subground`, `Topic`, `AuthorityLineage`, `Case`, `Statute`, `Paragraph`, `Proposition`, `Judge`, and `SourceDocument` nodes
+- `public_projection.json`: public-safe graph projection
+- `neo4j_constraints.cypher`: constraints, indexes, and vector indexes for Neo4j 5.x
+- `neo4j_import.cypher`: import template for loading the bundle into Neo4j
+
+Run a hybrid graph query:
+
+```bash
+cd /Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-
+PYTHONPATH=src python3 -m casemap hybrid-query \
+  --graph artifacts/hybrid_graph/hierarchical_graph.json \
+  --question "When can terms be implied into a contract in Hong Kong?"
+```
+
+Serve the internal API-driven explorer:
+
+```bash
+cd /Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-
+PYTHONPATH=src python3 -m casemap serve-internal --host 127.0.0.1 --port 8052
+```
+
+Internal routes:
+
+- `GET /api/manifest`
+- `GET /api/tree`
+- `GET /api/topic/{topic_id}`
+- `GET /api/case/{case_id}`
+- `GET /api/graph/focus?id={node_id}&depth=1`
+- `POST /api/query`
+
 ## Design
 
 The project stays light on dependencies:
@@ -78,6 +122,8 @@ The project stays light on dependencies:
 - retrieval uses a TF-IDF style lexical score
 - reranking boosts graph neighbors, cited authorities, and structurally central nodes
 - the relationship graph attaches source passages, page references, and HKLII-oriented external links
+- the hybrid graph bundle converts the public graph into explicit `Module -> Subground -> Topic` hierarchy plus typed authority relationships
+- the internal API serves bounded focus graphs instead of shipping the full corpus to the browser
 - the public export strips third-party snippets and keeps only structure, bibliographic references, and public-facing links
 - both viewers are static HTML files with inline data and client-side interactions
 
@@ -101,11 +147,16 @@ If you enrich the graph with third-party textbooks or other licensed material, k
 
 ```text
 Casemap-/
+  app.py
+  internal_app.py
   src/casemap/
     __init__.py
     __main__.py
+    case_enrichment_data.py
     docx_parser.py
     graphrag.py
+    hybrid_graph.py
+    internal_viewer.py
     relationship_graph.py
     source_parser.py
     viewer.py
@@ -120,3 +171,4 @@ Casemap-/
 - Persist the graph in Neo4j, Oracle Database, or another graph-capable backend
 - Add embeddings and a cross-encoder reranker
 - Layer in answer generation once your cloud backend is ready
+- Swap the bundle-backed internal API for a live Neo4j-backed runtime when infrastructure is available
