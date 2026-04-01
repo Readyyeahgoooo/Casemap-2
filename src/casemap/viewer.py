@@ -3289,6 +3289,219 @@ def render_hybrid_hierarchy(graph_payload: dict) -> str:
       color: var(--ink);
     }}
 
+    .graph-shell {{
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(244, 238, 228, 0.82));
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }}
+
+    .graph-toolbar {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 16px 18px 0;
+    }}
+
+    .graph-copy {{
+      display: grid;
+      gap: 5px;
+    }}
+
+    .graph-copy strong {{
+      font-size: 19px;
+      letter-spacing: -0.02em;
+    }}
+
+    .graph-copy span {{
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }}
+
+    .graph-controls {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }}
+
+    .graph-controls button {{
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--ink);
+      font: inherit;
+      padding: 9px 13px;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+    }}
+
+    .graph-status {{
+      padding: 0 18px 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }}
+
+    .graph-board {{
+      position: relative;
+      padding: 0 10px 12px;
+    }}
+
+    .graph-wrap {{
+      position: relative;
+      min-height: 680px;
+      border-top: 1px solid rgba(31, 35, 40, 0.08);
+      background:
+        radial-gradient(circle at top left, rgba(208, 140, 52, 0.09), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(32, 78, 95, 0.08), transparent 24%),
+        linear-gradient(180deg, rgba(251, 248, 242, 0.96), rgba(240, 233, 222, 0.88));
+      border-radius: 24px;
+      overflow: hidden;
+    }}
+
+    .graph-canvas {{
+      width: 100%;
+      height: 680px;
+      display: block;
+      touch-action: none;
+      cursor: grab;
+    }}
+
+    .graph-canvas.dragging {{
+      cursor: grabbing;
+    }}
+
+    .graph-edge-link {{
+      fill: none;
+      stroke: rgba(31, 35, 40, 0.15);
+      stroke-width: 2;
+      stroke-linecap: round;
+    }}
+
+    .graph-edge-link.active {{
+      stroke: rgba(143, 59, 27, 0.44);
+      stroke-width: 2.6;
+    }}
+
+    .graph-node {{
+      cursor: pointer;
+    }}
+
+    .graph-node-surface {{
+      fill: rgba(255, 255, 255, 0.94);
+      stroke: rgba(31, 35, 40, 0.16);
+      stroke-width: 1.5;
+      filter: drop-shadow(0 12px 22px rgba(31, 35, 40, 0.1));
+      transition: stroke 140ms ease, stroke-width 140ms ease, transform 140ms ease;
+    }}
+
+    .graph-node.root .graph-node-surface {{
+      fill: #182029;
+      stroke: rgba(17, 22, 28, 0.78);
+    }}
+
+    .graph-node.module .graph-node-surface {{
+      fill: rgba(32, 78, 95, 0.94);
+      stroke: rgba(32, 78, 95, 0.95);
+    }}
+
+    .graph-node.subground .graph-node-surface {{
+      fill: rgba(208, 140, 52, 0.15);
+      stroke: rgba(208, 140, 52, 0.4);
+    }}
+
+    .graph-node.topic .graph-node-surface {{
+      fill: rgba(91, 127, 99, 0.14);
+      stroke: rgba(91, 127, 99, 0.34);
+    }}
+
+    .graph-node.authoritylineage .graph-node-surface {{
+      fill: rgba(124, 45, 18, 0.14);
+      stroke: rgba(124, 45, 18, 0.35);
+    }}
+
+    .graph-node.case .graph-node-surface {{
+      fill: rgba(53, 92, 125, 0.14);
+      stroke: rgba(53, 92, 125, 0.34);
+    }}
+
+    .graph-node.statute .graph-node-surface {{
+      fill: rgba(107, 114, 128, 0.14);
+      stroke: rgba(107, 114, 128, 0.34);
+    }}
+
+    .graph-node.sourcedocument .graph-node-surface,
+    .graph-node.paragraph .graph-node-surface,
+    .graph-node.proposition .graph-node-surface {{
+      fill: rgba(255, 255, 255, 0.9);
+      stroke: rgba(31, 35, 40, 0.18);
+    }}
+
+    .graph-node.active .graph-node-surface {{
+      stroke: var(--accent);
+      stroke-width: 3;
+    }}
+
+    .graph-node.related .graph-node-surface {{
+      stroke: rgba(143, 59, 27, 0.42);
+      stroke-width: 2.1;
+    }}
+
+    .graph-node-label {{
+      fill: var(--ink);
+      font-size: 13px;
+      font-weight: 600;
+      pointer-events: none;
+    }}
+
+    .graph-node-subtitle {{
+      fill: var(--muted);
+      font-size: 10px;
+      pointer-events: none;
+    }}
+
+    .graph-node-meta {{
+      fill: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      pointer-events: none;
+    }}
+
+    .graph-node.root .graph-node-label,
+    .graph-node.root .graph-node-subtitle,
+    .graph-node.root .graph-node-meta,
+    .graph-node.module .graph-node-label,
+    .graph-node.module .graph-node-subtitle,
+    .graph-node.module .graph-node-meta {{
+      fill: rgba(255, 255, 255, 0.92);
+    }}
+
+    .graph-toggle {{
+      cursor: pointer;
+    }}
+
+    .graph-toggle circle {{
+      fill: rgba(255, 255, 255, 0.96);
+      stroke: rgba(31, 35, 40, 0.18);
+      stroke-width: 1.2;
+    }}
+
+    .graph-toggle text {{
+      fill: var(--ink);
+      font-size: 14px;
+      font-weight: 700;
+      dominant-baseline: middle;
+      text-anchor: middle;
+      pointer-events: none;
+    }}
+
     .metric-strip,
     .breadcrumbs,
     .results,
@@ -3635,6 +3848,14 @@ def render_hybrid_hierarchy(graph_payload: dict) -> str:
         border-left: 0;
         border-top: 1px solid var(--line);
       }}
+
+      .graph-wrap {{
+        min-height: 560px;
+      }}
+
+      .graph-canvas {{
+        height: 560px;
+      }}
     }}
   </style>
 </head>
@@ -3659,6 +3880,34 @@ def render_hybrid_hierarchy(graph_payload: dict) -> str:
       <div id="metricStrip" class="metric-strip"></div>
       <div id="breadcrumbs" class="breadcrumbs"></div>
       <div id="results" class="results"></div>
+      <section class="graph-shell">
+        <div class="graph-toolbar">
+          <div class="graph-copy">
+            <strong>Visual Hierarchy Graph</strong>
+            <span>Zoom, pan, and expand the doctrinal tree. Modules, subgrounds, and topics stay hierarchical; topic branches reveal linked cases, statutes, and authority lineages.</span>
+          </div>
+          <div class="graph-controls">
+            <button id="zoomOutButton" type="button">Zoom Out</button>
+            <button id="zoomInButton" type="button">Zoom In</button>
+            <button id="resetViewButton" type="button">Reset View</button>
+            <button id="collapseGraphButton" type="button">Collapse Topics</button>
+          </div>
+        </div>
+        <div id="graphStatus" class="graph-status">Loading hierarchy graph...</div>
+        <div class="graph-board">
+          <div class="graph-wrap">
+            <svg id="hierarchyCanvas" class="graph-canvas" viewBox="0 0 1800 960" preserveAspectRatio="xMidYMid meet" aria-label="Hierarchical knowledge graph">
+              <defs>
+                <pattern id="graphGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+                  <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(31, 35, 40, 0.04)" stroke-width="1"></path>
+                </pattern>
+              </defs>
+              <rect x="0" y="0" width="100%" height="100%" fill="url(#graphGrid)"></rect>
+              <g id="graphViewport"></g>
+            </svg>
+          </div>
+        </div>
+      </section>
       <div id="treeStack" class="stack-view"></div>
     </section>
     <aside class="detail-panel">
@@ -3731,6 +3980,13 @@ def render_hybrid_hierarchy(graph_payload: dict) -> str:
     const breadcrumbsEl = document.getElementById("breadcrumbs");
     const resultsEl = document.getElementById("results");
     const searchInput = document.getElementById("searchInput");
+    const graphCanvas = document.getElementById("hierarchyCanvas");
+    const graphViewport = document.getElementById("graphViewport");
+    const graphStatus = document.getElementById("graphStatus");
+    const zoomOutButton = document.getElementById("zoomOutButton");
+    const zoomInButton = document.getElementById("zoomInButton");
+    const resetViewButton = document.getElementById("resetViewButton");
+    const collapseGraphButton = document.getElementById("collapseGraphButton");
     const detailTitle = document.getElementById("detailTitle");
     const detailType = document.getElementById("detailType");
     const detailSummary = document.getElementById("detailSummary");
@@ -3743,6 +3999,15 @@ def render_hybrid_hierarchy(graph_payload: dict) -> str:
       moduleId: modules[0]?.id || null,
       subgroundId: modules[0]?.subgrounds?.[0]?.id || null,
       selectedId: "__root__",
+      expandedViewIds: new Set(),
+      graph: {{
+        scale: 1,
+        translateX: 0,
+        translateY: 0,
+        width: 1800,
+        height: 960,
+        pendingCenterActualId: "",
+      }},
     }};
 
     function escapeHtml(value) {{
@@ -3765,6 +4030,47 @@ def render_hybrid_hierarchy(graph_payload: dict) -> str:
         Paragraph: "Paragraph",
         Proposition: "Proposition",
       }}[type] || type;
+    }}
+
+    function labelForNode(node) {{
+      return node?.label || node?.case_name || node?.title || node?.id || "";
+    }}
+
+    function shortText(value, max = 60) {{
+      const clean = String(value || "").trim();
+      return clean.length > max ? `${{clean.slice(0, max - 3)}}...` : clean;
+    }}
+
+    function graphSubtitleForNode(node) {{
+      if (!node) return "";
+      if (node.type === "Root") return node.secondary || "";
+      if (node.type === "Module" || node.type === "Subground") return node.label_zh || node.summary || "";
+      if (node.type === "Topic") return node.path || node.summary || "";
+      if (node.type === "Case") return node.neutral_citation || `Authority ${{(node.authority_score || 0).toFixed(2)}}`;
+      if (node.type === "AuthorityLineage") return (node.codes || []).join(" · ");
+      if (node.type === "Statute") return node.summary_en || node.label || "";
+      return node.summary_en || node.summary || "";
+    }}
+
+    function multiLineText(value, maxLineLength = 24, maxLines = 3) {{
+      const words = String(value || "").trim().split(/\\s+/).filter(Boolean);
+      if (!words.length) return [""];
+      const lines = [];
+      let current = "";
+      words.forEach((word) => {{
+        const candidate = current ? `${{current}} ${{word}}` : word;
+        if (candidate.length > maxLineLength && current) {{
+          lines.push(current);
+          current = word;
+        }} else {{
+          current = candidate;
+        }}
+      }});
+      if (current) lines.push(current);
+      if (lines.length <= maxLines) return lines;
+      const trimmed = lines.slice(0, maxLines);
+      trimmed[maxLines - 1] = shortText(trimmed[maxLines - 1], maxLineLength);
+      return trimmed;
     }}
 
     function getNode(id) {{
@@ -3850,6 +4156,8 @@ def render_hybrid_hierarchy(graph_payload: dict) -> str:
       state.moduleId = context.moduleId;
       state.subgroundId = context.subgroundId;
       state.selectedId = id;
+      expandGraphPathForNode(node);
+      state.graph.pendingCenterActualId = id;
       render();
     }}
 
@@ -4006,6 +4314,310 @@ def render_hybrid_hierarchy(graph_payload: dict) -> str:
 
     function currentSubground() {{
       return state.subgroundId ? getNode(state.subgroundId) : null;
+    }}
+
+    function createDefaultExpandedIds() {{
+      const expanded = new Set([rootNode.id]);
+      modules.forEach((module) => expanded.add(module.id));
+      subgrounds.forEach((subground) => expanded.add(subground.id));
+      return expanded;
+    }}
+
+    function memberNodesForLineage(lineageId) {{
+      return (outgoing.get(lineageId) || [])
+        .filter((edge) => edge.type === "HAS_MEMBER")
+        .sort((left, right) => (left.position || 0) - (right.position || 0))
+        .map((edge) => ({{
+          edge,
+          node: nodeMap.get(edge.target),
+        }}))
+        .filter((entry) => entry.node);
+    }}
+
+    function graphChildrenForNode(node, viewId) {{
+      if (!node) return [];
+      if (node.type === "Root") {{
+        return modules.map((module) => ({{
+          viewId: module.id,
+          actualId: module.id,
+          parentViewId: viewId,
+          node: module,
+        }}));
+      }}
+      if (node.type === "Module") {{
+        return (node.subgrounds || []).map((subground) => ({{
+          viewId: subground.id,
+          actualId: subground.id,
+          parentViewId: viewId,
+          node: subground,
+        }}));
+      }}
+      if (node.type === "Subground") {{
+        return (node.topic_ids || [])
+          .map((topicId) => nodeMap.get(topicId))
+          .filter(Boolean)
+          .sort((left, right) => labelForNode(left).localeCompare(labelForNode(right)))
+          .map((topic) => ({{
+            viewId: topic.id,
+            actualId: topic.id,
+            parentViewId: viewId,
+            node: topic,
+          }}));
+      }}
+      if (node.type === "Topic") {{
+        const topicLineages = relatedLineagesForTopic(node.id).map((lineage) => ({{
+          viewId: `${{node.id}}::lineage::${{lineage.id}}`,
+          actualId: lineage.id,
+          parentViewId: viewId,
+          node: lineage,
+          relationLabel: "Lineage",
+        }}));
+        const topicCases = relatedCasesForTopic(node.id).map((caseNode) => ({{
+          viewId: `${{node.id}}::case::${{caseNode.id}}`,
+          actualId: caseNode.id,
+          parentViewId: viewId,
+          node: caseNode,
+          relationLabel: "Case",
+        }}));
+        const topicStatutes = relatedStatutesForTopic(node.id).map((statuteNode) => ({{
+          viewId: `${{node.id}}::statute::${{statuteNode.id}}`,
+          actualId: statuteNode.id,
+          parentViewId: viewId,
+          node: statuteNode,
+          relationLabel: "Statute",
+        }}));
+        return [...topicLineages, ...topicCases, ...topicStatutes];
+      }}
+      if (node.type === "AuthorityLineage") {{
+        return memberNodesForLineage(node.id).map((entry, index) => ({{
+          viewId: `${{viewId}}::member::${{index}}::${{entry.node.id}}`,
+          actualId: entry.node.id,
+          parentViewId: viewId,
+          node: entry.node,
+          relationLabel: entry.edge.code || entry.edge.treatment || entry.edge.note || "Member",
+        }}));
+      }}
+      return [];
+    }}
+
+    function buildGraphBranch(viewId, actualId, parentViewId = "", relationLabel = "") {{
+      const node = actualId === rootNode.id ? rootNode : getNode(actualId);
+      if (!node) return null;
+      const childrenSeed = graphChildrenForNode(node, viewId);
+      const isExpanded = state.expandedViewIds.has(viewId);
+      const children = isExpanded
+        ? childrenSeed.map((child) => buildGraphBranch(child.viewId, child.actualId, viewId, child.relationLabel || "")).filter(Boolean)
+        : [];
+      return {{
+        viewId,
+        actualId,
+        parentViewId,
+        relationLabel,
+        node,
+        childCount: childrenSeed.length,
+        children,
+      }};
+    }}
+
+    function layoutGraphTree(root) {{
+      const positions = new Map();
+      let nextY = 120;
+      let maxDepth = 0;
+      const columnGap = 270;
+      const rowGap = 88;
+
+      function sizeForType(type) {{
+        if (type === "Root") return {{ width: 260, height: 92 }};
+        if (type === "Module") return {{ width: 230, height: 86 }};
+        if (type === "Subground") return {{ width: 214, height: 80 }};
+        if (type === "Topic") return {{ width: 220, height: 80 }};
+        if (type === "AuthorityLineage") return {{ width: 214, height: 80 }};
+        if (type === "Case") return {{ width: 208, height: 78 }};
+        if (type === "Statute") return {{ width: 202, height: 76 }};
+        return {{ width: 198, height: 72 }};
+      }}
+
+      function visit(branch, depth) {{
+        maxDepth = Math.max(maxDepth, depth);
+        const size = sizeForType(branch.node.type);
+        const x = 150 + depth * columnGap;
+        if (!branch.children.length) {{
+          const y = nextY;
+          nextY += rowGap;
+          positions.set(branch.viewId, {{ x, y, ...size }});
+          return {{ top: y, bottom: y, center: y }};
+        }}
+
+        const childBounds = branch.children.map((child) => visit(child, depth + 1));
+        const first = childBounds[0];
+        const last = childBounds[childBounds.length - 1];
+        const y = (first.center + last.center) / 2;
+        positions.set(branch.viewId, {{ x, y, ...size }});
+        return {{ top: first.top, bottom: last.bottom, center: y }};
+      }}
+
+      visit(root, 0);
+      return {{
+        positions,
+        width: Math.max(1800, 360 + (maxDepth + 1) * columnGap),
+        height: Math.max(960, nextY + 120),
+      }};
+    }}
+
+    function flattenGraph(root) {{
+      const visibleNodes = [];
+      const visibleEdges = [];
+      function walk(branch) {{
+        visibleNodes.push(branch);
+        branch.children.forEach((child) => {{
+          visibleEdges.push({{ source: branch, target: child }});
+          walk(child);
+        }});
+      }}
+      walk(root);
+      return {{ visibleNodes, visibleEdges }};
+    }}
+
+    function graphEdgePath(source, target) {{
+      const startX = source.x + source.width / 2;
+      const endX = target.x - target.width / 2;
+      const delta = Math.max(72, (endX - startX) * 0.45);
+      return `M ${{startX}} ${{source.y}} C ${{startX + delta}} ${{source.y}}, ${{endX - delta}} ${{target.y}}, ${{endX}} ${{target.y}}`;
+    }}
+
+    function isGraphNodeRelated(actualId) {{
+      if (!state.selectedId || state.selectedId === rootNode.id || actualId === state.selectedId) return false;
+      return (outgoing.get(state.selectedId) || []).some((edge) => edge.target === actualId)
+        || (incoming.get(state.selectedId) || []).some((edge) => edge.source === actualId)
+        || topicIdsForNode(getNode(state.selectedId)).includes(actualId)
+        || topicIdsForNode(getNode(actualId)).includes(state.selectedId);
+    }}
+
+    function toggleGraphNodeExpansion(viewId) {{
+      if (state.expandedViewIds.has(viewId)) {{
+        state.expandedViewIds.delete(viewId);
+      }} else {{
+        state.expandedViewIds.add(viewId);
+      }}
+      render();
+    }}
+
+    function expandGraphPathForNode(node) {{
+      state.expandedViewIds.add(rootNode.id);
+      if (!node) return;
+      const context = inferContext(node);
+      if (context.moduleId) state.expandedViewIds.add(context.moduleId);
+      if (context.subgroundId) state.expandedViewIds.add(context.subgroundId);
+      const topicIds = topicIdsForNode(node);
+      if (node.type === "Topic") topicIds.unshift(node.id);
+      topicIds.filter((topicId, index, list) => list.indexOf(topicId) === index).forEach((topicId) => {{
+        state.expandedViewIds.add(topicId);
+        if (node.type === "AuthorityLineage") {{
+          state.expandedViewIds.add(`${{topicId}}::lineage::${{node.id}}`);
+        }}
+      }});
+    }}
+
+    function applyGraphTransform() {{
+      graphViewport.setAttribute("transform", `translate(${{state.graph.translateX}} ${{state.graph.translateY}}) scale(${{state.graph.scale}})`);
+      const zoomPercent = Math.round(state.graph.scale * 100);
+      graphStatus.textContent = `${{zoomPercent}}% zoom. Click a node to inspect it, use the small +/- control to expand or collapse branches, and drag the canvas to pan.`;
+    }}
+
+    function zoomGraph(multiplier) {{
+      const nextScale = Math.max(0.55, Math.min(2.4, state.graph.scale * multiplier));
+      state.graph.scale = Number(nextScale.toFixed(3));
+      applyGraphTransform();
+    }}
+
+    function resetGraphView() {{
+      state.graph.scale = 1;
+      state.graph.translateX = 0;
+      state.graph.translateY = 0;
+      applyGraphTransform();
+    }}
+
+    function centerGraphOnActualId(actualId, positions, branches) {{
+      const match = branches.find((branch) => branch.actualId === actualId);
+      if (!match) return;
+      const position = positions.get(match.viewId);
+      if (!position) return;
+      const targetX = state.graph.width * 0.34 - position.x * state.graph.scale;
+      const targetY = state.graph.height * 0.5 - position.y * state.graph.scale;
+      state.graph.translateX = Number(targetX.toFixed(2));
+      state.graph.translateY = Number(targetY.toFixed(2));
+      applyGraphTransform();
+    }}
+
+    function renderGraph() {{
+      const graphRoot = buildGraphBranch(rootNode.id, rootNode.id);
+      if (!graphRoot) return;
+      const layout = layoutGraphTree(graphRoot);
+      const flattened = flattenGraph(graphRoot);
+      state.graph.width = layout.width;
+      state.graph.height = layout.height;
+      graphCanvas.setAttribute("viewBox", `0 0 ${{layout.width}} ${{layout.height}}`);
+
+      const edgeMarkup = flattened.visibleEdges.map((edge) => {{
+        const source = layout.positions.get(edge.source.viewId);
+        const target = layout.positions.get(edge.target.viewId);
+        if (!source || !target) return "";
+        const active = edge.source.actualId === state.selectedId || edge.target.actualId === state.selectedId ? " active" : "";
+        return `<path class="graph-edge-link${{active}}" d="${{graphEdgePath(source, target)}}"></path>`;
+      }}).join("");
+
+      const nodeMarkup = flattened.visibleNodes.map((branch) => {{
+        const pos = layout.positions.get(branch.viewId);
+        if (!pos) return "";
+        const node = branch.node;
+        const typeClass = (node.type || "").toLowerCase();
+        const active = branch.actualId === state.selectedId ? " active" : "";
+        const related = isGraphNodeRelated(branch.actualId) ? " related" : "";
+        const titleLines = multiLineText(labelForNode(node), node.type === "Root" ? 26 : 22, node.type === "Case" ? 3 : 2);
+        const subtitle = shortText(branch.relationLabel || graphSubtitleForNode(node), 34);
+        const yStart = pos.y - (titleLines.length > 1 ? 12 : 4);
+        const titleMarkup = titleLines.map((line, index) =>
+          `<tspan x="${{pos.x}}" y="${{yStart + index * 15}}">${{escapeHtml(line)}}</tspan>`
+        ).join("");
+        const nodeMeta = branch.childCount ? `${{branch.childCount}} child${{branch.childCount === 1 ? "" : "ren"}}` : labelForType(node.type);
+        const toggleMarkup = branch.childCount
+          ? `
+            <g class="graph-toggle" data-toggle-view-id="${{escapeHtml(branch.viewId)}}">
+              <circle cx="${{pos.x + pos.width / 2 - 14}}" cy="${{pos.y - pos.height / 2 + 14}}" r="12"></circle>
+              <text x="${{pos.x + pos.width / 2 - 14}}" y="${{pos.y - pos.height / 2 + 14}}">${{state.expandedViewIds.has(branch.viewId) ? "-" : "+"}}</text>
+            </g>
+          `
+          : "";
+        return `
+          <g class="graph-node ${{typeClass}}${{active}}${{related}}" data-view-id="${{escapeHtml(branch.viewId)}}" data-actual-id="${{escapeHtml(branch.actualId)}}">
+            <rect class="graph-node-surface" x="${{pos.x - pos.width / 2}}" y="${{pos.y - pos.height / 2}}" rx="24" ry="24" width="${{pos.width}}" height="${{pos.height}}"></rect>
+            <text class="graph-node-meta" x="${{pos.x}}" y="${{pos.y - pos.height / 2 + 18}}" text-anchor="middle">${{escapeHtml(nodeMeta)}}</text>
+            <text class="graph-node-label" x="${{pos.x}}" y="${{yStart}}" text-anchor="middle">${{titleMarkup}}</text>
+            ${{subtitle ? `<text class="graph-node-subtitle" x="${{pos.x}}" y="${{pos.y + pos.height / 2 - 16}}" text-anchor="middle">${{escapeHtml(subtitle)}}</text>` : ""}}
+            ${{toggleMarkup}}
+          </g>
+        `;
+      }}).join("");
+
+      graphViewport.innerHTML = edgeMarkup + nodeMarkup;
+      graphViewport.querySelectorAll("[data-actual-id]").forEach((element) => {{
+        element.addEventListener("click", (event) => {{
+          if (event.target.closest("[data-toggle-view-id]")) return;
+          selectNode(element.dataset.actualId);
+        }});
+      }});
+      graphViewport.querySelectorAll("[data-toggle-view-id]").forEach((element) => {{
+        element.addEventListener("click", (event) => {{
+          event.stopPropagation();
+          toggleGraphNodeExpansion(element.dataset.toggleViewId);
+        }});
+      }});
+
+      applyGraphTransform();
+      if (state.graph.pendingCenterActualId) {{
+        centerGraphOnActualId(state.graph.pendingCenterActualId, layout.positions, flattened.visibleNodes);
+        state.graph.pendingCenterActualId = "";
+      }}
     }}
 
     function renderTree() {{
@@ -4254,12 +4866,63 @@ def render_hybrid_hierarchy(graph_payload: dict) -> str:
     function render() {{
       renderMetricStrip();
       renderBreadcrumbs();
+      renderGraph();
       renderTree();
       renderDetails(getNode(state.selectedId));
       renderResults(searchInput.value);
     }}
 
+    state.expandedViewIds = createDefaultExpandedIds();
+    expandGraphPathForNode(getNode(state.selectedId));
+
     searchInput.addEventListener("input", (event) => renderResults(event.target.value));
+    zoomOutButton.addEventListener("click", () => zoomGraph(0.86));
+    zoomInButton.addEventListener("click", () => zoomGraph(1.16));
+    resetViewButton.addEventListener("click", () => {{
+      resetGraphView();
+      state.graph.pendingCenterActualId = state.selectedId;
+      renderGraph();
+    }});
+    collapseGraphButton.addEventListener("click", () => {{
+      state.expandedViewIds = createDefaultExpandedIds();
+      expandGraphPathForNode(getNode(state.selectedId));
+      render();
+    }});
+
+    let pointerState = null;
+    graphCanvas.addEventListener("pointerdown", (event) => {{
+      if (event.target.closest("[data-actual-id]") || event.target.closest("[data-toggle-view-id]")) return;
+      pointerState = {{
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        translateX: state.graph.translateX,
+        translateY: state.graph.translateY,
+      }};
+      graphCanvas.classList.add("dragging");
+      graphCanvas.setPointerCapture(event.pointerId);
+    }});
+    graphCanvas.addEventListener("pointermove", (event) => {{
+      if (!pointerState || event.pointerId !== pointerState.pointerId) return;
+      state.graph.translateX = pointerState.translateX + (event.clientX - pointerState.startX);
+      state.graph.translateY = pointerState.translateY + (event.clientY - pointerState.startY);
+      applyGraphTransform();
+    }});
+    graphCanvas.addEventListener("pointerup", (event) => {{
+      if (!pointerState || event.pointerId !== pointerState.pointerId) return;
+      pointerState = null;
+      graphCanvas.classList.remove("dragging");
+      graphCanvas.releasePointerCapture(event.pointerId);
+    }});
+    graphCanvas.addEventListener("pointerleave", () => {{
+      if (!pointerState) return;
+      graphCanvas.classList.remove("dragging");
+    }});
+    graphCanvas.addEventListener("wheel", (event) => {{
+      event.preventDefault();
+      zoomGraph(event.deltaY > 0 ? 0.94 : 1.08);
+    }}, {{ passive: false }});
+
     render();
   </script>
 </body>

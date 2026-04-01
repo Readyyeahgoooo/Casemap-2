@@ -30,6 +30,8 @@ class AppRouteTests(unittest.TestCase):
         self.assertEqual(status, "200 OK")
         self.assertEqual(headers["Content-Type"], "text/html; charset=utf-8")
         self.assertIn("Hong Kong Contract Law Hierarchical Knowledge Graph", body)
+        self.assertIn('id="hierarchyCanvas"', body)
+        self.assertIn("Visual Hierarchy Graph", body)
         self.assertIn("/internal", body)
         self.assertNotIn("This explorer fetches tree, topic, case, and focus-graph data", body)
 
