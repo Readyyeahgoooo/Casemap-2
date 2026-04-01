@@ -11,7 +11,7 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from casemap.hybrid_graph import HybridGraphStore
-from casemap.internal_viewer import render_internal_graph_explorer
+from casemap.viewer import render_hybrid_hierarchy
 
 HYBRID_ARTIFACT_DIR = BASE_DIR / "artifacts" / "hybrid_graph"
 HYBRID_GRAPH_PATH = HYBRID_ARTIFACT_DIR / "hierarchical_graph.json"
@@ -73,7 +73,7 @@ def app(environ, start_response):
         )
 
     if method == "GET" and path in {"/", "/index.html"}:
-        return _html_response(start_response, render_internal_graph_explorer(store.manifest()["title"]))
+        return _html_response(start_response, render_hybrid_hierarchy(store.bundle, page_mode="internal"))
 
     if method == "GET" and path == "/health":
         return _json_response(start_response, {"ok": True, "graph_present": HYBRID_GRAPH_PATH.exists(), "manifest": store.manifest()})

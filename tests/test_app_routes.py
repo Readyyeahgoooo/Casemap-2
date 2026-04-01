@@ -40,9 +40,10 @@ class AppRouteTests(unittest.TestCase):
         self.assertEqual(status, "200 OK")
         self.assertEqual(headers["Content-Type"], "text/html; charset=utf-8")
         self.assertIn("Internal Explorer", body)
-        self.assertIn("/api/tree", body)
-        self.assertIn('id="graphCanvas"', body)
-        self.assertIn("loadTopic(firstTopicId)", body)
+        self.assertIn("Hong Kong Contract Law Internal Hierarchy Explorer", body)
+        self.assertIn('id="hierarchyCanvas"', body)
+        self.assertIn("Visual Hierarchy Graph", body)
+        self.assertIn('href="/internal" class="active"', body)
 
 
 if __name__ == "__main__":

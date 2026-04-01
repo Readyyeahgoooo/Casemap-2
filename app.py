@@ -12,7 +12,6 @@ if str(SRC_DIR) not in sys.path:
 
 from casemap.graphrag import RerankedRetriever
 from casemap.hybrid_graph import HybridGraphStore
-from casemap.internal_viewer import render_internal_graph_explorer
 from casemap.viewer import render_hybrid_hierarchy
 
 MVP_ARTIFACT_DIR = BASE_DIR / "artifacts" / "contract_big"
@@ -144,7 +143,7 @@ def app(environ, start_response):
                 "<h1>Casemap</h1><p>The internal explorer is unavailable because the hybrid graph artifact is missing.</p>",
                 status="503 Service Unavailable",
             )
-        return _html_response(start_response, render_internal_graph_explorer(hybrid_store.manifest()["title"]))
+        return _html_response(start_response, render_hybrid_hierarchy(hybrid_store.bundle, page_mode="internal"))
 
     if path == "/relationships":
         if PUBLIC_RELATIONSHIP_MAP_PATH.exists():

@@ -3152,8 +3152,22 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
     return html.replace("__CASEMAP_DATA__", data)
 
 
-def render_hybrid_hierarchy(graph_payload: dict) -> str:
+def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -> str:
     data = json.dumps(graph_payload, ensure_ascii=False)
+    is_internal = page_mode == "internal"
+    meta_label = "Internal Explorer" if is_internal else "Casemap Hybrid Hierarchy"
+    heading = "Hong Kong Contract Law Internal Hierarchy Explorer" if is_internal else "Hong Kong Contract Law Hierarchical Knowledge Graph"
+    intro = (
+        "This internal route now uses the same visual hierarchy graph so the doctrinal tree is complete and explorable here as well. "
+        "Start at the lifecycle modules, drill into subgrounds and topics, then inspect linked cases, statutes, and curated authority lineages."
+        if is_internal
+        else "The graph is back as a visual hierarchy. Start at the lifecycle modules, drill into subgrounds and topics, then inspect the linked cases, statutes, and curated authority lineages for each branch."
+    )
+    graph_copy = (
+        "Zoom, pan, and expand the internal hierarchy tree. The doctrinal spine stays hierarchical while topic branches reveal linked cases, statutes, and authority lineages."
+        if is_internal
+        else "Zoom, pan, and expand the doctrinal tree. Modules, subgrounds, and topics stay hierarchical; topic branches reveal linked cases, statutes, and authority lineages."
+    )
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3862,15 +3876,15 @@ def render_hybrid_hierarchy(graph_payload: dict) -> str:
 <body>
   <div class="shell">
     <section class="workspace">
-      <div class="meta">Casemap Hybrid Hierarchy</div>
-      <h1>Hong Kong Contract Law Hierarchical Knowledge Graph</h1>
-      <p class="intro">The graph is back as a visual hierarchy. Start at the lifecycle modules, drill into subgrounds and topics, then inspect the linked cases, statutes, and curated authority lineages for each branch.</p>
+      <div class="meta">{meta_label}</div>
+      <h1>{heading}</h1>
+      <p class="intro">{intro}</p>
       <div class="toolbar">
         <nav class="nav">
-          <a href="/" class="active">Hierarchy</a>
+          <a href="/"{" class=\"active\"" if not is_internal else ""}>Hierarchy</a>
           <a href="/relationships">Relationship Graph</a>
           <a href="/mvp">MVP GraphRAG</a>
-          <a href="/internal">Internal Explorer</a>
+          <a href="/internal"{" class=\"active\"" if is_internal else ""}>Internal Explorer</a>
         </nav>
         <label class="search-box">
           <span class="meta">Jump To Node</span>
@@ -3884,7 +3898,7 @@ def render_hybrid_hierarchy(graph_payload: dict) -> str:
         <div class="graph-toolbar">
           <div class="graph-copy">
             <strong>Visual Hierarchy Graph</strong>
-            <span>Zoom, pan, and expand the doctrinal tree. Modules, subgrounds, and topics stay hierarchical; topic branches reveal linked cases, statutes, and authority lineages.</span>
+            <span>{graph_copy}</span>
           </div>
           <div class="graph-controls">
             <button id="zoomOutButton" type="button">Zoom Out</button>
