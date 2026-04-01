@@ -1,0 +1,23 @@
+{
+  "title": "Casemap Hybrid Hierarchical Graph",
+  "generated_at": "2026-04-01T13:52:41.469293+00:00",
+  "node_count": 568,
+  "edge_count": 2667,
+  "case_count": 344,
+  "statute_count": 22,
+  "topic_count": 98,
+  "lineage_count": 6,
+  "paragraph_count": 22,
+  "proposition_count": 22,
+  "enriched_case_count": 8,
+  "notes": [
+    "Hybrid hierarchical graph bundle generated from the Casemap relationship graph.",
+    "Hierarchy is represented explicitly as Module -> Subground -> Topic while authorities remain graph-native.",
+    "Neo4j constraints and import templates are included for database-backed deployment."
+  ],
+  "neo4j": {
+    "vector_dimensions": 1536,
+    "constraints_file": "neo4j_constraints.cypher",
+    "import_file": "neo4j_import.cypher"
+  }
+}

@@ -14,3 +14,9 @@ artifacts/*
 !artifacts/public_relationship_graph/relationship_map.html
 !artifacts/public_relationship_graph/relationship_tree.html
 !artifacts/public_relationship_graph/manifest.json
+!artifacts/hybrid_graph/
+!artifacts/hybrid_graph/hierarchical_graph.json
+!artifacts/hybrid_graph/public_projection.json
+!artifacts/hybrid_graph/manifest.json
+!artifacts/hybrid_graph/neo4j_constraints.cypher
+!artifacts/hybrid_graph/neo4j_import.cypher
