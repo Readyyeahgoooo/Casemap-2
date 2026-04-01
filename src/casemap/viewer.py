@@ -3355,6 +3355,28 @@ def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -
       box-shadow: var(--shadow-soft);
     }}
 
+    .graph-controls label {{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--muted);
+      font-size: 12px;
+      padding: 4px 8px 4px 12px;
+      box-shadow: var(--shadow-soft);
+    }}
+
+    .graph-controls select {{
+      border: 0;
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      padding: 5px 8px;
+      cursor: pointer;
+    }}
+
     .graph-status {{
       padding: 0 18px 10px;
       color: var(--muted);
@@ -3901,6 +3923,15 @@ def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -
             <span>{graph_copy}</span>
           </div>
           <div class="graph-controls">
+            <label>
+              <span>Case Rank</span>
+              <select id="caseRankLimitSelect">
+                <option value="5">Top 5</option>
+                <option value="10" selected>Top 10</option>
+                <option value="20">Top 20</option>
+                <option value="40">Top 40</option>
+              </select>
+            </label>
             <button id="zoomOutButton" type="button">Zoom Out</button>
             <button id="zoomInButton" type="button">Zoom In</button>
             <button id="resetViewButton" type="button">Reset View</button>
@@ -4001,6 +4032,7 @@ def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -
     const zoomInButton = document.getElementById("zoomInButton");
     const resetViewButton = document.getElementById("resetViewButton");
     const collapseGraphButton = document.getElementById("collapseGraphButton");
+    const caseRankLimitSelect = document.getElementById("caseRankLimitSelect");
     const detailTitle = document.getElementById("detailTitle");
     const detailType = document.getElementById("detailType");
     const detailSummary = document.getElementById("detailSummary");
@@ -4013,6 +4045,7 @@ def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -
       moduleId: modules[0]?.id || null,
       subgroundId: modules[0]?.subgrounds?.[0]?.id || null,
       selectedId: "__root__",
+      caseRankLimit: 10,
       expandedViewIds: new Set(),
       graph: {{
         scale: 1,
@@ -4020,6 +4053,10 @@ def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -
         translateY: 0,
         width: 1800,
         height: 960,
+        viewportWidth: 1800,
+        viewportHeight: 960,
+        worldWidth: 1800,
+        worldHeight: 960,
         pendingCenterActualId: "",
       }},
     }};
@@ -4386,7 +4423,7 @@ def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -
           node: lineage,
           relationLabel: "Lineage",
         }}));
-        const topicCases = relatedCasesForTopic(node.id).map((caseNode) => ({{
+        const topicCases = relatedCasesForTopic(node.id).slice(0, state.caseRankLimit).map((caseNode) => ({{
           viewId: `${{node.id}}::case::${{caseNode.id}}`,
           actualId: caseNode.id,
           parentViewId: viewId,
@@ -4535,7 +4572,7 @@ def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -
     function applyGraphTransform() {{
       graphViewport.setAttribute("transform", `translate(${{state.graph.translateX}} ${{state.graph.translateY}}) scale(${{state.graph.scale}})`);
       const zoomPercent = Math.round(state.graph.scale * 100);
-      graphStatus.textContent = `${{zoomPercent}}% zoom. Click a node to inspect it, use the small +/- control to expand or collapse branches, and drag the canvas to pan.`;
+      graphStatus.textContent = `${{zoomPercent}}% zoom. Topic branches currently show the top ${{state.caseRankLimit}} ranked cases. Click a node to inspect it, use the small +/- control to expand or collapse branches, and drag the canvas to pan.`;
     }}
 
     function zoomGraph(multiplier) {{
@@ -4568,9 +4605,11 @@ def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -
       if (!graphRoot) return;
       const layout = layoutGraphTree(graphRoot);
       const flattened = flattenGraph(graphRoot);
-      state.graph.width = layout.width;
-      state.graph.height = layout.height;
-      graphCanvas.setAttribute("viewBox", `0 0 ${{layout.width}} ${{layout.height}}`);
+      state.graph.width = state.graph.viewportWidth;
+      state.graph.height = state.graph.viewportHeight;
+      state.graph.worldWidth = layout.width;
+      state.graph.worldHeight = layout.height;
+      graphCanvas.setAttribute("viewBox", `0 0 ${{state.graph.viewportWidth}} ${{state.graph.viewportHeight}}`);
 
       const edgeMarkup = flattened.visibleEdges.map((edge) => {{
         const source = layout.positions.get(edge.source.viewId);
@@ -4890,6 +4929,12 @@ def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -
     expandGraphPathForNode(getNode(state.selectedId));
 
     searchInput.addEventListener("input", (event) => renderResults(event.target.value));
+    caseRankLimitSelect.addEventListener("change", (event) => {{
+      const nextValue = Number(event.target.value);
+      state.caseRankLimit = Number.isFinite(nextValue) ? nextValue : 10;
+      state.graph.pendingCenterActualId = state.selectedId;
+      render();
+    }});
     zoomOutButton.addEventListener("click", () => zoomGraph(0.86));
     zoomInButton.addEventListener("click", () => zoomGraph(1.16));
     resetViewButton.addEventListener("click", () => {{
