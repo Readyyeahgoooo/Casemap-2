@@ -1101,6 +1101,10 @@ def build_criminal_relationship_payload(
         if left_id in node_lookup and right_id in node_lookup:
             add_edge(left_id, right_id, "co_mentioned", mentions=mentions, weight=min(1.0, 0.2 * mentions))
 
+    for node in nodes:
+        node.setdefault("legal_domain", "criminal")
+        node.setdefault("domain_tags", ["criminal"])
+
     payload = {
         "meta": {
             "title": title,
@@ -1126,6 +1130,8 @@ def build_criminal_relationship_payload(
             "viewer_heading_internal": "Hong Kong Criminal Law Internal Hierarchy Explorer",
             "viewer_intro_public": "A criminal-law hierarchy and authority network built from HKLII judgments plus local textbook passages. Start at the doctrinal modules, then drill into topics, cases, and statutes.",
             "viewer_intro_internal": "This internal criminal-law explorer uses the same hierarchy shell but keeps the graph centered on case metadata, textbook support passages, and statute links.",
+            "legal_domain": "criminal",
+            "domain_tags": ["criminal"],
         },
         "nodes": nodes,
         "edges": edges,

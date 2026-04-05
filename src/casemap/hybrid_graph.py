@@ -12,6 +12,7 @@ from urllib import request as urllib_request
 
 from .case_enrichment_data import CURATED_CASE_ENRICHMENTS
 from .graphrag import normalize_scores, slugify, tokenize
+from .hklii_crawler import HKLIICrawler
 from .relationship_graph import export_public_relationship_payload
 
 CASE_EDGE_TYPES = {"CITES", "FOLLOWS", "APPLIES", "DISTINGUISHES", "OVERRULES", "DOUBTS"}
@@ -67,10 +68,237 @@ OPENROUTER_API_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions"
 OPENROUTER_DEFAULT_MODEL = "openrouter/auto"
 OPENROUTER_TIMEOUT_SECONDS = 25
 OPENROUTER_CITATION_TAG_RE = re.compile(r"\[(C\d+)\]")
+QUERY_STOPWORDS = {
+    "a",
+    "an",
+    "and",
+    "are",
+    "be",
+    "by",
+    "can",
+    "could",
+    "do",
+    "does",
+    "for",
+    "from",
+    "have",
+    "how",
+    "if",
+    "in",
+    "into",
+    "is",
+    "it",
+    "its",
+    "legal",
+    "liability",
+    "my",
+    "of",
+    "on",
+    "or",
+    "own",
+    "the",
+    "their",
+    "there",
+    "to",
+    "under",
+    "what",
+    "when",
+    "which",
+    "with",
+    "would",
+}
+CRIMINAL_QUERY_HINTS = {
+    "dog": ["animal cruelty dog hong kong", "prevention of cruelty to animals hong kong"],
+    "animal": ["animal cruelty hong kong", "prevention of cruelty to animals hong kong"],
+    "hearsay": ["hearsay evidence criminal hong kong"],
+    "confession": ["confession evidence criminal hong kong"],
+    "identification": ["identification evidence criminal hong kong"],
+    "sentencing": ["sentencing criminal hong kong"],
+    "bribery": ["bribery hong kong criminal"],
+    "money": ["money laundering hong kong criminal"],
+}
 
 
 def _normalize_label(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
+
+
+def _infer_legal_domain(metadata: dict | None) -> str:
+    meta = metadata or {}
+    explicit = str(meta.get("legal_domain", "")).strip().lower()
+    if explicit:
+        return explicit
+    combined = " ".join(
+        str(meta.get(key, ""))
+        for key in (
+            "title",
+            "viewer_heading_public",
+            "viewer_heading_internal",
+            "viewer_intro_public",
+            "viewer_intro_internal",
+        )
+    ).lower()
+    if "criminal" in combined:
+        return "criminal"
+    return "contract"
+
+
+def _domain_tags(metadata: dict | None, legal_domain: str) -> list[str]:
+    meta = metadata or {}
+    tags = [
+        str(item).strip().lower()
+        for item in meta.get("domain_tags", [])
+        if str(item).strip()
+    ]
+    if legal_domain and legal_domain not in tags:
+        tags.append(legal_domain)
+    return tags
+
+
+def _dedupe_strings(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    ordered: list[str] = []
+    for value in values:
+        normalized = value.strip()
+        if not normalized:
+            continue
+        key = normalized.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        ordered.append(normalized)
+    return ordered
+
+
+def _hklii_search_queries(question: str, legal_domain: str) -> list[str]:
+    compact_question = re.sub(r"\s+", " ", question).strip()
+    keywords = [token for token in tokenize(question) if token not in QUERY_STOPWORDS][:7]
+    base_keywords = " ".join(keywords)
+    queries = [compact_question, base_keywords]
+    if legal_domain == "criminal" and base_keywords:
+        queries.extend(
+            [
+                f"{base_keywords} hong kong criminal law",
+                f"{base_keywords} offence hong kong",
+            ]
+        )
+        for token in keywords:
+            queries.extend(CRIMINAL_QUERY_HINTS.get(token, []))
+    return _dedupe_strings(queries)
+
+
+def _lexical_overlap_score(query_tokens: list[str], text: str, title: str = "") -> float:
+    text_tokens = set(tokenize(text))
+    if not text_tokens:
+        return 0.0
+    query_set = set(query_tokens)
+    overlap = len(query_set & text_tokens)
+    if not overlap:
+        return 0.0
+    score = overlap / max(math.sqrt(len(query_set) * len(text_tokens)), 1)
+    title_tokens = set(tokenize(title))
+    if title_tokens:
+        score += 0.08 * len(query_set & title_tokens)
+    return round(score, 6)
+
+
+def _live_hklii_grounding(question: str, legal_domain: str, max_results: int = 4, max_citations: int = 8) -> dict:
+    crawler = HKLIICrawler()
+    query_tokens = tokenize(question)
+    search_queries = _hklii_search_queries(question, legal_domain)
+    search_trace: list[dict] = []
+    public_paths: list[str] = []
+    seen_paths: set[str] = set()
+    for search_query in search_queries[:5]:
+        results = crawler.simple_search(search_query, limit=max_results)
+        search_trace.append({"query": search_query, "result_count": len(results)})
+        for result in results:
+            if result.path in seen_paths:
+                continue
+            seen_paths.add(result.path)
+            public_paths.append(result.path)
+            if len(public_paths) >= max_results:
+                break
+        if len(public_paths) >= max_results:
+            break
+
+    documents = crawler.crawl_paths(public_paths[:max_results]) if public_paths else []
+    citation_pool: list[dict] = []
+    for document in documents:
+        ranked_paragraphs = sorted(
+            (
+                {
+                    "paragraph_span": paragraph.paragraph_span,
+                    "quote": paragraph.text.strip(),
+                    "support_score": _lexical_overlap_score(query_tokens, paragraph.text, document.case_name) + 0.12,
+                }
+                for paragraph in document.paragraphs[:20]
+                if paragraph.text.strip()
+            ),
+            key=lambda item: (item["support_score"], len(item["quote"])),
+            reverse=True,
+        )
+        if not ranked_paragraphs:
+            fallback_quote = (document.text or document.title or document.case_name).strip()
+            if fallback_quote:
+                ranked_paragraphs = [
+                    {
+                        "paragraph_span": "",
+                        "quote": fallback_quote[:420],
+                        "support_score": 0.08,
+                    }
+                ]
+        for ranked in ranked_paragraphs[:2]:
+            citation_pool.append(
+                {
+                    "case_id": f"hklii_live:{slugify(document.neutral_citation or document.case_name)[:80]}",
+                    "focus_node_id": "",
+                    "case_name": document.case_name,
+                    "neutral_citation": document.neutral_citation,
+                    "paragraph_span": ranked["paragraph_span"],
+                    "principle_label": "Live HKLII fallback",
+                    "quote": ranked["quote"],
+                    "lineage_titles": [],
+                    "support_score": ranked["support_score"],
+                    "links": [{"label": "HKLII judgment", "url": document.public_url}],
+                    "retrieval_origin": "hklii_live",
+                    "legal_domain": legal_domain,
+                }
+            )
+
+    citations = sorted(
+        citation_pool,
+        key=lambda item: (item["support_score"], len(item["quote"]), item["case_name"]),
+        reverse=True,
+    )[:max_citations]
+
+    sources: list[dict] = []
+    seen_cases: set[str] = set()
+    for citation in citations:
+        case_key = citation["case_id"]
+        if case_key in seen_cases:
+            continue
+        seen_cases.add(case_key)
+        sources.append(
+            {
+                "case_id": citation["case_id"],
+                "case_name": citation["case_name"],
+                "neutral_citation": citation["neutral_citation"],
+                "paragraph_span": citation["paragraph_span"],
+                "text": citation["quote"],
+                "links": citation.get("links", []),
+                "citation_ids": [],
+                "retrieval_origin": "hklii_live",
+                "legal_domain": legal_domain,
+            }
+        )
+
+    return {
+        "citations": citations,
+        "sources": sources,
+        "warnings": list(crawler.warnings),
+        "search_trace": search_trace,
+    }
 
 
 def _stable_statute_key(label: str) -> str:
@@ -288,6 +516,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
         else export_public_relationship_payload(relationship_payload, title=title)
     )
     effective_title = title or public_projection.get("meta", {}).get("title") or relationship_payload.get("meta", {}).get("title")
+    legal_domain = _infer_legal_domain(public_projection.get("meta") or relationship_payload.get("meta"))
+    domain_tags = _domain_tags(public_projection.get("meta") or relationship_payload.get("meta"), legal_domain)
 
     bundle_nodes: list[dict] = []
     bundle_edges: list[dict] = []
@@ -334,6 +564,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                 "label_en": label,
                 "kind": kind,
                 "path": path,
+                "legal_domain": legal_domain,
+                "domain_tags": list(domain_tags),
             }
         )
 
@@ -373,6 +605,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
             "enrichment_status": "case_only",
             "summary_embedding": [],
             "references": [],
+            "legal_domain": legal_domain,
+            "domain_tags": list(domain_tags),
         }
         case_node.update({key: value for key, value in updates.items() if value is not None})
         return add_node(case_node)
@@ -392,6 +626,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                 "source_links": [],
                 "summary_en": "",
                 "summary_zh": "",
+                "legal_domain": legal_domain,
+                "domain_tags": list(domain_tags),
             }
         )
 
@@ -410,6 +646,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                 "module_id": module_id,
                 "summary": f"Synthetic subground created to absorb additional graph concepts under {module['label_en']}.",
                 "topic_ids": [],
+                "legal_domain": legal_domain,
+                "domain_tags": list(domain_tags),
             }
         )
         subground_lookup[synthetic_id] = node
@@ -443,6 +681,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                 "path": _make_topic_path(module["label_en"], subground.get("label_en", subground["label"]), hint),
                 "module_id": module["id"],
                 "subground_id": chosen_subground_id,
+                "legal_domain": legal_domain,
+                "domain_tags": list(domain_tags),
             }
         )
         topic_nodes[topic_id] = topic_node
@@ -481,6 +721,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                 "label_en": module["label_en"],
                 "label_zh": module.get("label_zh", ""),
                 "summary": module.get("summary_en", module.get("summary", "")),
+                "legal_domain": legal_domain,
+                "domain_tags": list(domain_tags),
             }
         )
         module_lookup[module_id] = module_node
@@ -496,6 +738,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                     "module_id": module_id,
                     "children": subground.get("children", []),
                     "topic_ids": list(subground.get("topic_ids", [])),
+                    "legal_domain": legal_domain,
+                    "domain_tags": list(domain_tags),
                 }
             )
             subground_lookup[subground["id"]] = subground_node
@@ -537,6 +781,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                 "path": path,
                 "module_id": context["module_id"],
                 "subground_id": context["subground_id"],
+                "legal_domain": legal_domain,
+                "domain_tags": list(domain_tags),
             }
         )
         topic_nodes[topic_id] = topic_node
@@ -626,6 +872,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                 "title": lineage["title"],
                 "codes": lineage.get("codes", []),
                 "topic_ids": list(lineage.get("topic_ids", [])),
+                "legal_domain": legal_domain,
+                "domain_tags": list(domain_tags),
             }
         )
         for topic_id in lineage.get("topic_ids", []):
@@ -657,7 +905,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
             previous_member_id = member_node["id"]
             previous_member_type = member["type"]
 
-    for enrichment in CURATED_CASE_ENRICHMENTS:
+    curated_enrichments = CURATED_CASE_ENRICHMENTS if legal_domain == "contract" else []
+    for enrichment in curated_enrichments:
         case_node = ensure_case(
             enrichment["case_name"],
             enrichment["neutral_citation"],
@@ -699,6 +948,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                     "text_private": principle.get("statement_en", ""),
                     "embedding": [],
                     "principle_ids": [proposition_id],
+                    "legal_domain": legal_domain,
+                    "domain_tags": list(domain_tags),
                 }
             )
             proposition_node = add_node(
@@ -712,6 +963,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                     "statement_zh": principle.get("statement_zh", ""),
                     "doctrine_key": slugify(principle["label_en"]),
                     "confidence": 0.98,
+                    "legal_domain": legal_domain,
+                    "domain_tags": list(domain_tags),
                 }
             )
             add_edge(paragraph_node["id"], case_node["id"], "PART_OF")
@@ -970,6 +1223,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                 "constraints_file": "neo4j_constraints.cypher",
                 "import_file": "neo4j_import.cypher",
             },
+            "legal_domain": legal_domain,
+            "domain_tags": domain_tags,
             "viewer_heading_public": public_projection.get("meta", {}).get("viewer_heading_public", ""),
             "viewer_heading_internal": public_projection.get("meta", {}).get("viewer_heading_internal", ""),
             "viewer_intro_public": public_projection.get("meta", {}).get("viewer_intro_public", ""),
@@ -1187,6 +1442,7 @@ class HybridGraphStore:
         except (TypeError, ValueError):
             bounded_max_citations = 8
         requested_mode = (mode or "extractive").strip().lower()
+        legal_domain = _infer_legal_domain(self.bundle.get("meta"))
         query_tokens = tokenize(question)
         if not query_tokens:
             return {
@@ -1205,6 +1461,7 @@ class HybridGraphStore:
                     "provider": "openrouter",
                     "model": model.strip() or os.environ.get("OPENROUTER_MODEL", "").strip() or OPENROUTER_DEFAULT_MODEL,
                 },
+                "legal_domain": legal_domain,
             }
 
         searchable: list[tuple[str, str, str]] = []
@@ -1331,7 +1588,90 @@ class HybridGraphStore:
             key=lambda item: (item["support_score"], len(item["quote"]), item["case_name"]),
             reverse=True,
         )[:bounded_max_citations]
+
+        live_hklii_trace: dict = {"attempted": False, "used": False, "searches": []}
+        distinctive_query_tokens: set[str] = set()
+        token_coverage: float | None = None
+        suppress_local_summary = False
+        prefer_live_grounding = False
+        if legal_domain == "criminal":
+            top_local_support = max((citation["support_score"] for citation in citations), default=0.0)
+            distinctive_query_tokens = {token for token in query_tokens if token not in QUERY_STOPWORDS}
+            local_grounding_text = " ".join(
+                f"{citation.get('case_name', '')} {citation.get('quote', '')} {citation.get('principle_label', '')}"
+                for citation in citations[:3]
+            )
+            local_grounding_tokens = set(tokenize(local_grounding_text))
+            token_coverage = (
+                len(distinctive_query_tokens & local_grounding_tokens) / max(len(distinctive_query_tokens), 1)
+                if distinctive_query_tokens
+                else 1.0
+            )
+            weak_local_grounding = (
+                len(citations) < min(3, bounded_top_k)
+                or top_local_support < 0.22
+                or token_coverage < 0.34
+            )
+            if weak_local_grounding:
+                prefer_live_grounding = token_coverage < 0.34
+                live_hklii_trace["attempted"] = True
+                live_grounding = _live_hklii_grounding(
+                    question,
+                    legal_domain=legal_domain,
+                    max_results=max(3, bounded_top_k),
+                    max_citations=bounded_max_citations,
+                )
+                live_hklii_trace["searches"] = live_grounding.get("search_trace", [])
+                warnings_from_live = live_grounding.get("warnings", [])
+                if warnings_from_live:
+                    warnings = warnings_from_live[:]
+                else:
+                    warnings = []
+                if live_grounding.get("citations"):
+                    combined_citations = citations + live_grounding["citations"]
+                    deduped: list[dict] = []
+                    seen_citation_keys: set[tuple[str, str, str, str]] = set()
+                    for citation in sorted(
+                        combined_citations,
+                        key=lambda item: (
+                            1 if prefer_live_grounding and item.get("retrieval_origin") == "hklii_live" else 0,
+                            item["support_score"],
+                            len(item["quote"]),
+                            item["case_name"],
+                        ),
+                        reverse=True,
+                    ):
+                        key = (
+                            citation.get("case_name", "").lower(),
+                            citation.get("neutral_citation", "").lower(),
+                            citation.get("paragraph_span", "").lower(),
+                            citation.get("quote", "")[:180].lower(),
+                        )
+                        if key in seen_citation_keys:
+                            continue
+                        seen_citation_keys.add(key)
+                        deduped.append(citation)
+                        if len(deduped) >= bounded_max_citations:
+                            break
+                    citations = deduped
+                    live_hklii_trace["used"] = True
+                    if not support_cases:
+                        warnings.append("Local criminal graph coverage was weak, so live HKLII authorities were retrieved.")
+                else:
+                    if prefer_live_grounding:
+                        citations = []
+                        support_cases = []
+                        suppress_local_summary = True
+                    if not warnings_from_live:
+                        warnings = ["Local criminal graph coverage was weak, and no live HKLII matches were found."]
+            else:
+                warnings = []
+        else:
+            warnings = []
+
         for index, citation in enumerate(citations, start=1):
+            citation.setdefault("retrieval_origin", "bundle")
+            citation.setdefault("legal_domain", legal_domain)
             citation["citation_id"] = f"C{index}"
 
         if citations:
@@ -1339,6 +1679,10 @@ class HybridGraphStore:
                 f"[{citation['citation_id']}] {citation['quote']}"
                 for citation in citations[: min(3, len(citations))]
             ).strip()
+        elif suppress_local_summary:
+            extractive_answer = (
+                "No directly relevant criminal authority was recovered from the current graph bundle or the live HKLII fallback for this query."
+            )
         elif support_cases:
             extractive_answer = " ".join(
                 card["metadata"]["summary_en"]
@@ -1350,7 +1694,6 @@ class HybridGraphStore:
 
         answer_mode = "extractive"
         resolved_model = model.strip() or os.environ.get("OPENROUTER_MODEL", "").strip() or OPENROUTER_DEFAULT_MODEL
-        warnings: list[str] = []
         answer = extractive_answer
         if requested_mode == "openrouter":
             try:
@@ -1383,6 +1726,17 @@ class HybridGraphStore:
                     "position": None,
                 }
             ]
+        if not authority_path and citations:
+            first_citation = citations[0]
+            authority_path = [
+                {
+                    "lineage_id": "",
+                    "lineage_title": "Live authority fallback" if first_citation.get("retrieval_origin") == "hklii_live" else "Derived authority neighborhood",
+                    "case_id": first_citation.get("case_id", ""),
+                    "case_name": first_citation.get("case_name", ""),
+                    "position": None,
+                }
+            ]
 
         sources = []
         seen_cases: set[str] = set()
@@ -1399,8 +1753,10 @@ class HybridGraphStore:
                     "neutral_citation": citation["neutral_citation"],
                     "paragraph_span": citation["paragraph_span"],
                     "text": citation["quote"],
-                    "links": card["metadata"]["source_links"] if card else [],
+                    "links": card["metadata"]["source_links"] if card else citation.get("links", []),
                     "citation_ids": [entry["citation_id"] for entry in citations if entry["case_id"] == case_id],
+                    "retrieval_origin": citation.get("retrieval_origin", "bundle"),
+                    "legal_domain": citation.get("legal_domain", legal_domain),
                 }
             )
 
@@ -1421,6 +1777,7 @@ class HybridGraphStore:
                 if node_id in self.nodes
             ][:25],
             "retrieval_trace": {
+                "legal_domain": legal_domain,
                 "query_tokens": query_tokens[:24],
                 "matched_node_ids": best_node_ids[:12],
                 "top_case_scores": [
@@ -1431,6 +1788,9 @@ class HybridGraphStore:
                     }
                     for card in support_cases
                 ],
+                "distinctive_query_tokens": sorted(distinctive_query_tokens),
+                "local_token_coverage": round(token_coverage, 4) if legal_domain == "criminal" else None,
+                "live_hklii": live_hklii_trace,
             },
             "warnings": warnings,
             "llm": {
@@ -1439,4 +1799,5 @@ class HybridGraphStore:
                 "provider": "openrouter",
                 "model": resolved_model,
             },
+            "legal_domain": legal_domain,
         }

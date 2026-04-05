@@ -118,6 +118,13 @@ class CriminalGraphTests(unittest.TestCase):
             bundle = json.loads((hybrid_dir / "hierarchical_graph.json").read_text(encoding="utf-8"))
             self.assertEqual(bundle["meta"]["viewer_heading_public"], "Hong Kong Criminal Law Hierarchical Knowledge Graph")
             self.assertEqual(bundle["meta"]["viewer_heading_internal"], "Hong Kong Criminal Law Internal Hierarchy Explorer")
+            self.assertEqual(bundle["meta"]["legal_domain"], "criminal")
+            case_names = {
+                node.get("case_name", node.get("label", ""))
+                for node in bundle["nodes"]
+                if node["type"] == "Case"
+            }
+            self.assertNotIn("Chiu Man On Paul t/a Pacific Power Engineering Co. v Vaford Contracting Co. Ltd.", case_names)
 
 
 if __name__ == "__main__":

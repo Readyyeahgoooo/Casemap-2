@@ -13,7 +13,7 @@ if str(SRC_DIR) not in sys.path:
 
 from casemap.graphrag import RerankedRetriever
 from casemap.hybrid_graph import HybridGraphStore
-from casemap.viewer import render_hybrid_hierarchy
+from casemap.viewer import render_hybrid_hierarchy, render_relationship_map
 
 MVP_ARTIFACT_DIR = BASE_DIR / "artifacts" / "contract_big"
 MVP_GRAPH_PATH = MVP_ARTIFACT_DIR / "graph.json"
@@ -52,6 +52,7 @@ CRIMINAL_HYBRID_PUBLIC_PROJECTION_PATH = CRIMINAL_HYBRID_ARTIFACT_DIR / "public_
 
 _retriever: RerankedRetriever | None = None
 _hybrid_store: HybridGraphStore | None = None
+_hybrid_store_path: Path | None = None
 
 
 def _artifact_profile() -> str:
@@ -85,6 +86,12 @@ def _selected_relationship_paths() -> tuple[Path, Path, Path]:
     )
 
 
+def _selected_relationship_graph_path() -> Path:
+    if _artifact_profile() == "criminal":
+        return CRIMINAL_RELATIONSHIP_GRAPH_PATH
+    return PUBLIC_RELATIONSHIP_GRAPH_PATH
+
+
 def _selected_monitor_paths() -> tuple[Path, Path, Path]:
     if _artifact_profile() == "criminal":
         return (
@@ -115,10 +122,13 @@ def _get_retriever() -> RerankedRetriever | None:
 
 
 def _get_hybrid_store() -> HybridGraphStore | None:
-    global _hybrid_store
+    global _hybrid_store, _hybrid_store_path
     graph_path, _, _ = _selected_hybrid_paths()
+    if _hybrid_store is not None and _hybrid_store_path != graph_path:
+        _hybrid_store = None
     if _hybrid_store is None and graph_path.exists():
         _hybrid_store = HybridGraphStore.from_file(graph_path)
+        _hybrid_store_path = graph_path
     return _hybrid_store
 
 
@@ -160,6 +170,7 @@ def _not_found(start_response) -> list[bytes]:
         "routes": [
             "/",
             "/tree",
+            "/hierarchy",
             "/internal",
             "/mvp",
             "/relationships",
@@ -189,6 +200,7 @@ def app(environ, start_response):
         selected_relationship_map_path,
         selected_relationship_tree_path,
     ) = _selected_relationship_paths()
+    selected_relationship_graph_path = _selected_relationship_graph_path()
     (
         selected_monitor_path,
         selected_monitor_json_path,
@@ -198,11 +210,30 @@ def app(environ, start_response):
     if method not in {"GET", "POST"}:
         return _json_response(start_response, {"error": "Method not allowed"}, status="405 Method Not Allowed")
 
-    if path in {"/", "/index.html", "/tree"}:
+    if path in {"/", "/index.html", "/relationships"}:
+        if selected_relationship_graph_path.exists():
+            return _html_response(start_response, render_relationship_map(_load_json(selected_relationship_graph_path)))
+        if selected_relationship_map_path.exists():
+            return _html_response(start_response, _load_text(selected_relationship_map_path))
         if hybrid_store is not None:
             return _html_response(start_response, render_hybrid_hierarchy(hybrid_store.bundle))
         if selected_relationship_tree_path.exists():
             return _html_response(start_response, _load_text(selected_relationship_tree_path))
+        if MVP_MAP_PATH.exists():
+            return _html_response(start_response, _load_text(MVP_MAP_PATH))
+        return _html_response(
+            start_response,
+            "<h1>Casemap</h1><p>No public artifact is available in this deployment.</p>",
+            status="503 Service Unavailable",
+        )
+
+    if path in {"/tree", "/hierarchy"}:
+        if hybrid_store is not None:
+            return _html_response(start_response, render_hybrid_hierarchy(hybrid_store.bundle))
+        if selected_relationship_tree_path.exists():
+            return _html_response(start_response, _load_text(selected_relationship_tree_path))
+        if selected_relationship_graph_path.exists():
+            return _html_response(start_response, render_relationship_map(_load_json(selected_relationship_graph_path)))
         if selected_relationship_map_path.exists():
             return _html_response(start_response, _load_text(selected_relationship_map_path))
         if MVP_MAP_PATH.exists():
@@ -221,17 +252,6 @@ def app(environ, start_response):
                 status="503 Service Unavailable",
             )
         return _html_response(start_response, render_hybrid_hierarchy(hybrid_store.bundle, page_mode="internal"))
-
-    if path == "/relationships":
-        if selected_relationship_map_path.exists():
-            return _html_response(start_response, _load_text(selected_relationship_map_path))
-        if MVP_MAP_PATH.exists():
-            return _html_response(start_response, _load_text(MVP_MAP_PATH))
-        return _html_response(
-            start_response,
-            "<h1>Casemap</h1><p>No public artifact is available in this deployment.</p>",
-            status="503 Service Unavailable",
-        )
 
     if path == "/monitor":
         if selected_monitor_path.exists():

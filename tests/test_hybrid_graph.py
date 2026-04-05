@@ -6,7 +6,47 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
+from casemap.hklii_crawler import HKLIICaseDocument, HKLIIParagraph, HKLIISearchResult
 from casemap.hybrid_graph import HybridGraphStore, build_hierarchical_graph_bundle, export_public_projection
+
+
+class _FallbackCrawler:
+    def __init__(self, *args, **kwargs) -> None:
+        self.warnings = []
+
+    def simple_search(self, query: str, limit: int = 10) -> list[HKLIISearchResult]:
+        return [
+            HKLIISearchResult(
+                title="HKSAR v Animal Care Example",
+                subtitle="[2021] HKMC 12",
+                path="/en/cases/hkmc/2021/12",
+                db="Magistrates' Courts",
+                pub_date="2021-01-10",
+            )
+        ]
+
+    def crawl_paths(self, public_paths: list[str]) -> list[HKLIICaseDocument]:
+        return [
+            HKLIICaseDocument(
+                case_name="HKSAR v Animal Care Example",
+                court_name="Magistrates' Courts",
+                neutral_citation="[2021] HKMC 12",
+                decision_date="2021-01-10",
+                court_code="HKMC",
+                public_url="https://www.hklii.hk/en/cases/hkmc/2021/12",
+                raw_html="",
+                paragraphs=[
+                    HKLIIParagraph(
+                        "para 4",
+                        "The prosecution concerned animal cruelty after a dog was deprived of necessary care, and the court discussed criminal liability under Hong Kong law.",
+                    )
+                ],
+                judges=[],
+                cited_cases=[],
+                cited_statutes=[],
+                title="HKSAR v Animal Care Example",
+            )
+        ]
 
 
 class HybridGraphTests(unittest.TestCase):
@@ -16,6 +56,9 @@ class HybridGraphTests(unittest.TestCase):
         cls.payload = json.loads(payload_path.read_text(encoding="utf-8"))
         cls.bundle = build_hierarchical_graph_bundle(cls.payload, title="Hybrid Graph Test")
         cls.store = HybridGraphStore(cls.bundle)
+        criminal_payload_path = Path("artifacts/hk_criminal_relationship/relationship_graph.json")
+        cls.criminal_payload = json.loads(criminal_payload_path.read_text(encoding="utf-8"))
+        cls.criminal_bundle = build_hierarchical_graph_bundle(cls.criminal_payload, title="Hybrid Criminal Graph Test")
 
     def test_taxonomy_import_preserves_modules(self) -> None:
         expected_module_ids = {
@@ -89,6 +132,34 @@ class HybridGraphTests(unittest.TestCase):
         self.assertTrue(result["llm"]["requested"])
         self.assertFalse(result["llm"]["used"])
         self.assertGreaterEqual(len(result["warnings"]), 1)
+
+    def test_criminal_bundle_excludes_contract_curated_enrichments(self) -> None:
+        case_names = {
+            node.get("case_name", node.get("label", ""))
+            for node in self.criminal_bundle["nodes"]
+            if node["type"] == "Case"
+        }
+        self.assertNotIn("Chiu Man On Paul t/a Pacific Power Engineering Co. v Vaford Contracting Co. Ltd.", case_names)
+        self.assertNotIn("To Yung Sing Herman v Szeto Chak Mei and Others", case_names)
+        self.assertEqual(self.criminal_bundle["meta"]["legal_domain"], "criminal")
+
+    @mock.patch("casemap.hybrid_graph.HKLIICrawler", _FallbackCrawler)
+    def test_criminal_query_uses_live_hklii_when_local_grounding_is_weak(self) -> None:
+        store = HybridGraphStore(
+            {
+                "meta": {"title": "Hong Kong Criminal Law Hierarchical Graph", "legal_domain": "criminal"},
+                "tree": {},
+                "nodes": [],
+                "edges": [],
+                "case_cards": {},
+            }
+        )
+        result = store.query("What is my legal liability if I eat my own dog?", top_k=3, mode="extractive")
+        self.assertTrue(result["retrieval_trace"]["live_hklii"]["attempted"])
+        self.assertTrue(result["retrieval_trace"]["live_hklii"]["used"])
+        self.assertGreaterEqual(len(result["citations"]), 1)
+        self.assertEqual(result["sources"][0]["retrieval_origin"], "hklii_live")
+        self.assertIn("animal cruelty", result["answer"].lower())
 
     def test_public_projection_strips_private_fields(self) -> None:
         public_projection = export_public_projection(self.bundle)

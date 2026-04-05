@@ -470,6 +470,20 @@ def render_knowledge_map(graph_payload: dict) -> str:
 
 def render_relationship_map(graph_payload: dict) -> str:
     data = json.dumps(graph_payload, ensure_ascii=False)
+    meta = graph_payload.get("meta", {})
+    legal_domain = str(meta.get("legal_domain", "")).strip().lower()
+    inferred_criminal = legal_domain == "criminal" or "criminal" in str(meta.get("title", "")).lower()
+    heading = meta.get("relationship_heading_public") or ("Hong Kong Criminal Law" if inferred_criminal else "Hong Kong Contract Law")
+    intro = meta.get("relationship_intro_public") or (
+        "A node-first research map for criminal topics, case authorities, statutes, and source passages. Start with the graph, then pivot into the hierarchy when you want a doctrinal spine."
+        if inferred_criminal
+        else "A node-first research map for doctrine, authorities, statutes, and source passages. Start with the graph, then pivot into the hierarchy when you want a doctrinal spine."
+    )
+    canvas_copy = (
+        "The main surface stays graph-native: topic hubs connect outward to criminal authorities, statutes, and source support so retrieval remains specific to the criminal domain."
+        if inferred_criminal
+        else "The main surface stays graph-native: doctrinal hubs connect outward to authorities, statutes, and source support so retrieval remains specific to the selected legal domain."
+    )
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -933,13 +947,13 @@ def render_relationship_map(graph_payload: dict) -> str:
   <div class="shell">
     <aside class="panel">
       <nav class="nav">
-        <a href="/">Authority Tree</a>
-        <a href="/relationships" class="active">Relationship Graph</a>
+        <a href="/" class="active">Node Graph</a>
+        <a href="/tree">Hierarchy</a>
         <a href="/mvp">MVP GraphRAG</a>
       </nav>
       <div class="meta">Casemap Relationship Graph</div>
-      <h1>Hong Kong Contract Law</h1>
-      <p class="intro">A legal research network view for doctrine, authorities, statutes, and source structure. Search for a case or topic, filter the graph, then inspect the right-hand dossier for references and links.</p>
+      <h1>{heading}</h1>
+      <p class="intro">{intro}</p>
       <div class="counts">
         <div class="count-card"><strong>{graph_payload["meta"]["node_count"]}</strong><span>Nodes</span></div>
         <div class="count-card"><strong>{graph_payload["meta"]["edge_count"]}</strong><span>Edges</span></div>
@@ -970,7 +984,7 @@ def render_relationship_map(graph_payload: dict) -> str:
         <div>
           <div class="meta">Authority Network</div>
           <h2 class="canvas-title">Doctrinal Relationship Map</h2>
-          <p class="canvas-copy">A Cornell-LII-style research surface with a more modern monochrome finish. Ground nodes anchor the topics; topics radiate into authorities, statutes, and source structure.</p>
+          <p class="canvas-copy">{canvas_copy}</p>
         </div>
         <div class="legend">
           <span><i class="swatch" style="background: var(--domain)"></i>Domain</span>
@@ -4087,8 +4101,8 @@ def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -
       <p class="intro">{intro}</p>
       <div class="toolbar">
         <nav class="nav">
-          <a href="/"{" class=\"active\"" if not is_internal else ""}>Hierarchy</a>
-          <a href="/relationships">Relationship Graph</a>
+          <a href="/">Node Graph</a>
+          <a href="/tree"{" class=\"active\"" if not is_internal else ""}>Hierarchy</a>
           <a href="/mvp">MVP GraphRAG</a>
           <a href="/internal"{" class=\"active\"" if is_internal else ""}>Internal Explorer</a>
         </nav>
