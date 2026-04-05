@@ -428,7 +428,8 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                 chosen_subground_id = subground_id
                 break
         if not chosen_subground_id:
-            chosen_subground_id = ensure_synthetic_subground("module:cross_cutting", "Derived Topics")["id"]
+            fallback_module_id = "module:cross_cutting" if "module:cross_cutting" in module_lookup else next(iter(module_lookup))
+            chosen_subground_id = ensure_synthetic_subground(fallback_module_id, "Derived Topics")["id"]
         subground = subground_lookup[chosen_subground_id]
         module = module_lookup[subground["module_id"]]
         topic_node = add_node(
@@ -969,6 +970,10 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
                 "constraints_file": "neo4j_constraints.cypher",
                 "import_file": "neo4j_import.cypher",
             },
+            "viewer_heading_public": public_projection.get("meta", {}).get("viewer_heading_public", ""),
+            "viewer_heading_internal": public_projection.get("meta", {}).get("viewer_heading_internal", ""),
+            "viewer_intro_public": public_projection.get("meta", {}).get("viewer_intro_public", ""),
+            "viewer_intro_internal": public_projection.get("meta", {}).get("viewer_intro_internal", ""),
         },
         "tree": {
             "id": tree["id"],

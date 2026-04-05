@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 from urllib.parse import parse_qs, unquote
@@ -26,14 +27,76 @@ PUBLIC_RELATIONSHIP_GRAPH_PATH = PUBLIC_RELATIONSHIP_DIR / "relationship_graph.j
 PUBLIC_RELATIONSHIP_MANIFEST_PATH = PUBLIC_RELATIONSHIP_DIR / "manifest.json"
 PUBLIC_RELATIONSHIP_MAP_PATH = PUBLIC_RELATIONSHIP_DIR / "relationship_map.html"
 PUBLIC_RELATIONSHIP_TREE_PATH = PUBLIC_RELATIONSHIP_DIR / "relationship_tree.html"
+PUBLIC_RELATIONSHIP_MONITOR_PATH = PUBLIC_RELATIONSHIP_DIR / "monitor_report.html"
+PUBLIC_RELATIONSHIP_MONITOR_JSON_PATH = PUBLIC_RELATIONSHIP_DIR / "monitor_report.json"
+PUBLIC_RELATIONSHIP_PROGRESS_PATH = PUBLIC_RELATIONSHIP_DIR / "build_progress.json"
 
 HYBRID_ARTIFACT_DIR = BASE_DIR / "artifacts" / "hybrid_graph"
 HYBRID_GRAPH_PATH = HYBRID_ARTIFACT_DIR / "hierarchical_graph.json"
 HYBRID_MANIFEST_PATH = HYBRID_ARTIFACT_DIR / "manifest.json"
 HYBRID_PUBLIC_PROJECTION_PATH = HYBRID_ARTIFACT_DIR / "public_projection.json"
 
+CRIMINAL_RELATIONSHIP_DIR = BASE_DIR / "artifacts" / "hk_criminal_relationship"
+CRIMINAL_RELATIONSHIP_GRAPH_PATH = CRIMINAL_RELATIONSHIP_DIR / "relationship_graph.json"
+CRIMINAL_RELATIONSHIP_MANIFEST_PATH = CRIMINAL_RELATIONSHIP_DIR / "manifest.json"
+CRIMINAL_RELATIONSHIP_MAP_PATH = CRIMINAL_RELATIONSHIP_DIR / "relationship_map.html"
+CRIMINAL_RELATIONSHIP_TREE_PATH = CRIMINAL_RELATIONSHIP_DIR / "relationship_tree.html"
+CRIMINAL_RELATIONSHIP_MONITOR_PATH = CRIMINAL_RELATIONSHIP_DIR / "monitor_report.html"
+CRIMINAL_RELATIONSHIP_MONITOR_JSON_PATH = CRIMINAL_RELATIONSHIP_DIR / "monitor_report.json"
+CRIMINAL_RELATIONSHIP_PROGRESS_PATH = CRIMINAL_RELATIONSHIP_DIR / "build_progress.json"
+
+CRIMINAL_HYBRID_ARTIFACT_DIR = BASE_DIR / "artifacts" / "hk_criminal_hybrid"
+CRIMINAL_HYBRID_GRAPH_PATH = CRIMINAL_HYBRID_ARTIFACT_DIR / "hierarchical_graph.json"
+CRIMINAL_HYBRID_MANIFEST_PATH = CRIMINAL_HYBRID_ARTIFACT_DIR / "manifest.json"
+CRIMINAL_HYBRID_PUBLIC_PROJECTION_PATH = CRIMINAL_HYBRID_ARTIFACT_DIR / "public_projection.json"
+
 _retriever: RerankedRetriever | None = None
 _hybrid_store: HybridGraphStore | None = None
+
+
+def _artifact_profile() -> str:
+    profile = os.environ.get("CASEMAP_PROFILE", "").strip().lower()
+    if profile in {"criminal", "hk-criminal", "criminal-law"}:
+        return "criminal"
+    return "contract"
+
+
+def _selected_hybrid_paths() -> tuple[Path, Path, Path]:
+    if _artifact_profile() == "criminal":
+        return (
+            CRIMINAL_HYBRID_GRAPH_PATH,
+            CRIMINAL_HYBRID_MANIFEST_PATH,
+            CRIMINAL_HYBRID_PUBLIC_PROJECTION_PATH,
+        )
+    return HYBRID_GRAPH_PATH, HYBRID_MANIFEST_PATH, HYBRID_PUBLIC_PROJECTION_PATH
+
+
+def _selected_relationship_paths() -> tuple[Path, Path, Path]:
+    if _artifact_profile() == "criminal":
+        return (
+            CRIMINAL_RELATIONSHIP_MANIFEST_PATH,
+            CRIMINAL_RELATIONSHIP_MAP_PATH,
+            CRIMINAL_RELATIONSHIP_TREE_PATH,
+        )
+    return (
+        PUBLIC_RELATIONSHIP_MANIFEST_PATH,
+        PUBLIC_RELATIONSHIP_MAP_PATH,
+        PUBLIC_RELATIONSHIP_TREE_PATH,
+    )
+
+
+def _selected_monitor_paths() -> tuple[Path, Path, Path]:
+    if _artifact_profile() == "criminal":
+        return (
+            CRIMINAL_RELATIONSHIP_MONITOR_PATH,
+            CRIMINAL_RELATIONSHIP_MONITOR_JSON_PATH,
+            CRIMINAL_RELATIONSHIP_PROGRESS_PATH,
+        )
+    return (
+        PUBLIC_RELATIONSHIP_MONITOR_PATH,
+        PUBLIC_RELATIONSHIP_MONITOR_JSON_PATH,
+        PUBLIC_RELATIONSHIP_PROGRESS_PATH,
+    )
 
 
 def _load_text(path: Path) -> str:
@@ -53,8 +116,9 @@ def _get_retriever() -> RerankedRetriever | None:
 
 def _get_hybrid_store() -> HybridGraphStore | None:
     global _hybrid_store
-    if _hybrid_store is None and HYBRID_GRAPH_PATH.exists():
-        _hybrid_store = HybridGraphStore.from_file(HYBRID_GRAPH_PATH)
+    graph_path, _, _ = _selected_hybrid_paths()
+    if _hybrid_store is None and graph_path.exists():
+        _hybrid_store = HybridGraphStore.from_file(graph_path)
     return _hybrid_store
 
 
@@ -100,7 +164,9 @@ def _not_found(start_response) -> list[bytes]:
             "/mvp",
             "/relationships",
             "/health",
+            "/monitor",
             "/api/manifest",
+            "/api/monitor",
             "/api/tree",
             "/api/topic/{topic_id}",
             "/api/case/{case_id}",
@@ -117,6 +183,17 @@ def app(environ, start_response):
     path = environ.get("PATH_INFO", "/")
     method = environ.get("REQUEST_METHOD", "GET").upper()
     hybrid_store = _get_hybrid_store()
+    selected_hybrid_graph_path, selected_hybrid_manifest_path, selected_hybrid_public_projection_path = _selected_hybrid_paths()
+    (
+        selected_relationship_manifest_path,
+        selected_relationship_map_path,
+        selected_relationship_tree_path,
+    ) = _selected_relationship_paths()
+    (
+        selected_monitor_path,
+        selected_monitor_json_path,
+        selected_progress_path,
+    ) = _selected_monitor_paths()
 
     if method not in {"GET", "POST"}:
         return _json_response(start_response, {"error": "Method not allowed"}, status="405 Method Not Allowed")
@@ -124,10 +201,10 @@ def app(environ, start_response):
     if path in {"/", "/index.html", "/tree"}:
         if hybrid_store is not None:
             return _html_response(start_response, render_hybrid_hierarchy(hybrid_store.bundle))
-        if PUBLIC_RELATIONSHIP_TREE_PATH.exists():
-            return _html_response(start_response, _load_text(PUBLIC_RELATIONSHIP_TREE_PATH))
-        if PUBLIC_RELATIONSHIP_MAP_PATH.exists():
-            return _html_response(start_response, _load_text(PUBLIC_RELATIONSHIP_MAP_PATH))
+        if selected_relationship_tree_path.exists():
+            return _html_response(start_response, _load_text(selected_relationship_tree_path))
+        if selected_relationship_map_path.exists():
+            return _html_response(start_response, _load_text(selected_relationship_map_path))
         if MVP_MAP_PATH.exists():
             return _html_response(start_response, _load_text(MVP_MAP_PATH))
         return _html_response(
@@ -146,13 +223,22 @@ def app(environ, start_response):
         return _html_response(start_response, render_hybrid_hierarchy(hybrid_store.bundle, page_mode="internal"))
 
     if path == "/relationships":
-        if PUBLIC_RELATIONSHIP_MAP_PATH.exists():
-            return _html_response(start_response, _load_text(PUBLIC_RELATIONSHIP_MAP_PATH))
+        if selected_relationship_map_path.exists():
+            return _html_response(start_response, _load_text(selected_relationship_map_path))
         if MVP_MAP_PATH.exists():
             return _html_response(start_response, _load_text(MVP_MAP_PATH))
         return _html_response(
             start_response,
             "<h1>Casemap</h1><p>No public artifact is available in this deployment.</p>",
+            status="503 Service Unavailable",
+        )
+
+    if path == "/monitor":
+        if selected_monitor_path.exists():
+            return _html_response(start_response, _load_text(selected_monitor_path))
+        return _html_response(
+            start_response,
+            "<h1>Casemap</h1><p>The monitor dashboard is not available for the current artifact profile yet.</p>",
             status="503 Service Unavailable",
         )
 
@@ -174,6 +260,9 @@ def app(environ, start_response):
                     "hybrid_graph": HYBRID_GRAPH_PATH.exists(),
                     "hybrid_manifest": HYBRID_MANIFEST_PATH.exists(),
                     "hybrid_public_projection": HYBRID_PUBLIC_PROJECTION_PATH.exists(),
+                    "selected_hybrid_graph": selected_hybrid_graph_path.exists(),
+                    "selected_hybrid_manifest": selected_hybrid_manifest_path.exists(),
+                    "selected_hybrid_public_projection": selected_hybrid_public_projection_path.exists(),
                     "mvp_graph": MVP_GRAPH_PATH.exists(),
                     "mvp_chunks": MVP_CHUNK_PATH.exists(),
                     "mvp_manifest": MVP_MANIFEST_PATH.exists(),
@@ -182,6 +271,20 @@ def app(environ, start_response):
                     "public_relationship_manifest": PUBLIC_RELATIONSHIP_MANIFEST_PATH.exists(),
                     "public_relationship_map": PUBLIC_RELATIONSHIP_MAP_PATH.exists(),
                     "public_relationship_tree": PUBLIC_RELATIONSHIP_TREE_PATH.exists(),
+                    "public_relationship_monitor": PUBLIC_RELATIONSHIP_MONITOR_PATH.exists(),
+                    "public_relationship_monitor_json": PUBLIC_RELATIONSHIP_MONITOR_JSON_PATH.exists(),
+                    "public_relationship_build_progress": PUBLIC_RELATIONSHIP_PROGRESS_PATH.exists(),
+                    "criminal_relationship_graph": CRIMINAL_RELATIONSHIP_GRAPH_PATH.exists(),
+                    "criminal_relationship_manifest": CRIMINAL_RELATIONSHIP_MANIFEST_PATH.exists(),
+                    "criminal_relationship_map": CRIMINAL_RELATIONSHIP_MAP_PATH.exists(),
+                    "criminal_relationship_tree": CRIMINAL_RELATIONSHIP_TREE_PATH.exists(),
+                    "criminal_relationship_monitor": CRIMINAL_RELATIONSHIP_MONITOR_PATH.exists(),
+                    "criminal_relationship_monitor_json": CRIMINAL_RELATIONSHIP_MONITOR_JSON_PATH.exists(),
+                    "criminal_relationship_build_progress": CRIMINAL_RELATIONSHIP_PROGRESS_PATH.exists(),
+                    "criminal_hybrid_graph": CRIMINAL_HYBRID_GRAPH_PATH.exists(),
+                    "criminal_hybrid_manifest": CRIMINAL_HYBRID_MANIFEST_PATH.exists(),
+                    "criminal_hybrid_public_projection": CRIMINAL_HYBRID_PUBLIC_PROJECTION_PATH.exists(),
+                    "profile": _artifact_profile(),
                 },
             },
         )
@@ -189,9 +292,18 @@ def app(environ, start_response):
     if path == "/api/manifest":
         if hybrid_store is not None:
             return _json_response(start_response, hybrid_store.manifest())
+        if selected_relationship_manifest_path.exists():
+            return _json_response(start_response, _load_json(selected_relationship_manifest_path))
         if not MVP_MANIFEST_PATH.exists():
             return _json_response(start_response, {"error": "manifest.json not found"}, status="503 Service Unavailable")
         return _json_response(start_response, _load_json(MVP_MANIFEST_PATH))
+
+    if path == "/api/monitor":
+        if selected_monitor_json_path.exists():
+            return _json_response(start_response, _load_json(selected_monitor_json_path))
+        if selected_progress_path.exists():
+            return _json_response(start_response, _load_json(selected_progress_path))
+        return _json_response(start_response, {"error": "monitor artifacts not found"}, status="503 Service Unavailable")
 
     if path == "/api/tree":
         if hybrid_store is None:
@@ -233,13 +345,13 @@ def app(environ, start_response):
             return _json_response(start_response, {"error": "Node not found", "id": node_id}, status="404 Not Found")
 
     if path == "/api/relationship-manifest":
-        if not PUBLIC_RELATIONSHIP_MANIFEST_PATH.exists():
+        if not selected_relationship_manifest_path.exists():
             return _json_response(
                 start_response,
                 {"error": "public relationship manifest not found"},
                 status="503 Service Unavailable",
             )
-        return _json_response(start_response, _load_json(PUBLIC_RELATIONSHIP_MANIFEST_PATH))
+        return _json_response(start_response, _load_json(selected_relationship_manifest_path))
 
     if path == "/api/sample-queries":
         if not MVP_SAMPLE_QUERY_PATH.exists():

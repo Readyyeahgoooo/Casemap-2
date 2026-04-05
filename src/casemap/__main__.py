@@ -3,11 +3,14 @@ from __future__ import annotations
 import argparse
 import importlib
 import json
+from pathlib import Path
 from wsgiref.simple_server import make_server
 
+from .criminal_graph import build_criminal_graph_artifacts
 from .graphrag import RerankedRetriever, build_artifacts
 from .hybrid_graph import HybridGraphStore, build_hybrid_graph_artifacts
 from .relationship_graph import build_relationship_artifacts, export_public_relationship_artifacts
+from .supabase_sync import load_env_file, sync_criminal_artifacts_to_supabase
 
 
 def build_command(args: argparse.Namespace) -> int:
@@ -60,6 +63,40 @@ def build_hybrid_graph_command(args: argparse.Namespace) -> int:
         graph_path=args.graph,
         output_dir=args.output_dir,
         title=args.title,
+    )
+    print(json.dumps(manifest, indent=2, ensure_ascii=False))
+    return 0
+
+
+def build_criminal_graph_command(args: argparse.Namespace) -> int:
+    manifest = build_criminal_graph_artifacts(
+        source_paths=args.source,
+        relationship_output_dir=args.output_dir,
+        hybrid_output_dir=args.hybrid_output_dir,
+        title=args.title,
+        per_query_limit=args.per_query_limit,
+        max_cases=args.max_cases,
+        embedding_backend=args.embedding_backend,
+        embedding_model=args.embedding_model,
+        embedding_dimensions=args.embedding_dimensions,
+    )
+    print(json.dumps(manifest, indent=2, ensure_ascii=False))
+    return 0
+
+
+def sync_criminal_supabase_command(args: argparse.Namespace) -> int:
+    for candidate in args.env_file:
+        load_env_file(candidate)
+    manifest = sync_criminal_artifacts_to_supabase(
+        relationship_graph_path=args.graph,
+        relationship_output_dir=args.output_dir,
+        hybrid_output_dir=args.hybrid_output_dir or None,
+        bucket=args.bucket,
+        prefix=args.prefix,
+        max_cases=args.max_cases,
+        embedding_backend=args.embedding_backend,
+        embedding_model=args.embedding_model,
+        prune_prefix_cases=args.prune_prefix_cases,
     )
     print(json.dumps(manifest, indent=2, ensure_ascii=False))
     return 0
@@ -142,6 +179,98 @@ def parser() -> argparse.ArgumentParser:
         help="Display title for the generated hybrid graph bundle",
     )
     hybrid_parser.set_defaults(func=build_hybrid_graph_command)
+
+    criminal_parser = subparsers.add_parser(
+        "build-criminal-graph",
+        help="Build a Hong Kong criminal-law graph from textbook sources plus HKLII primary materials",
+    )
+    criminal_parser.add_argument(
+        "--source",
+        action="append",
+        default=[],
+        help="Supplemental criminal-law source path. Repeat for each .pdf or .docx source.",
+    )
+    criminal_parser.add_argument("--output-dir", required=True, help="Directory for generated relationship, embedding, and monitor artifacts")
+    criminal_parser.add_argument(
+        "--hybrid-output-dir",
+        default="",
+        help="Optional directory for hierarchical graph artifacts. If omitted, only relationship and storage exports are written.",
+    )
+    criminal_parser.add_argument(
+        "--title",
+        default="Hong Kong Criminal Law Relationship Graph",
+        help="Display title for the generated criminal-law graph",
+    )
+    criminal_parser.add_argument("--per-query-limit", type=int, default=6, help="Maximum HKLII case hits to retain per seeded topic query")
+    criminal_parser.add_argument("--max-cases", type=int, default=140, help="Upper bound on HKLII case documents to fetch")
+    criminal_parser.add_argument(
+        "--embedding-backend",
+        default="auto",
+        help="Embedding backend to use: auto, local-hash, sentence-transformers, or openai",
+    )
+    criminal_parser.add_argument(
+        "--embedding-model",
+        default="",
+        help="Optional model override for the selected embedding backend",
+    )
+    criminal_parser.add_argument(
+        "--embedding-dimensions",
+        type=int,
+        default=0,
+        help="Optional embedding dimension override when supported by the chosen backend",
+    )
+    criminal_parser.set_defaults(func=build_criminal_graph_command)
+
+    sync_parser = subparsers.add_parser(
+        "sync-criminal-supabase",
+        help="Upload current criminal-law artifacts and a bounded set of HKLII-backed cases into Supabase Storage and Postgres",
+    )
+    sync_parser.add_argument(
+        "--graph",
+        default=str(Path("artifacts") / "hk_criminal_relationship" / "relationship_graph.json"),
+        help="Path to the criminal relationship_graph.json artifact",
+    )
+    sync_parser.add_argument(
+        "--output-dir",
+        default=str(Path("artifacts") / "hk_criminal_relationship"),
+        help="Relationship artifact directory to upload",
+    )
+    sync_parser.add_argument(
+        "--hybrid-output-dir",
+        default=str(Path("artifacts") / "hk_criminal_hybrid"),
+        help="Optional hybrid artifact directory to upload",
+    )
+    sync_parser.add_argument("--bucket", default="Casebase", help="Supabase Storage bucket name")
+    sync_parser.add_argument(
+        "--prefix",
+        default="casemap/hk_criminal/latest",
+        help="Storage prefix for uploaded artifacts and per-case JSON files",
+    )
+    sync_parser.add_argument("--max-cases", type=int, default=40, help="Maximum number of HKLII-backed cases to sync")
+    sync_parser.add_argument(
+        "--embedding-backend",
+        default="sentence-transformers",
+        help="Embedding backend for case chunk vectors",
+    )
+    sync_parser.add_argument(
+        "--embedding-model",
+        default="",
+        help="Optional model override for the selected embedding backend",
+    )
+    sync_parser.add_argument(
+        "--env-file",
+        action="append",
+        default=[".env.local", ".env"],
+        help="Env file to load before syncing. Repeat to add more files.",
+    )
+    sync_parser.add_argument(
+        "--no-prune-prefix-cases",
+        action="store_false",
+        dest="prune_prefix_cases",
+        help="Keep older cases already stored under the same prefix instead of pruning them after sync",
+    )
+    sync_parser.set_defaults(prune_prefix_cases=True)
+    sync_parser.set_defaults(func=sync_criminal_supabase_command)
 
     hybrid_query_parser = subparsers.add_parser(
         "hybrid-query",

@@ -19,6 +19,31 @@ Casemap- is a dependency-light MVP for turning Hong Kong contract-law materials 
 
 The repository also includes a Vercel-ready `app.py` WSGI entrypoint. When deployed, it serves the knowledge map at `/` and lightweight JSON endpoints such as `/api/manifest`, `/api/sample-queries`, and `/api/query?q=...`.
 
+## Casemap-2 Bootstrap Snapshot
+
+The `Casemap-2` bootstrap snapshot intentionally includes:
+
+- the current criminal-law pipeline code
+- local criminal-law generated artifacts under `artifacts/hk_criminal_relationship/` and `artifacts/hk_criminal_hybrid/`
+- cached HKLII search/judgment responses under `data/cache/hklii/`
+
+It still excludes live secrets and machine-local credentials:
+
+- `.env`
+- `.env.local`
+- any service-role or other runtime keys
+
+For hosted refreshes, the current starting command remains:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m casemap sync-criminal-supabase --max-cases 10 --prefix casemap/hk_criminal/latest
+```
+
+For future low-burn continuation, start with:
+
+- [docs/project_handoff.md](/Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-/docs/project_handoff.md)
+- [docs/codex_workflow.md](/Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-/docs/codex_workflow.md)
+
 ## Quick Start
 
 ```bash
@@ -121,6 +146,50 @@ Optional OpenRouter environment variables:
 
 - `OPENROUTER_API_KEY`
 - `OPENROUTER_MODEL` (defaults to `openrouter/auto`)
+
+## Supabase Runtime Split
+
+The repo now includes an env template at [.env.example](/Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-/.env.example).
+
+Use the variables in two layers:
+
+- Public runtime variables for the deployed app:
+  - `CASEMAP_PROFILE=criminal`
+  - `SUPABASE_URL=https://vzqlwjibtujhrhjgwhhe.supabase.co`
+  - `SUPABASE_PUBLISHABLE_KEY=...`
+- Server-only ingest variables for bulk uploads, admin imports, and future pipeline writes:
+  - `SUPABASE_SERVICE_ROLE_KEY=...`
+
+Important:
+
+- The publishable key is suitable for browser/client access when protected by RLS.
+- Do not put the service-role key into client-side code or public Vercel env exposed to the browser.
+- Until a service-role key is added, the current repo is still operating in local-export mode for `supabase_export.sql` and related artifacts rather than live Supabase ingestion.
+
+Suggested Vercel env setup:
+
+```bash
+CASEMAP_PROFILE=criminal
+SUPABASE_URL=https://vzqlwjibtujhrhjgwhhe.supabase.co
+SUPABASE_PUBLISHABLE_KEY=sb_publishable_jbTqB00EEbq-1ukymq5MMA_4Wa6ANpj
+```
+
+Keep this unset until you deliberately enable server-side ingest:
+
+```bash
+SUPABASE_SERVICE_ROLE_KEY=
+```
+
+Hosted criminal-law sync:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m casemap sync-criminal-supabase --max-cases 10 --prefix casemap/hk_criminal/latest
+```
+
+To keep future Codex sessions cheaper and more accurate, start from:
+
+- [docs/project_handoff.md](/Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-/docs/project_handoff.md)
+- [docs/codex_workflow.md](/Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-/docs/codex_workflow.md)
 
 ## Design
 

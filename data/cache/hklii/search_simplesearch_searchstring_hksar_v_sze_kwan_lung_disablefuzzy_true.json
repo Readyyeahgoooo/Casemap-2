@@ -1,0 +1,97 @@
+{
+  "count": 6,
+  "results": [
+    {
+      "title": "HKSAR V. PAUL SHAUN WAYNE WENDELL",
+      "path": "/en/cases/hkca/2026/89",
+      "pub_date": "2026-01-23T00:00:00+08:00",
+      "db": "Court of Appeal",
+      "act": "CACC187/2025",
+      "neutral": "[2026] HKCA 89",
+      "parallel": "",
+      "coram": "Before: Hon Macrae VP in Court",
+      "parties": "BETWEEN HKSAR Respondent and Paul Shaun Wayne Wendell Applicant ________________________",
+      "charge": "",
+      "representations": "Ms Chan Sze Yan SPP, of the Department of Justice, for the Respondent The Applicant appeared in person",
+      "remarks": ""
+    },
+    {
+      "title": "HKSAR V. CHEUNG KIE CHUNG",
+      "path": "/en/cases/hkcfi/2025/5292",
+      "pub_date": "2025-11-04T00:00:00+08:00",
+      "db": "Court of First Instance",
+      "act": "HCCC37/2024",
+      "neutral": "[2025] HKCFI 5292",
+      "parallel": "",
+      "coram": "Before: Hon Barnes J in Court",
+      "parties": "Between HKSAR against CHEUNG Kie-chung Defendant",
+      "charge": "",
+      "representations": "Mr Lui Tsz-ming, Ira, ADPP and Miss Wong Lilly, SPP of the Department of Justice, for the Prosecution Mr Chan, Derek C.L., S.C. and Mr Lee Shu-wun, Counsel instructed by Messrs. Chiu, Szeto & Cheng, Solicitors for the Defendant CHEUNG Kie-chung",
+      "remarks": ""
+    },
+    {
+      "title": "HKSAR V. LAM MAN TAK",
+      "path": "/en/cases/hkca/2026/67",
+      "pub_date": "2026-01-20T00:00:00+08:00",
+      "db": "Court of Appeal",
+      "act": "CACC49/2018",
+      "neutral": "[2026] HKCA 67",
+      "parallel": "",
+      "coram": "Before: Hon Macrae VP, Zervos JA and K Yeung J in Court",
+      "parties": "BETWEEN HKSAR Respondent and Lam Man Tak (林文德) Applicant",
+      "charge": "",
+      "representations": "Mr Ira Lui ADPP and Mr Michael Tsang SPP, of the Department of Justice, for the Respondent Ms Virginia Lau and Ms Ferrida Chan, instructed by Johnnie Yam, Jacky Lee & Co, assigned by the Director of Legal Aid, for the Applicant",
+      "remarks": ""
+    },
+    {
+      "title": "香港特別行政區 訴 尹載道",
+      "path": "/tc/cases/hkcfi/2022/1889",
+      "pub_date": "2022-06-24T00:00:00+08:00",
+      "db": "原訟法庭",
+      "act": "HCMA166/2021",
+      "neutral": "[2022] HKCFI 1889",
+      "parallel": "",
+      "coram": "主審法官： 高等法院原訟法庭法官李運騰",
+      "parties": "答辯人 香港特別行政區 訴 上訴人 尹載道",
+      "charge": "",
+      "representations": "答辯人： 由律政司檢控官鄧芷琳代表香港特別行政區。 上訴人： 無律師代表，親自行事。",
+      "remarks": ""
+    },
+    {
+      "title": "HKSAR V. KWAN TAT YEE",
+      "path": "/en/cases/hkca/2022/1021",
+      "pub_date": "2022-12-07T00:00:00+08:00",
+      "db": "Court of Appeal",
+      "act": "CACC213/2018",
+      "neutral": "[2022] HKCA 1021",
+      "parallel": "[2023] 1 HKC 501; [2023] 1 HKLRD 289",
+      "coram": "Before: Hon Macrae VP, D Pang and Zervos JJA in Court",
+      "parties": "HKSAR Respondent v Kwan Tat Yee Applicant",
+      "charge": "",
+      "representations": "Mr William Tam, SC, DDPP and Ms Chan Sze-yan, SPP of Department of Justice, for the respondent Mr Eric Cheung, Solicitor Advocate, instructed by ONC Lawyers, assigned by the Director of Legal Aid, for the applicant",
+      "remarks": ""
+    },
+    {
+      "title": "香港特別行政區 訴 陳凱港及另一人",
+      "path": "/tc/cases/hkdc/2024/634",
+      "pub_date": "2024-04-19T00:00:00+08:00",
+      "db": "區域法院",
+      "act": "DCCC132/2022",
+      "neutral": "[2024] HKDC 634",
+      "parallel": "",
+      "coram": "主審法官： 區域法院暫委法官王證瑜",
+      "parties": "香港特別行政區 訴 陳凱港 （第一被告人） 汪浩毅 （第二被告人）",
+      "charge": "控罪： [1] – [2] 欺詐罪（Fraud）",
+      "representations": "出席人士： 律政司高級檢控官李希哲先生及署理高級檢控官劉卓賢先生，代表香港特別行政區 霍健明先生及廖煦琪女士，由何韋律師行延聘，代表第一被告人 沈仲平先生帶領黎家傑先生，由任其昌李鴻生律師行延聘，代表第二被告人",
+      "remarks": ""
+    }
+  ],
+  "classification": {
+    "type": "CASE",
+    "case_format": "name"
+  },
+  "recommendation": {
+    "message": "Not concept search",
+    "data": []
+  }
+}

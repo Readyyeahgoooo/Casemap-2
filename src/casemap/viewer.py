@@ -3155,13 +3155,24 @@ def render_relationship_family_tree(graph_payload: dict) -> str:
 def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -> str:
     data = json.dumps(graph_payload, ensure_ascii=False)
     is_internal = page_mode == "internal"
+    meta = graph_payload.get("meta", {})
     meta_label = "Internal Explorer" if is_internal else "Casemap Hybrid Hierarchy"
-    heading = "Hong Kong Contract Law Internal Hierarchy Explorer" if is_internal else "Hong Kong Contract Law Hierarchical Knowledge Graph"
-    intro = (
-        "This internal route now uses the same visual hierarchy graph so the doctrinal tree is complete and explorable here as well. "
-        "Start at the lifecycle modules, drill into subgrounds and topics, then inspect linked cases, statutes, and curated authority lineages."
+    heading = (
+        meta.get("viewer_heading_internal", "Hong Kong Contract Law Internal Hierarchy Explorer")
         if is_internal
-        else "The graph is back as a visual hierarchy. Start at the lifecycle modules, drill into subgrounds and topics, then inspect the linked cases, statutes, and curated authority lineages for each branch."
+        else meta.get("viewer_heading_public", "Hong Kong Contract Law Hierarchical Knowledge Graph")
+    )
+    intro = (
+        meta.get(
+            "viewer_intro_internal",
+            "This internal route now uses the same visual hierarchy graph so the doctrinal tree is complete and explorable here as well. "
+            "Start at the lifecycle modules, drill into subgrounds and topics, then inspect linked cases, statutes, and curated authority lineages.",
+        )
+        if is_internal
+        else meta.get(
+            "viewer_intro_public",
+            "The graph is back as a visual hierarchy. Start at the lifecycle modules, drill into subgrounds and topics, then inspect the linked cases, statutes, and curated authority lineages for each branch.",
+        )
     )
     graph_copy = (
         "Zoom, pan, and expand the internal hierarchy tree. The doctrinal spine stays hierarchical while topic branches reveal linked cases, statutes, and authority lineages."

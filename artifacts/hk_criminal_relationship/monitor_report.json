@@ -1,0 +1,68 @@
+{
+  "title": "Hong Kong Criminal Law Relationship Graph",
+  "generated_at": "2026-04-05T11:51:43.969967+00:00",
+  "case_count": 514,
+  "topic_count": 27,
+  "uncovered_topics": [],
+  "low_coverage_topics": [],
+  "cases_missing_principles": [
+    "[2021] HKDC 1178",
+    "[2022] HKDC 1083",
+    "HKSAR v. CHAN KAM SHING",
+    "[2016] HCA 30",
+    "[2012] QB 160",
+    "[1975] QB 773",
+    "[2003] UKPC 10",
+    "[1997] LQR 453",
+    "[1954] AC 378",
+    "[1989] QB 775",
+    "HKSAR v. CHAN MAN-SUM, IVAN",
+    "[2021] HKCFI 2833",
+    "[2020] HKCA 516",
+    "[1996] AC 1",
+    "[2013] NICA 23",
+    "[2021] HKCA 185",
+    "[2021] HKCFI 906",
+    "[2021] HKCFI 1119",
+    "[1975] QB 834",
+    "[1973] AC 729",
+    "[1974] AC 85",
+    "[2021] HKDC 1324",
+    "[2021] HKDC 645",
+    "[2021] HKDC 1100",
+    "[2021] HKDC 1160",
+    "[2021] HKDC 457",
+    "[2020] HKCFI 3089",
+    "[2021] HKCA 1137",
+    "[2022] HKCFI 569",
+    "[1985] HKLR 427"
+  ],
+  "warnings": [
+    "SSL verification failed for https://www.hklii.hk/api/simplesearch?searchstring=prevention+of+bribery+ordinance+HKSAR+criminal&disablefuzzy=true; retried with an unverified TLS context.",
+    "Search failed for 'prevention of bribery ordinance HKSAR criminal': HTTP Error 500: Internal Server Error",
+    "SSL verification failed for https://www.hklii.hk/api/simplesearch?searchstring=criminal+hearsay+ordinance+HKSAR&disablefuzzy=true; retried with an unverified TLS context.",
+    "Search failed for 'criminal hearsay ordinance HKSAR': HTTP Error 500: Internal Server Error",
+    "SSL verification failed for https://www.hklii.hk/api/simplesearch?searchstring=confiscation+order+HKSAR+criminal&disablefuzzy=true; retried with an unverified TLS context.",
+    "Search failed for 'confiscation order HKSAR criminal': HTTP Error 500: Internal Server Error",
+    "SSL verification failed for https://www.hklii.hk/api/simplesearch?searchstring=HKSAR+v+So+Wai+Lun+was+delivered+before+the+recognition+of+intermediate+basesof+liability+in+Kulemesin+v+HKSAR&disablefuzzy=true; retried with an unverified TLS context.",
+    "SSL verification failed for https://www.hklii.hk/api/simplesearch?searchstring=the+well-known+and+leading+case+of+R+v+Dudley+and+Stephens&disablefuzzy=true; retried with an unverified TLS context.",
+    "SSL verification failed for https://www.hklii.hk/api/simplesearch?searchstring=That+distinction+can+be+found+in+many+cases.+In+R+v+Beard&disablefuzzy=true; retried with an unverified TLS context."
+  ],
+  "storage": {
+    "embedding_record_count": 674,
+    "embedding_dimensions": 384,
+    "embedding_backend": {
+      "backend": "sentence-transformers",
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "dimensions": 384
+    },
+    "chroma_export": "/Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-/artifacts/hk_criminal_relationship/chroma_records.json",
+    "supabase_export": "/Users/puiyuenwong/PolymarketCorrelationStrategy/Casemap-/artifacts/hk_criminal_relationship/supabase_export.sql",
+    "hybrid_bundle_written": true
+  },
+  "next_actions": [
+    "Run a second HKLII crawl on the uncovered topics using more specific offence or doctrine queries.",
+    "Feed uncovered topics into NotebookLM or a DeepSeek/OpenRouter enrichment pass if an MCP or API becomes available.",
+    "Review the low-coverage topics before promoting this graph as a full-production criminal-law map."
+  ]
+}

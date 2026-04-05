@@ -1,0 +1,27 @@
+{
+  "count": 1,
+  "results": [
+    {
+      "title": "HKSAR V. LIMBU PRASHANT",
+      "path": "/en/cases/hkdc/2022/597",
+      "pub_date": "2022-06-15T00:00:00+08:00",
+      "db": "District Court",
+      "act": "DCCC689/2021",
+      "neutral": "[2022] HKDC 597",
+      "parallel": "",
+      "coram": "Before: Deputy District Judge Terence Wai in Court",
+      "parties": "HKSAR v LIMBU PRASHANT",
+      "charge": "Offence: Trafficking in a dangerous drug (販運危險藥物)",
+      "representations": "Present: Mr Sadhwani Kamlesh Arjan, Counsel on fiat, for HKSAR Mr Allan William, instructed by Mohnani & Associates, for the defendant",
+      "remarks": ""
+    }
+  ],
+  "classification": {
+    "type": "CASE",
+    "case_format": "name"
+  },
+  "recommendation": {
+    "message": "Not concept search",
+    "data": []
+  }
+}
