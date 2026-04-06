@@ -13,7 +13,7 @@ if str(SRC_DIR) not in sys.path:
 
 from casemap.graphrag import RerankedRetriever
 from casemap.hybrid_graph import HybridGraphStore
-from casemap.viewer import render_hybrid_hierarchy, render_relationship_map
+from casemap.viewer import render_hybrid_hierarchy, render_knowledge_graph, render_relationship_map
 
 MVP_ARTIFACT_DIR = BASE_DIR / "artifacts" / "contract_big"
 MVP_GRAPH_PATH = MVP_ARTIFACT_DIR / "graph.json"
@@ -169,6 +169,7 @@ def _not_found(start_response) -> list[bytes]:
         "error": "Not found",
         "routes": [
             "/",
+            "/graph",
             "/tree",
             "/hierarchy",
             "/internal",
@@ -209,6 +210,15 @@ def app(environ, start_response):
 
     if method not in {"GET", "POST"}:
         return _json_response(start_response, {"error": "Method not allowed"}, status="405 Method Not Allowed")
+
+    if path == "/graph":
+        if hybrid_store is None:
+            return _html_response(
+                start_response,
+                "<h1>Casemap</h1><p>The knowledge graph is unavailable because the hybrid graph artifact is missing.</p>",
+                status="503 Service Unavailable",
+            )
+        return _html_response(start_response, render_knowledge_graph(hybrid_store.bundle))
 
     if path in {"/", "/index.html", "/relationships"}:
         if selected_relationship_graph_path.exists():

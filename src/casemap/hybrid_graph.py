@@ -11,6 +11,7 @@ from urllib import error as urllib_error
 from urllib import request as urllib_request
 
 from .case_enrichment_data import CURATED_CASE_ENRICHMENTS
+from .criminal_enrichment_data import CURATED_CRIMINAL_CASE_ENRICHMENTS
 from .graphrag import normalize_scores, slugify, tokenize
 from .hklii_crawler import HKLIICrawler
 from .relationship_graph import export_public_relationship_payload
@@ -108,14 +109,78 @@ QUERY_STOPWORDS = {
     "would",
 }
 CRIMINAL_QUERY_HINTS = {
-    "dog": ["animal cruelty dog hong kong", "prevention of cruelty to animals hong kong"],
-    "animal": ["animal cruelty hong kong", "prevention of cruelty to animals hong kong"],
+    # Animal welfare
+    "dog": ["animal cruelty dog hong kong", "prevention of cruelty to animals ordinance cap 169 hong kong"],
+    "animal": ["animal cruelty hong kong", "prevention of cruelty to animals ordinance cap 169 hong kong"],
+    "pet": ["animal cruelty pet hong kong", "prevention of cruelty to animals hong kong"],
+    "cat": ["animal cruelty cat hong kong", "prevention of cruelty to animals hong kong"],
+    "bird": ["animal cruelty bird hong kong", "prevention of cruelty to animals hong kong"],
+    "livestock": ["animal cruelty livestock hong kong", "prevention of cruelty to animals hong kong"],
+    "wildlife": ["wildlife protection hong kong criminal", "animals ordinance hong kong"],
+    "cruelty": ["animal cruelty hong kong", "prevention of cruelty to animals ordinance cap 169"],
+    "stab": ["stabbing animal hong kong offence", "animal cruelty injury hong kong"],
+    # Evidence
     "hearsay": ["hearsay evidence criminal hong kong"],
-    "confession": ["confession evidence criminal hong kong"],
-    "identification": ["identification evidence criminal hong kong"],
-    "sentencing": ["sentencing criminal hong kong"],
-    "bribery": ["bribery hong kong criminal"],
-    "money": ["money laundering hong kong criminal"],
+    "confession": ["confession evidence criminal hong kong", "admissibility confession HKSAR"],
+    "identification": ["identification evidence criminal hong kong", "dock identification HKSAR"],
+    "corroboration": ["corroboration evidence criminal hong kong"],
+    "admissibility": ["admissibility evidence criminal hong kong"],
+    "witness": ["witness evidence criminal hong kong", "accomplice witness HKSAR"],
+    # Sentencing
+    "sentencing": ["sentencing criminal hong kong", "sentencing guidelines HKSAR"],
+    "tariff": ["sentencing tariff hong kong criminal"],
+    "mitigation": ["mitigation sentencing hong kong criminal"],
+    "totality": ["totality principle sentencing hong kong"],
+    # Corruption and bribery
+    "bribery": ["bribery hong kong criminal", "prevention of bribery ordinance HKSAR"],
+    "corruption": ["corruption ICAC hong kong criminal", "misconduct public office HKSAR"],
+    # Money and financial crime
+    "money": ["money laundering hong kong criminal", "drug trafficking proceeds HKSAR"],
+    "laundering": ["money laundering hong kong criminal", "organized serious crimes ordinance HKSAR"],
+    "fraud": ["fraud deception hong kong criminal", "theft ordinance fraud HKSAR"],
+    "deception": ["deception offence hong kong criminal", "obtaining property deception HKSAR"],
+    # Theft and property offences
+    "theft": ["theft hong kong criminal", "theft ordinance HKSAR"],
+    "robbery": ["robbery hong kong criminal", "armed robbery HKSAR"],
+    "burglary": ["burglary hong kong criminal", "breaking entering HKSAR"],
+    "blackmail": ["blackmail extortion hong kong criminal"],
+    "handling": ["handling stolen goods hong kong criminal"],
+    # Drug offences
+    "drug": ["drug trafficking hong kong criminal", "dangerous drugs ordinance HKSAR"],
+    "narcotic": ["narcotic drug offence hong kong", "dangerous drugs ordinance HKSAR"],
+    "trafficking": ["drug trafficking hong kong criminal", "dangerous drugs ordinance cap 134 HKSAR"],
+    "possession": ["possession dangerous drugs hong kong", "drug possession HKSAR criminal"],
+    "cannabis": ["cannabis drug offence hong kong criminal"],
+    "heroin": ["heroin drug trafficking hong kong criminal"],
+    # Road traffic
+    "driving": ["dangerous driving hong kong criminal", "road traffic ordinance HKSAR"],
+    "vehicle": ["road traffic offence hong kong criminal", "dangerous driving HKSAR"],
+    "traffic": ["road traffic ordinance hong kong criminal", "careless driving HKSAR"],
+    "accident": ["road traffic accident hong kong criminal liability"],
+    "drink": ["drink driving hong kong criminal", "driving under influence HKSAR"],
+    # Sexual offences
+    "rape": ["rape sexual offence hong kong criminal", "crimes ordinance rape HKSAR"],
+    "sexual": ["sexual offence hong kong criminal", "indecent assault HKSAR"],
+    "indecent": ["indecent assault hong kong criminal", "sexual offence HKSAR"],
+    "assault": ["assault hong kong criminal", "common assault HKSAR"],
+    # Public order
+    "riot": ["riot public order hong kong criminal", "public order ordinance HKSAR"],
+    "affray": ["affray hong kong criminal", "public order offence HKSAR"],
+    "unlawful": ["unlawful assembly hong kong criminal", "public order ordinance HKSAR"],
+    # Firearms and weapons
+    "firearm": ["firearm offence hong kong criminal", "firearms ordinance HKSAR"],
+    "weapon": ["offensive weapon hong kong criminal", "possession weapon HKSAR"],
+    "arms": ["arms ammunition hong kong criminal", "firearms ordinance HKSAR"],
+    "knife": ["offensive weapon knife hong kong criminal"],
+    # Homicide
+    "murder": ["murder hong kong criminal", "homicide HKSAR"],
+    "manslaughter": ["manslaughter hong kong criminal", "involuntary manslaughter HKSAR"],
+    "killing": ["homicide killing hong kong criminal"],
+    # Defences
+    "self": ["self defence hong kong criminal", "defence of person HKSAR"],
+    "insanity": ["insanity defence hong kong criminal", "mental disorder HKSAR"],
+    "duress": ["duress defence hong kong criminal"],
+    "intoxication": ["intoxication defence hong kong criminal", "voluntary intoxication HKSAR"],
 }
 
 
@@ -905,7 +970,7 @@ def build_hierarchical_graph_bundle(relationship_payload: dict, title: str | Non
             previous_member_id = member_node["id"]
             previous_member_type = member["type"]
 
-    curated_enrichments = CURATED_CASE_ENRICHMENTS if legal_domain == "contract" else []
+    curated_enrichments = CURATED_CASE_ENRICHMENTS if legal_domain == "contract" else CURATED_CRIMINAL_CASE_ENRICHMENTS
     for enrichment in curated_enrichments:
         case_node = ensure_case(
             enrichment["case_name"],
@@ -1612,6 +1677,26 @@ class HybridGraphStore:
                 or top_local_support < 0.22
                 or token_coverage < 0.34
             )
+            if not weak_local_grounding:
+                # Check if query tokens map to CRIMINAL_QUERY_HINTS but local
+                # citations lack the domain-specific hint terms. This catches
+                # cases like "stabbing one's dog" where 'stab' matches
+                # human-violence cases giving false token_coverage.
+                hint_triggered_tokens = [t for t in distinctive_query_tokens if t in CRIMINAL_QUERY_HINTS]
+                if hint_triggered_tokens:
+                    hint_terms: set[str] = set()
+                    for ht in hint_triggered_tokens:
+                        for hint_query in CRIMINAL_QUERY_HINTS[ht]:
+                            hint_terms.update(tokenize(hint_query))
+                    hint_terms -= QUERY_STOPWORDS
+                    local_hint_coverage = (
+                        len(hint_terms & local_grounding_tokens) / max(len(hint_terms), 1)
+                        if hint_terms
+                        else 1.0
+                    )
+                    if local_hint_coverage < 0.15:
+                        weak_local_grounding = True
+                        prefer_live_grounding = True
             if weak_local_grounding:
                 prefer_live_grounding = token_coverage < 0.34
                 live_hklii_trace["attempted"] = True

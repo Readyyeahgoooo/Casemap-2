@@ -484,6 +484,54 @@ CRIMINAL_AUTHORITY_TREE = [
             },
         ],
     },
+    {
+        "id": "regulatory_and_welfare_offences",
+        "label_en": "Regulatory and Welfare Offences",
+        "label_zh": "規管及福利罪行",
+        "summary_en": "Offences under regulatory ordinances protecting animals, the environment, and public welfare.",
+        "summary_zh": "保護動物、環境及公眾福祉的規管條例下的罪行。",
+        "subgrounds": [
+            {
+                "id": "animal_cruelty",
+                "label_en": "Animal Cruelty",
+                "label_zh": "虐待動物",
+                "summary_en": "Offences of cruelty, neglect, and unnecessary suffering under the Prevention of Cruelty to Animals Ordinance (Cap. 169).",
+                "summary_zh": "根據《防止殘酷對待動物條例》（第169章）的虐待、疏忽及不必要痛苦罪行。",
+                "topics": [
+                    {
+                        "id": "prevention_cruelty_animals",
+                        "label_en": "Prevention of Cruelty to Animals Ordinance (Cap. 169)",
+                        "label_zh": "防止殘酷對待動物條例（第169章）",
+                        "search_queries": [
+                            "prevention of cruelty to animals ordinance cap 169 hong kong",
+                            "animal cruelty offence hong kong criminal",
+                            "unnecessary suffering animal hong kong",
+                            "SPCA hong kong animal welfare prosecution",
+                            "cruelty to animals HKSAR conviction",
+                            "animal welfare ordinance hong kong",
+                            "stabbing animal hong kong offence",
+                            "injuring animal hong kong criminal liability",
+                        ],
+                    },
+                    {
+                        "id": "animal_welfare_sentencing",
+                        "label_en": "Animal Cruelty Sentencing",
+                        "label_zh": "虐待動物量刑",
+                        "search_queries": [
+                            "animal cruelty sentencing hong kong",
+                            "cap 169 penalty hong kong",
+                            "imprisonment animal cruelty hong kong",
+                        ],
+                    },
+                ],
+                "children": [
+                    {"en": "Unnecessary suffering and cruelty", "zh": "不必要痛苦與虐待"},
+                    {"en": "Neglect and abandonment", "zh": "疏忽及遺棄"},
+                    {"en": "Sentencing for animal cruelty", "zh": "虐待動物量刑"},
+                ],
+            },
+        ],
+    },
 ]
 
 

@@ -5336,3 +5336,247 @@ def render_hybrid_hierarchy(graph_payload: dict, page_mode: str = "hierarchy") -
   </script>
 </body>
 </html>"""
+
+
+def render_knowledge_graph(bundle: dict) -> str:
+    """Render an interactive D3.js force-directed knowledge graph from a hybrid graph bundle."""
+    meta = bundle.get("meta", {})
+    heading = meta.get("viewer_heading_public") or meta.get("title") or "HK Legal Knowledge Graph"
+    node_count = meta.get("node_count", 0)
+    edge_count = meta.get("edge_count", 0)
+
+    # Build a lightweight node/edge payload for the browser
+    # Only include fields needed for rendering to keep payload small
+    VISIBLE_TYPES = {"Module", "Subground", "Topic", "Case", "Statute", "AuthorityLineage"}
+    graph_nodes = []
+    for n in bundle.get("nodes", []):
+        if n.get("type") not in VISIBLE_TYPES:
+            continue
+        graph_nodes.append({
+            "id": n["id"],
+            "type": n["type"],
+            "label": n.get("label_en") or n.get("case_name") or n.get("label") or n["id"],
+            "summary": (n.get("summary_en") or n.get("summary") or "")[:280],
+        })
+
+    visible_ids = {n["id"] for n in graph_nodes}
+    VISIBLE_EDGE_TYPES = {"CONTAINS", "BELONGS_TO_TOPIC", "CITES", "FOLLOWS", "APPLIES", "DISTINGUISHES", "HAS_MEMBER", "ABOUT_TOPIC"}
+    graph_edges = [
+        {"source": e["source"], "target": e["target"], "type": e["type"]}
+        for e in bundle.get("edges", [])
+        if e.get("type") in VISIBLE_EDGE_TYPES
+        and e["source"] in visible_ids
+        and e["target"] in visible_ids
+    ]
+
+    import json as _json
+    nodes_json = _json.dumps(graph_nodes, ensure_ascii=False)
+    edges_json = _json.dumps(graph_edges, ensure_ascii=False)
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Casemap Knowledge Graph</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <style>
+    :root {{
+      --bg: #f0f4f8;
+      --panel: rgba(255,255,255,0.92);
+      --ink: #101317;
+      --muted: #6b7280;
+      --line: rgba(16,19,23,0.1);
+      --module: #0f4c5c;
+      --subground: #2d6a8a;
+      --topic: #d28d2d;
+      --case: #7f5539;
+      --statute: #bc4749;
+      --lineage: #52796f;
+      --accent: #0f1216;
+    }}
+    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    body {{ font-family: "Avenir Next","Helvetica Neue",sans-serif; background: var(--bg); color: var(--ink); height: 100vh; display: flex; flex-direction: column; }}
+    .toolbar {{ display: flex; align-items: center; gap: 12px; padding: 10px 18px; background: var(--panel); border-bottom: 1px solid var(--line); flex-shrink: 0; }}
+    .toolbar h1 {{ font-size: 16px; font-weight: 600; letter-spacing: -0.02em; }}
+    .toolbar .counts {{ color: var(--muted); font-size: 12px; }}
+    .toolbar input {{ padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; background: white; width: 220px; }}
+    nav.nav {{ display: inline-flex; gap: 6px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.7); margin-left: auto; }}
+    nav.nav a {{ padding: 7px 12px; border-radius: 999px; color: var(--ink); text-decoration: none; font-size: 12px; }}
+    nav.nav a.active {{ background: var(--accent); color: white; }}
+    .legend {{ display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; color: var(--muted); }}
+    .legend span {{ display: inline-flex; align-items: center; gap: 5px; }}
+    .swatch {{ width: 9px; height: 9px; border-radius: 2px; display: inline-block; }}
+    .main {{ display: flex; flex: 1; overflow: hidden; }}
+    #graph-container {{ flex: 1; overflow: hidden; position: relative; }}
+    svg {{ width: 100%; height: 100%; }}
+    .side {{ width: 320px; border-left: 1px solid var(--line); background: var(--panel); padding: 20px 18px; overflow-y: auto; flex-shrink: 0; }}
+    .side .meta {{ font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 6px; }}
+    .side h2 {{ font-size: 20px; line-height: 1.1; margin-bottom: 8px; }}
+    .side .pill {{ display: inline-block; padding: 5px 10px; border-radius: 999px; font-size: 11px; background: rgba(16,19,23,0.06); color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }}
+    .side p {{ font-size: 14px; line-height: 1.6; color: var(--ink); margin-bottom: 14px; }}
+    .side ul {{ list-style: none; display: grid; gap: 8px; margin-bottom: 14px; }}
+    .side ul li {{ border: 1px solid var(--line); border-radius: 12px; padding: 9px 12px; font-size: 13px; background: rgba(255,255,255,0.6); }}
+    .node circle {{ stroke: rgba(255,255,255,0.9); stroke-width: 1.5; cursor: pointer; transition: stroke-width 120ms; }}
+    .node circle:hover {{ stroke-width: 3; }}
+    .node text {{ font-size: 10px; fill: var(--ink); pointer-events: none; font-family: "SFMono-Regular",monospace; }}
+    .link {{ stroke: rgba(16,19,23,0.12); stroke-width: 1; }}
+    .link.CITES, .link.FOLLOWS, .link.APPLIES {{ stroke: rgba(16,19,23,0.22); stroke-width: 1.4; }}
+    .faded {{ opacity: 0.1; }}
+    .active circle {{ stroke: var(--accent) !important; stroke-width: 3.5 !important; }}
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <h1>{heading}</h1>
+    <span class="counts">{node_count} nodes · {edge_count} edges</span>
+    <input id="search" type="search" placeholder="Search nodes…">
+    <div class="legend">
+      <span><i class="swatch" style="background:var(--module)"></i>Module</span>
+      <span><i class="swatch" style="background:var(--subground)"></i>Subground</span>
+      <span><i class="swatch" style="background:var(--topic)"></i>Topic</span>
+      <span><i class="swatch" style="background:var(--case)"></i>Case</span>
+      <span><i class="swatch" style="background:var(--statute)"></i>Statute</span>
+      <span><i class="swatch" style="background:var(--lineage)"></i>Lineage</span>
+    </div>
+    <nav class="nav">
+      <a href="/">Graph</a>
+      <a href="/tree">Hierarchy</a>
+      <a href="/graph" class="active">Force Graph</a>
+    </nav>
+  </div>
+  <div class="main">
+    <div id="graph-container">
+      <svg id="svg"></svg>
+    </div>
+    <aside class="side">
+      <div class="meta">Selection</div>
+      <h2 id="nodeTitle">Overview</h2>
+      <div id="nodeType" class="pill">Knowledge Graph</div>
+      <p id="nodeSummary">Click any node to inspect its details, type, and connected neighbours.</p>
+      <div class="meta">Neighbours</div>
+      <ul id="neighbourList"><li>No node selected.</li></ul>
+    </aside>
+  </div>
+  <script>
+    const NODES = {nodes_json};
+    const EDGES = {edges_json};
+
+    const COLOR = {{
+      Module: getComputedStyle(document.documentElement).getPropertyValue("--module").trim(),
+      Subground: getComputedStyle(document.documentElement).getPropertyValue("--subground").trim(),
+      Topic: getComputedStyle(document.documentElement).getPropertyValue("--topic").trim(),
+      Case: getComputedStyle(document.documentElement).getPropertyValue("--case").trim(),
+      Statute: getComputedStyle(document.documentElement).getPropertyValue("--statute").trim(),
+      AuthorityLineage: getComputedStyle(document.documentElement).getPropertyValue("--lineage").trim(),
+    }};
+    const RADIUS = {{ Module: 22, Subground: 15, Topic: 11, Case: 9, Statute: 8, AuthorityLineage: 8 }};
+
+    const nodeIndex = new Map(NODES.map(n => [n.id, n]));
+    const neighbours = new Map(NODES.map(n => [n.id, new Set()]));
+    EDGES.forEach(e => {{ neighbours.get(e.source)?.add(e.target); neighbours.get(e.target)?.add(e.source); }});
+
+    const container = document.getElementById("graph-container");
+    const svg = d3.select("#svg");
+    const width = () => container.clientWidth;
+    const height = () => container.clientHeight;
+
+    const zoom = d3.zoom().scaleExtent([0.05, 4]).on("zoom", (event) => g.attr("transform", event.transform));
+    svg.call(zoom);
+    const g = svg.append("g");
+
+    const sim = d3.forceSimulation(NODES)
+      .force("link", d3.forceLink(EDGES).id(d => d.id).distance(d => {{
+        const types = [d.source.type || "", d.target.type || ""];
+        if (types.includes("Module")) return 180;
+        if (types.includes("Subground")) return 120;
+        if (types.includes("Topic")) return 80;
+        return 60;
+      }}).strength(0.6))
+      .force("charge", d3.forceManyBody().strength(d => {{
+        if (d.type === "Module") return -800;
+        if (d.type === "Subground") return -400;
+        if (d.type === "Topic") return -200;
+        return -120;
+      }}))
+      .force("center", d3.forceCenter(0, 0))
+      .force("collision", d3.forceCollide().radius(d => (RADIUS[d.type] || 9) + 4));
+
+    const link = g.append("g").selectAll("line")
+      .data(EDGES).join("line")
+      .attr("class", d => `link ${{d.type}}`)
+      .attr("marker-end", null);
+
+    const node = g.append("g").selectAll("g")
+      .data(NODES).join("g")
+      .attr("class", "node")
+      .call(d3.drag()
+        .on("start", (event, d) => {{ if (!event.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; }})
+        .on("drag", (event, d) => {{ d.fx = event.x; d.fy = event.y; }})
+        .on("end", (event, d) => {{ if (!event.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }}))
+      .on("click", (event, d) => selectNode(d.id));
+
+    node.append("circle")
+      .attr("r", d => RADIUS[d.type] || 9)
+      .attr("fill", d => COLOR[d.type] || "#888")
+      .attr("fill-opacity", 0.88);
+
+    node.append("text")
+      .attr("dx", d => (RADIUS[d.type] || 9) + 4)
+      .attr("dy", "0.35em")
+      .text(d => d.label.length > 28 ? d.label.slice(0, 26) + "…" : d.label);
+
+    sim.on("tick", () => {{
+      link.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+      node.attr("transform", d => `translate(${{d.x}},${{d.y}})`);
+    }});
+
+    // Centre view after initial layout
+    sim.on("end", () => {{
+      const bounds = g.node().getBBox();
+      const w = width(), h = height();
+      const scale = Math.min(0.9, 0.9 / Math.max(bounds.width / w, bounds.height / h));
+      svg.call(zoom.transform, d3.zoomIdentity
+        .translate(w / 2 - scale * (bounds.x + bounds.width / 2), h / 2 - scale * (bounds.y + bounds.height / 2))
+        .scale(scale));
+    }});
+
+    const titleEl = document.getElementById("nodeTitle");
+    const typeEl = document.getElementById("nodeType");
+    const summaryEl = document.getElementById("nodeSummary");
+    const neighbourList = document.getElementById("neighbourList");
+
+    function selectNode(id) {{
+      const n = nodeIndex.get(id);
+      if (!n) return;
+      const nbs = [...(neighbours.get(id) || [])].map(nid => nodeIndex.get(nid)).filter(Boolean);
+      titleEl.textContent = n.label;
+      typeEl.textContent = n.type;
+      summaryEl.textContent = n.summary || "No summary available.";
+      neighbourList.innerHTML = "";
+      if (!nbs.length) {{
+        neighbourList.innerHTML = "<li>No neighbours.</li>";
+      }} else {{
+        nbs.sort((a, b) => a.label.localeCompare(b.label)).forEach(nb => {{
+          const li = document.createElement("li");
+          li.textContent = `${{nb.label}} (${{nb.type}})`;
+          li.style.cursor = "pointer";
+          li.addEventListener("click", () => selectNode(nb.id));
+          neighbourList.appendChild(li);
+        }});
+      }}
+      node.classed("faded", d => d.id !== id && !neighbours.get(id)?.has(d.id));
+      node.classed("active", d => d.id === id);
+      link.classed("faded", d => d.source.id !== id && d.target.id !== id);
+    }}
+
+    document.getElementById("search").addEventListener("input", e => {{
+      const q = e.target.value.trim().toLowerCase();
+      if (!q) {{ node.classed("faded", false).classed("active", false); link.classed("faded", false); return; }}
+      const match = NODES.find(n => n.label.toLowerCase().includes(q) || n.summary.toLowerCase().includes(q));
+      if (match) selectNode(match.id);
+    }});
+  </script>
+</body>
+</html>"""
