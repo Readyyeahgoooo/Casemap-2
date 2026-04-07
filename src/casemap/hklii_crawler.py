@@ -11,6 +11,7 @@ import hashlib
 import json
 import re
 import ssl
+import tempfile
 import time
 
 CASE_CITATION_RE = re.compile(r"\[(\d{4})\]\s+([A-Z]{2,8})\s+(\d+)")
@@ -106,13 +107,30 @@ class HKLIICrawler:
     ) -> None:
         self.base_url = "https://www.hklii.hk"
         self.api_url = f"{self.base_url}/api"
-        self.cache_dir = Path(cache_dir).expanduser().resolve()
-        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        self.cache_dir = self._prepare_cache_dir(cache_dir)
         self.timeout_seconds = timeout_seconds
         self.max_workers = max_workers
         self.retry_delay_seconds = retry_delay_seconds
         self.user_agent = user_agent
         self.warnings: list[str] = []
+        self._cache_warning_emitted = False
+
+    def _prepare_cache_dir(self, cache_dir: str | Path) -> Path | None:
+        candidates = [
+            Path(cache_dir).expanduser(),
+            Path(tempfile.gettempdir()) / "casemap_hklii_cache",
+        ]
+        for candidate in candidates:
+            try:
+                resolved = candidate.resolve()
+                resolved.mkdir(parents=True, exist_ok=True)
+                probe = resolved / ".write_probe"
+                probe.write_text("ok", encoding="utf-8")
+                probe.unlink(missing_ok=True)
+                return resolved
+            except OSError:
+                continue
+        return None
 
     def simple_search(self, query: str, limit: int = 10) -> list[HKLIISearchResult]:
         try:
@@ -189,8 +207,8 @@ class HKLIICrawler:
     def _request_json(self, endpoint: str, params: dict[str, str], cache_prefix: str) -> dict:
         query = urllib_parse.urlencode(params)
         cache_key = f"{cache_prefix}_{endpoint}_{_slugify_for_cache(query)}.json"
-        cache_path = self.cache_dir / cache_key
-        if cache_path.exists():
+        cache_path = (self.cache_dir / cache_key) if self.cache_dir is not None else None
+        if cache_path is not None and cache_path.exists():
             return json.loads(cache_path.read_text(encoding="utf-8"))
 
         url = f"{self.api_url}/{endpoint}?{query}"
@@ -209,7 +227,13 @@ class HKLIICrawler:
                 raise
             self.warnings.append(f"SSL verification failed for {url}; retried with an unverified TLS context.")
             data = self._open_json(request, context=ssl._create_unverified_context())
-        cache_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        if cache_path is not None:
+            try:
+                cache_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            except OSError as exc:
+                if not self._cache_warning_emitted:
+                    self.warnings.append(f"HKLII cache write skipped: {exc}")
+                    self._cache_warning_emitted = True
         time.sleep(self.retry_delay_seconds)
         return data
 

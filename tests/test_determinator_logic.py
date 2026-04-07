@@ -9,6 +9,7 @@ from pathlib import Path
 from unittest import mock
 
 from casemap.hybrid_graph import DeterminatorPipeline, HybridGraphStore, KnowledgeGrowthWriter
+from casemap.hklii_crawler import HKLIICrawler
 
 
 def _minimal_bundle() -> dict:
@@ -137,6 +138,21 @@ class DeterminatorLogicTests(unittest.TestCase):
         )
         self.assertIn("atob(", html)
         self.assertNotIn("const hierarchyHtml = \"<html><body><script>", html)
+
+    def test_no_citations_skips_llm_case_fabrication(self) -> None:
+        pipeline = DeterminatorPipeline()
+        store = HybridGraphStore(_minimal_bundle())
+        with mock.patch.dict(os.environ, {"OPENROUTER_API_KEY": "mock"}, clear=False):
+            with mock.patch.object(pipeline, "_llm_query", side_effect=AssertionError("LLM should not run without citations")):
+                result = pipeline.query("What happens if I eat my dog?", store, mode="openrouter")
+        self.assertEqual(result["answer_mode"], "ungrounded_classifier_only")
+        self.assertEqual(result["citations"], [])
+        self.assertIn("no verified supporting citations", result["answer"].lower())
+
+    def test_hklii_crawler_falls_back_when_cache_dir_unwritable(self) -> None:
+        with mock.patch.object(HKLIICrawler, "_prepare_cache_dir", return_value=None):
+            crawler = HKLIICrawler(cache_dir="/definitely/unwritable/path")
+        self.assertIsNone(crawler.cache_dir)
 
 
 if __name__ == "__main__":

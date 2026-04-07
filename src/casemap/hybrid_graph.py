@@ -2192,6 +2192,46 @@ class DeterminatorPipeline:
             "new_knowledge": new_knowledge,
         }
 
+    def _ungrounded_answer(self, question: str, classification: dict) -> str:
+        primary = classification.get("primary_ordinance") or {}
+        alternatives = classification.get("offence_candidates", [])[1:3]
+        lines = [
+            "**Step 0 - Classification**",
+            f"- Question type: Criminal law / procedure",
+            f"- Primary area: {classification.get('area', 'offence_elements').replace('_', ' ')}",
+            "",
+            "**Step 1 - Potential Offence & Ordinance**",
+        ]
+        if primary:
+            strict_note = " Possible strict-liability / regulatory features may apply." if primary.get("strict_liability_possible") else ""
+            lines.append(
+                f"- Most likely ordinance from the current classifier: {primary.get('ordinance', '')} {primary.get('section', '')}.{strict_note}"
+            )
+        else:
+            lines.append("- No reliable ordinance mapping was produced from the current query wording.")
+        if alternatives:
+            lines.append("- Other possible offence families:")
+            for candidate in alternatives:
+                lines.append(f"  - {candidate.get('ordinance', '')} {candidate.get('section', '')}")
+        lines.extend(
+            [
+                "",
+                "**Step 2 - Elements / Application**",
+                "- A fully grounded element-by-element analysis cannot be given yet because no verified local or live HKLII case authority was recovered for this query.",
+                "",
+                "**Step 3 - Defences / Procedure / Sentencing**",
+                "- These steps should be treated cautiously until verified authorities are retrieved. The app is intentionally avoiding invented case citations here.",
+                "",
+                "**Step 4 - Source Status**",
+                "- No verified supporting citations were found from the current graph bundle or the live HKLII fallback.",
+                f"- Query asked: {question.strip()}",
+                "",
+                "**Step 5 - Next Step**",
+                "- Rephrase the query with clearer facts or connect additional verified authorities before relying on a case-specific answer.",
+            ]
+        )
+        return "\n".join(lines)
+
     def query(
         self,
         question: str,
@@ -2237,7 +2277,7 @@ class DeterminatorPipeline:
         model_used = ""
         new_knowledge: list[dict] = []
 
-        if use_llm:
+        if use_llm and local_result.get("citations"):
             try:
                 llm_result = self._llm_query(question, local_result.get("citations", []), mode, model, classification)
                 llm_answer = llm_result["answer"]
@@ -2246,6 +2286,16 @@ class DeterminatorPipeline:
                 new_knowledge = llm_result.get("new_knowledge", [])
             except Exception as exc:
                 local_result.setdefault("warnings", []).append(f"LLM synthesis skipped: {exc}")
+        elif use_llm and not local_result.get("citations"):
+            local_result.setdefault("warnings", []).append(
+                "LLM synthesis was skipped because no verified citations were available for grounding."
+            )
+
+        final_answer = llm_answer or local_result.get("answer", "")
+        final_mode = llm_mode
+        if not local_result.get("citations"):
+            final_answer = self._ungrounded_answer(question, classification)
+            final_mode = "ungrounded_classifier_only"
 
         verifier = KnowledgeGrowthWriter()
         verified_new_knowledge, rejected_new_knowledge = verifier.verify_items(
@@ -2263,8 +2313,8 @@ class DeterminatorPipeline:
             "classification_area": classification["area"],
             "offence_candidates": classification["offence_candidates"],
             "primary_ordinance": classification["primary_ordinance"],
-            "answer": llm_answer or local_result.get("answer", ""),
-            "answer_mode": llm_mode,
+            "answer": final_answer,
+            "answer_mode": final_mode,
             "model_used": model_used,
             "new_knowledge": verified_new_knowledge,
             "rejected_new_knowledge": rejected_new_knowledge,

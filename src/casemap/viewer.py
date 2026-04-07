@@ -5776,6 +5776,12 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
       border: 0;
       background: #0b121a;
     }}
+    .graph-note {{
+      padding: 0 20px 16px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }}
     .hierarchy-shell {{
       width: 100%;
       height: 100%;
@@ -5971,6 +5977,7 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
             <h2 id="canvasTitle">Graph Workspace</h2>
           </div>
         </div>
+        <div class="graph-note">The graph itself is embedded below on this main page. Use it together with the inquiry panel rather than as a separate step.</div>
         <div class="canvas-stage">
           <div id="graphPane" class="canvas-pane">
             <iframe src="/graph" title="Casemap graph workspace"></iframe>
