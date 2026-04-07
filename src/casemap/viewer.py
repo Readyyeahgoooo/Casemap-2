@@ -5594,6 +5594,30 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
     statute_count = meta.get("statute_count", 0)
     hierarchy_payload = json.dumps(base64.b64encode(hierarchy_html.encode("utf-8")).decode("ascii"))
 
+    # Build inline graph data (same logic as render_knowledge_graph)
+    VISIBLE_TYPES = {"Module", "Subground", "Topic", "Case", "Statute", "AuthorityLineage"}
+    graph_nodes = []
+    for n in bundle.get("nodes", []):
+        if n.get("type") not in VISIBLE_TYPES:
+            continue
+        graph_nodes.append({
+            "id": n["id"],
+            "type": n["type"],
+            "label": (n.get("label_en") or n.get("case_name") or n.get("label") or n["id"])[:32],
+            "summary": (n.get("summary_en") or n.get("summary") or "")[:240],
+        })
+    visible_ids = {n["id"] for n in graph_nodes}
+    VISIBLE_EDGE_TYPES = {"CONTAINS", "BELONGS_TO_TOPIC", "CITES", "FOLLOWS", "APPLIES", "DISTINGUISHES", "HAS_MEMBER", "ABOUT_TOPIC"}
+    graph_edges = [
+        {"source": e["source"], "target": e["target"], "type": e["type"]}
+        for e in bundle.get("edges", [])
+        if e.get("type") in VISIBLE_EDGE_TYPES
+        and e["source"] in visible_ids
+        and e["target"] in visible_ids
+    ]
+    nodes_json = json.dumps(graph_nodes, ensure_ascii=False)
+    edges_json = json.dumps(graph_edges, ensure_ascii=False)
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5631,6 +5655,29 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
       display: grid;
       gap: 16px;
     }}
+    .topbar {{
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 14px 22px;
+      flex-wrap: wrap;
+    }}
+    .topbar-left {{ flex: 1; min-width: 0; }}
+    .topbar-left h1 {{ margin: 4px 0 0; font-size: 20px; letter-spacing: -0.02em; line-height: 1.1; }}
+    .topbar-stats {{ display: flex; gap: 16px; }}
+    .topbar-nav {{ display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }}
+    .mode-btn {{
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 120ms, color 120ms;
+    }}
+    .mode-btn.active {{ background: var(--accent); color: #0b121a; border-color: var(--accent); font-weight: 600; }}
     .hero {{
       display: grid;
       grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
@@ -5776,6 +5823,12 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
       border: 0;
       background: #0b121a;
     }}
+    #mainGraph {{
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #0b121a;
+    }}
     .graph-note {{
       padding: 0 20px 16px;
       color: var(--muted);
@@ -5853,7 +5906,7 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
     .card {{
       border: 1px solid var(--line);
       border-radius: 18px;
-      background: var(--panel-2);
+      background: rgba(255, 255, 255, 0.06);
       padding: 14px 16px;
     }}
     .card h3 {{
@@ -5867,7 +5920,17 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
       white-space: pre-wrap;
       font-size: 14px;
       line-height: 1.75;
+      color: #e8edf3;
     }}
+    .answer strong {{ color: #f3f7fb; font-weight: 600; }}
+    .answer em {{ color: #c8d8e8; font-style: italic; }}
+    .answer h4 {{ margin: 12px 0 4px; color: var(--accent); font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; }}
+    .answer table {{ width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }}
+    .answer th {{ background: rgba(255,255,255,0.08); color: var(--accent-2); padding: 6px 10px; text-align: left; border: 1px solid var(--line); }}
+    .answer td {{ padding: 6px 10px; border: 1px solid var(--line); color: #d0dce8; vertical-align: top; }}
+    .answer ul, .answer ol {{ padding-left: 20px; margin: 6px 0; }}
+    .answer li {{ margin: 3px 0; color: #d0dce8; }}
+    .answer hr {{ border: 0; border-top: 1px solid var(--line); margin: 12px 0; }}
     .citations {{
       display: grid;
       gap: 10px;
@@ -5942,45 +6005,32 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
 </head>
 <body>
   <main class="shell">
-    <section class="hero">
-      <div class="panel hero-copy">
-        <div class="eyebrow">{legal_domain} graph rag workspace</div>
+    <header class="topbar panel">
+      <div class="topbar-left">
+        <span class="eyebrow">{legal_domain} · GraphRAG</span>
         <h1>{heading}</h1>
-        <p class="lede">Default mode is the zoomable graph workspace. Backup mode keeps the hierarchy view separate so retrieval stays clear, domain-specific, and easy to inspect before asking the determiner for a grounded answer.</p>
-        <p class="lede">Doctrinal Relationship Map stays visible through the graph workspace, while the backup hierarchy remains a distinct switchable mode rather than an overlapping view.</p>
-        <div class="stats">
-          <div class="stat"><strong>{node_count}</strong><span>Nodes</span></div>
-          <div class="stat"><strong>{edge_count}</strong><span>Edges</span></div>
-          <div class="stat"><strong>{case_count}</strong><span>Cases</span></div>
-          <div class="stat"><strong>{statute_count}</strong><span>Statutes</span></div>
-        </div>
       </div>
-      <aside class="panel hero-side">
-        <div class="label">View Mode</div>
-        <div class="mode-switch" role="tablist" aria-label="View mode switch">
-          <button id="graphModeBtn" class="active" type="button">Graph Default</button>
-          <button id="hierarchyModeBtn" type="button">Hierarchy Backup</button>
-        </div>
-        <p class="helper">The graph stays primary. The hierarchy stays available as a distinct backup mode rather than competing with the node view. Use the force graph for navigation, then ask the determiner below for a structured answer.</p>
-        <div class="actions">
-          <a class="inline-link" href="/graph">Open Full Graph</a>
-          <a class="inline-link" href="/tree">Open Full Hierarchy</a>
-        </div>
-      </aside>
-    </section>
+      <div class="topbar-stats">
+        <div class="stat"><strong>{node_count}</strong><span>Nodes</span></div>
+        <div class="stat"><strong>{case_count}</strong><span>Cases</span></div>
+        <div class="stat"><strong>{statute_count}</strong><span>Statutes</span></div>
+      </div>
+      <div class="topbar-nav">
+        <button id="graphModeBtn" class="mode-btn active" type="button">Knowledge Graph</button>
+        <button id="hierarchyModeBtn" class="mode-btn" type="button">Hierarchy Tree</button>
+        <a class="inline-link" href="/tree">Full Tree</a>
+      </div>
+    </header>
 
     <section class="workspace">
       <section class="panel canvas">
         <div class="canvas-header">
-          <div>
-            <div class="sub">Knowledge Map</div>
-            <h2 id="canvasTitle">Graph Workspace</h2>
-          </div>
+          <div class="sub">Doctrinal Relationship Map</div>
+          <h2 id="canvasTitle">Graph Workspace</h2>
         </div>
-        <div class="graph-note">The graph itself is embedded below on this main page. Use it together with the inquiry panel rather than as a separate step.</div>
         <div class="canvas-stage">
           <div id="graphPane" class="canvas-pane">
-            <iframe src="/graph" title="Casemap graph workspace"></iframe>
+            <svg id="mainGraph"></svg>
           </div>
           <div id="hierarchyPane" class="canvas-pane hidden">
             <div class="hierarchy-shell" id="hierarchyMount"></div>
@@ -6034,7 +6084,96 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
   <script>
+    // ── Inline force-directed graph ──────────────────────────────────────
+    const GNODES = {nodes_json};
+    const GEDGES = {edges_json};
+    const GCOLOR = {{
+      Module:"#4a9eff", Subground:"#7b68ee", Topic:"#ffa500",
+      Case:"#ff6b6b", Statute:"#50c878", AuthorityLineage:"#dda0dd"
+    }};
+    const GRADIUS = {{Module:22,Subground:15,Topic:11,Case:9,Statute:8,AuthorityLineage:8}};
+    const gNeighbours = new Map(GNODES.map(n=>[n.id,new Set()]));
+    GEDGES.forEach(e=>{{gNeighbours.get(e.source)?.add(e.target);gNeighbours.get(e.target)?.add(e.source);}});
+    const gIndex = new Map(GNODES.map(n=>[n.id,n]));
+
+    const gSvg = d3.select("#mainGraph");
+    const gZoom = d3.zoom().scaleExtent([0.04,4]).on("zoom",ev=>gG.attr("transform",ev.transform));
+    gSvg.call(gZoom);
+    const gG = gSvg.append("g");
+
+    // Arrowhead marker
+    gSvg.append("defs").append("marker")
+      .attr("id","arrow").attr("viewBox","0 -4 8 8").attr("refX",14).attr("refY",0)
+      .attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto")
+      .append("path").attr("d","M0,-4L8,0L0,4").attr("fill","rgba(255,255,255,0.25)");
+
+    const gSim = d3.forceSimulation(GNODES)
+      .force("link",d3.forceLink(GEDGES).id(d=>d.id).distance(d=>{{
+        const t=[d.source.type||"",d.target.type||""];
+        if(t.includes("Module"))return 200;if(t.includes("Subground"))return 130;if(t.includes("Topic"))return 90;return 60;
+      }}).strength(0.5))
+      .force("charge",d3.forceManyBody().strength(d=>{{
+        if(d.type==="Module")return -900;if(d.type==="Subground")return -450;if(d.type==="Topic")return -220;return -130;
+      }}))
+      .force("center",d3.forceCenter(0,0))
+      .force("collision",d3.forceCollide().radius(d=>(GRADIUS[d.type]||9)+5));
+
+    const gLink = gG.append("g").selectAll("line").data(GEDGES).join("line")
+      .attr("stroke","rgba(255,255,255,0.12)").attr("stroke-width",1)
+      .attr("marker-end","url(#arrow)");
+
+    const gNode = gG.append("g").selectAll("g").data(GNODES).join("g")
+      .attr("cursor","pointer")
+      .call(d3.drag()
+        .on("start",(ev,d)=>{{if(!ev.active)gSim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;}})
+        .on("drag",(ev,d)=>{{d.fx=ev.x;d.fy=ev.y;}})
+        .on("end",(ev,d)=>{{if(!ev.active)gSim.alphaTarget(0);d.fx=null;d.fy=null;}}))
+      .on("click",(ev,d)=>{{
+        // Pre-fill question textarea with node label
+        const q=document.getElementById("question");
+        if(q)q.value=d.label+(d.type==="Topic"?" — what are the key legal principles and cases?":"");
+        gNode.attr("opacity",n=>n.id===d.id||gNeighbours.get(d.id)?.has(n.id)?1:0.15);
+        gLink.attr("opacity",e=>e.source.id===d.id||e.target.id===d.id?1:0.08);
+      }});
+
+    gNode.append("circle")
+      .attr("r",d=>GRADIUS[d.type]||9)
+      .attr("fill",d=>GCOLOR[d.type]||"#888")
+      .attr("fill-opacity",0.85)
+      .attr("stroke","rgba(255,255,255,0.7)").attr("stroke-width",1.2);
+
+    gNode.append("text")
+      .attr("dx",d=>(GRADIUS[d.type]||9)+4).attr("dy","0.35em")
+      .attr("fill","#e8edf3").attr("font-size","9.5px")
+      .attr("font-family","'SFMono-Regular',monospace")
+      .text(d=>d.label.length>26?d.label.slice(0,24)+"…":d.label);
+
+    gSim.on("tick",()=>{{
+      gLink.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
+           .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
+      gNode.attr("transform",d=>`translate(${{d.x}},${{d.y}})`);
+    }});
+
+    gSim.on("end",()=>{{
+      try{{
+        const b=gG.node().getBBox();
+        const w=gSvg.node().clientWidth||900,h=gSvg.node().clientHeight||700;
+        const s=Math.min(0.85,0.85/Math.max(b.width/w,b.height/h,0.01));
+        gSvg.call(gZoom.transform,d3.zoomIdentity
+          .translate(w/2-s*(b.x+b.width/2),h/2-s*(b.y+b.height/2)).scale(s));
+      }}catch(e){{}}
+    }});
+
+    // Click canvas background to reset opacity
+    gSvg.on("click",ev=>{{
+      if(ev.target===gSvg.node()||ev.target===gG.node()){{
+        gNode.attr("opacity",1);gLink.attr("opacity",1);
+      }}
+    }});
+    // ── End inline graph ─────────────────────────────────────────────────
+
     const hierarchyHtml = new TextDecoder().decode(
       Uint8Array.from(atob({hierarchy_payload}), (char) => char.charCodeAt(0))
     );
@@ -6067,6 +6206,33 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
 
     graphModeBtn.addEventListener("click", () => switchMode("graph"));
     hierarchyModeBtn.addEventListener("click", () => switchMode("hierarchy"));
+
+    function markdownToHtml(text) {{
+      // Minimal markdown renderer: bold, italic, headers, tables, lists, hr
+      let html = text
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        // Tables: | col | col |
+        .replace(/^\\|(.+)\\|\\s*$/gm, (_, row) => `<tr>${{row.split("|").map(c => `<td>${{c.trim()}}</td>`).join("")}}</tr>`)
+        .replace(/(<tr>.*<\\/tr>\\n?)+/gs, match => `<table>${{match}}</table>`)
+        // Headers
+        .replace(/^#{1,3}\\s+(.+)$/gm, (_, t) => `<h4>${{t}}</h4>`)
+        // Bold
+        .replace(/\\*\\*(.+?)\\*\\*/g, "<strong>$1</strong>")
+        // Italic
+        .replace(/\\*(.+?)\\*/g, "<em>$1</em>")
+        // HR
+        .replace(/^---+$/gm, "<hr>")
+        // Unordered list items
+        .replace(/^[\\-\\*]\\s+(.+)$/gm, "<li>$1</li>")
+        .replace(/(<li>.*<\\/li>\\n?)+/gs, match => `<ul>${{match}}</ul>`)
+        // Numbered list items
+        .replace(/^\\d+\\.\\s+(.+)$/gm, "<li>$1</li>")
+        // Paragraphs: double newline
+        .replace(/\\n{{2,}}/g, "</p><p>")
+        // Single newlines
+        .replace(/\\n/g, "<br>");
+      return `<p>${{html}}</p>`;
+    }}
 
     function setBusy(isBusy, message) {{
       document.getElementById("runBtn").disabled = isBusy;
@@ -6106,7 +6272,7 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
         if (!response.ok) {{
           throw new Error(data.error || "Determinator request failed.");
         }}
-        answerEl.textContent = data.answer || "No answer returned.";
+        answerEl.innerHTML = markdownToHtml(data.answer || "No answer returned.");
         metaEl.textContent = [
           data.answer_mode ? `Mode: ${{data.answer_mode}}` : "",
           data.model_used ? `Model: ${{data.model_used}}` : "",
