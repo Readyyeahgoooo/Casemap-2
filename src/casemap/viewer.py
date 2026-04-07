@@ -5831,23 +5831,6 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
       display: block;
       background: #0b121a;
     }}
-    .graph-fallback {{
-      width: 100%;
-      height: 100%;
-      display: grid;
-      place-items: center;
-      padding: 18px;
-      color: #d8e4ef;
-      background: #0b121a;
-      text-align: center;
-      gap: 12px;
-    }}
-    .graph-fallback p {{
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-      max-width: 48ch;
-    }}
     .graph-note {{
       padding: 0 20px 16px;
       color: var(--muted);
@@ -6126,140 +6109,82 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
     const GRADIUS = {{Module:22,Subground:15,Topic:11,Case:9,Statute:8,AuthorityLineage:8}};
     const gNeighbours = new Map(GNODES.map(n=>[n.id,new Set()]));
     GEDGES.forEach(e=>{{gNeighbours.get(e.source)?.add(e.target);gNeighbours.get(e.target)?.add(e.source);}});
-    function renderGraphFallback(message) {{
-      const graphPaneEl = document.getElementById("graphPane");
-      graphPaneEl.innerHTML = `
-        <div class="graph-fallback">
-          <div>
-            <strong>Inline graph did not finish loading.</strong>
-            <p>${{message || "Falling back to the dedicated graph viewer so the node map still stays accessible."}}</p>
-          </div>
-          <iframe src="/graph" title="Casemap graph workspace"></iframe>
-        </div>
-      `;
-    }}
+    const gIndex = new Map(GNODES.map(n=>[n.id,n]));
 
-    try {{
-      if (!window.d3 || !GNODES.length) {{
-        renderGraphFallback("The browser could not initialise the inline renderer.");
-      }} else {{
-        const gSvg = d3.select("#mainGraph");
-        const gSvgEl = gSvg.node();
-        const gG = gSvg.append("g");
-        const gZoom = d3.zoom().scaleExtent([0.04,4]).on("zoom",ev=>gG.attr("transform",ev.transform));
-        gSvg.call(gZoom);
+    const gSvg = d3.select("#mainGraph");
+    const gZoom = d3.zoom().scaleExtent([0.04,4]).on("zoom",ev=>gG.attr("transform",ev.transform));
+    gSvg.call(gZoom);
+    const gG = gSvg.append("g");
 
-        function viewport() {{
-          const rect = gSvgEl.getBoundingClientRect();
-          return {{
-            w: Math.max(640, rect.width || 0),
-            h: Math.max(420, rect.height || 0),
-          }};
-        }}
+    // Arrowhead marker
+    gSvg.append("defs").append("marker")
+      .attr("id","arrow").attr("viewBox","0 -4 8 8").attr("refX",14).attr("refY",0)
+      .attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto")
+      .append("path").attr("d","M0,-4L8,0L0,4").attr("fill","rgba(255,255,255,0.25)");
 
-        function fitGraph() {{
-          try {{
-            const bbox = gG.node().getBBox();
-            const {{ w, h }} = viewport();
-            const widthRatio = bbox.width / Math.max(w, 1);
-            const heightRatio = bbox.height / Math.max(h, 1);
-            const scale = Math.min(0.9, 0.9 / Math.max(widthRatio, heightRatio, 0.01));
-            const tx = w / 2 - scale * (bbox.x + bbox.width / 2);
-            const ty = h / 2 - scale * (bbox.y + bbox.height / 2);
-            gSvg.transition().duration(250).call(gZoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
-          }} catch (error) {{
-            console.warn("graph-fit-failed", error);
-          }}
-        }}
+    const gSim = d3.forceSimulation(GNODES)
+      .force("link",d3.forceLink(GEDGES).id(d=>d.id).distance(d=>{{
+        const t=[d.source.type||"",d.target.type||""];
+        if(t.includes("Module"))return 200;if(t.includes("Subground"))return 130;if(t.includes("Topic"))return 90;return 60;
+      }}).strength(0.5))
+      .force("charge",d3.forceManyBody().strength(d=>{{
+        if(d.type==="Module")return -900;if(d.type==="Subground")return -450;if(d.type==="Topic")return -220;return -130;
+      }}))
+      .force("center",d3.forceCenter(0,0))
+      .force("collision",d3.forceCollide().radius(d=>(GRADIUS[d.type]||9)+5));
 
-        const {{ w, h }} = viewport();
-        gSvg.attr("viewBox", `0 0 ${{w}} ${{h}}`);
-        GNODES.forEach((node, index) => {{
-          const angle = (Math.PI * 2 * index) / Math.max(GNODES.length, 1);
-          const radius = Math.min(w, h) * 0.24 + (index % 11) * 6;
-          node.x = w / 2 + Math.cos(angle) * radius;
-          node.y = h / 2 + Math.sin(angle) * radius;
-        }});
+    const gLink = gG.append("g").selectAll("line").data(GEDGES).join("line")
+      .attr("stroke","rgba(255,255,255,0.12)").attr("stroke-width",1)
+      .attr("marker-end","url(#arrow)");
 
-        // Arrowhead marker
-        gSvg.append("defs").append("marker")
-          .attr("id","arrow").attr("viewBox","0 -4 8 8").attr("refX",14).attr("refY",0)
-          .attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto")
-          .append("path").attr("d","M0,-4L8,0L0,4").attr("fill","rgba(255,255,255,0.25)");
+    const gNode = gG.append("g").selectAll("g").data(GNODES).join("g")
+      .attr("cursor","pointer")
+      .call(d3.drag()
+        .on("start",(ev,d)=>{{if(!ev.active)gSim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;}})
+        .on("drag",(ev,d)=>{{d.fx=ev.x;d.fy=ev.y;}})
+        .on("end",(ev,d)=>{{if(!ev.active)gSim.alphaTarget(0);d.fx=null;d.fy=null;}}))
+      .on("click",(ev,d)=>{{
+        // Pre-fill question textarea with node label
+        const q=document.getElementById("question");
+        if(q)q.value=d.label+(d.type==="Topic"?" — what are the key legal principles and cases?":"");
+        gNode.attr("opacity",n=>n.id===d.id||gNeighbours.get(d.id)?.has(n.id)?1:0.15);
+        gLink.attr("opacity",e=>e.source.id===d.id||e.target.id===d.id?1:0.08);
+      }});
 
-        const gSim = d3.forceSimulation(GNODES)
-          .force("link",d3.forceLink(GEDGES).id(d=>d.id).distance(d=>{{
-            const t=[d.source.type||"",d.target.type||""];
-            if(t.includes("Module"))return 220;if(t.includes("Subground"))return 150;if(t.includes("Topic"))return 104;return 72;
-          }}).strength(0.5))
-          .force("charge",d3.forceManyBody().strength(d=>{{
-            if(d.type==="Module")return -960;if(d.type==="Subground")return -520;if(d.type==="Topic")return -260;return -150;
-          }}))
-          .force("center",d3.forceCenter(w/2,h/2))
-          .force("collision",d3.forceCollide().radius(d=>(GRADIUS[d.type]||9)+8));
+    gNode.append("circle")
+      .attr("r",d=>GRADIUS[d.type]||9)
+      .attr("fill",d=>GCOLOR[d.type]||"#888")
+      .attr("fill-opacity",0.85)
+      .attr("stroke","rgba(255,255,255,0.7)").attr("stroke-width",1.2);
 
-        const gLink = gG.append("g").selectAll("line").data(GEDGES).join("line")
-          .attr("stroke","rgba(255,255,255,0.12)").attr("stroke-width",1)
-          .attr("marker-end","url(#arrow)");
+    gNode.append("text")
+      .attr("dx",d=>(GRADIUS[d.type]||9)+4).attr("dy","0.35em")
+      .attr("fill","#e8edf3").attr("font-size","9.5px")
+      .attr("font-family","'SFMono-Regular',monospace")
+      .text(d=>d.label.length>26?d.label.slice(0,24)+"…":d.label);
 
-        const gNode = gG.append("g").selectAll("g").data(GNODES).join("g")
-          .attr("cursor","pointer")
-          .call(d3.drag()
-            .on("start",(ev,d)=>{{if(!ev.active)gSim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;}})
-            .on("drag",(ev,d)=>{{d.fx=ev.x;d.fy=ev.y;}})
-            .on("end",(ev,d)=>{{if(!ev.active)gSim.alphaTarget(0);d.fx=null;d.fy=null;}}))
-          .on("click",(ev,d)=>{{
-            const q=document.getElementById("question");
-            if(q)q.value=d.label+(d.type==="Topic"?" — what are the key legal principles and cases?":"");
-            gNode.attr("opacity",n=>n.id===d.id||gNeighbours.get(d.id)?.has(n.id)?1:0.15);
-            gLink.attr("opacity",e=>e.source.id===d.id||e.target.id===d.id?1:0.08);
-          }});
+    gSim.on("tick",()=>{{
+      gLink.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
+           .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
+      gNode.attr("transform",d=>`translate(${{d.x}},${{d.y}})`);
+    }});
 
-        gNode.append("circle")
-          .attr("r",d=>GRADIUS[d.type]||9)
-          .attr("fill",d=>GCOLOR[d.type]||"#888")
-          .attr("fill-opacity",0.88)
-          .attr("stroke","rgba(255,255,255,0.72)").attr("stroke-width",1.2);
+    gSim.on("end",()=>{{
+      try{{
+        const b=gG.node().getBBox();
+        const w=gSvg.node().clientWidth||900,h=gSvg.node().clientHeight||700;
+        const s=Math.min(0.85,0.85/Math.max(b.width/w,b.height/h,0.01));
+        gSvg.call(gZoom.transform,d3.zoomIdentity
+          .translate(w/2-s*(b.x+b.width/2),h/2-s*(b.y+b.height/2)).scale(s));
+      }}catch(e){{}}
+    }});
 
-        gNode.append("text")
-          .attr("dx",d=>(GRADIUS[d.type]||9)+4).attr("dy","0.35em")
-          .attr("fill","#e8edf3").attr("font-size","9.5px")
-          .attr("font-family","'SFMono-Regular',monospace")
-          .text(d=>d.label.length>26?d.label.slice(0,24)+"…":d.label);
-
-        let fitted = false;
-        gSim.on("tick",()=>{{
-          gLink.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
-               .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
-          gNode.attr("transform",d=>`translate(${{d.x}},${{d.y}})`);
-          if (!fitted && gSim.alpha() < 0.28) {{
-            fitted = true;
-            fitGraph();
-          }}
-        }});
-
-        gSim.on("end", fitGraph);
-        window.addEventListener("resize", () => {{
-          const next = viewport();
-          gSvg.attr("viewBox", `0 0 ${{next.w}} ${{next.h}}`);
-          gSim.force("center", d3.forceCenter(next.w/2, next.h/2));
-          fitGraph();
-        }});
-
-        setTimeout(() => {{
-          if (!fitted) fitGraph();
-        }}, 700);
-
-        gSvg.on("click",ev=>{{
-          if(ev.target===gSvg.node()||ev.target===gG.node()){{
-            gNode.attr("opacity",1);gLink.attr("opacity",1);
-          }}
-        }});
+    // Click canvas background to reset opacity
+    gSvg.on("click",ev=>{{
+      if(ev.target===gSvg.node()||ev.target===gG.node()){{
+        gNode.attr("opacity",1);gLink.attr("opacity",1);
       }}
-    }} catch (error) {{
-      console.error("inline-graph-init-failed", error);
-      renderGraphFallback("The inline graph renderer failed in this browser session.");
-    }}
+    }});
     // ── End inline graph ─────────────────────────────────────────────────
 
     const hierarchyHtml = new TextDecoder().decode(
