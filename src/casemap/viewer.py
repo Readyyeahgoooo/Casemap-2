@@ -5637,6 +5637,7 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
       --danger: #d36b6b;
       --shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
     }}
+    html {{ scroll-behavior: smooth; }}
     * {{ box-sizing: border-box; }}
     .hidden {{ display: none !important; }}
     body {{
@@ -5757,10 +5758,10 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
     }}
     .mode-switch button,
     .inline-link {{
-      border: 0;
+      border: 1px solid var(--line);
       border-radius: 999px;
       padding: 10px 14px;
-      background: transparent;
+      background: rgba(255, 255, 255, 0.04);
       color: var(--ink);
       cursor: pointer;
       font-size: 13px;
@@ -5786,6 +5787,7 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
       overflow: hidden;
       min-height: 780px;
     }}
+    .section-anchor {{ scroll-margin-top: 18px; }}
     .canvas-header {{
       padding: 18px 20px 0;
       display: flex;
@@ -5846,6 +5848,7 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
       padding: 20px;
       display: grid;
       gap: 14px;
+      align-content: start;
     }}
     .search-panel h2 {{
       margin: 0;
@@ -5906,7 +5909,7 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
     .card {{
       border: 1px solid var(--line);
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(19, 28, 40, 0.98);
       padding: 14px 16px;
     }}
     .card h3 {{
@@ -5922,14 +5925,22 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
       line-height: 1.75;
       color: #e8edf3;
     }}
-    .answer strong {{ color: #f3f7fb; font-weight: 600; }}
-    .answer em {{ color: #c8d8e8; font-style: italic; }}
-    .answer h4 {{ margin: 12px 0 4px; color: var(--accent); font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; }}
+    .answer,
+    .answer p,
+    .answer div,
+    .answer span,
+    .answer li,
+    .answer td {{
+      color: #e8edf3 !important;
+    }}
+    .answer strong {{ color: #f3f7fb !important; font-weight: 600; }}
+    .answer em {{ color: #c8d8e8 !important; font-style: italic; }}
+    .answer h4 {{ margin: 12px 0 4px; color: var(--accent) !important; font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; }}
     .answer table {{ width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }}
-    .answer th {{ background: rgba(255,255,255,0.08); color: var(--accent-2); padding: 6px 10px; text-align: left; border: 1px solid var(--line); }}
-    .answer td {{ padding: 6px 10px; border: 1px solid var(--line); color: #d0dce8; vertical-align: top; }}
+    .answer th {{ background: rgba(255,255,255,0.08); color: var(--accent-2) !important; padding: 6px 10px; text-align: left; border: 1px solid var(--line); }}
+    .answer td {{ padding: 6px 10px; border: 1px solid var(--line); vertical-align: top; }}
     .answer ul, .answer ol {{ padding-left: 20px; margin: 6px 0; }}
-    .answer li {{ margin: 3px 0; color: #d0dce8; }}
+    .answer li {{ margin: 3px 0; }}
     .answer hr {{ border: 0; border-top: 1px solid var(--line); margin: 12px 0; }}
     .citations {{
       display: grid;
@@ -5998,7 +6009,7 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
       }}
       .canvas-stage {{
         padding: 10px;
-        height: 500px;
+        height: 420px;
       }}
     }}
   </style>
@@ -6016,6 +6027,8 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
         <div class="stat"><strong>{statute_count}</strong><span>Statutes</span></div>
       </div>
       <div class="topbar-nav">
+        <a class="inline-link" href="#graphSection">Jump to Graph</a>
+        <a class="inline-link" href="#inquirySection">Jump to Inquiry</a>
         <button id="graphModeBtn" class="mode-btn active" type="button">Knowledge Graph</button>
         <button id="hierarchyModeBtn" class="mode-btn" type="button">Hierarchy Tree</button>
         <a class="inline-link" href="/tree">Full Tree</a>
@@ -6023,7 +6036,7 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
     </header>
 
     <section class="workspace">
-      <section class="panel canvas">
+      <section id="graphSection" class="panel canvas section-anchor">
         <div class="canvas-header">
           <div class="sub">Doctrinal Relationship Map</div>
           <h2 id="canvasTitle">Graph Workspace</h2>
@@ -6038,7 +6051,7 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
         </div>
       </section>
 
-      <aside class="panel search-panel">
+      <aside id="inquirySection" class="panel search-panel section-anchor">
         <div class="label">Determinator</div>
         <h2>Structured Criminal RAG</h2>
         <p class="helper">This panel queries the existing graph and embeddings first, then uses the determiner pipeline to synthesize a tighter answer. When available, fallback LLM synthesis stays grounded against the local citations.</p>
