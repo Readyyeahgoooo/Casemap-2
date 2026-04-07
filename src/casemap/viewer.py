@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import json
 
 
@@ -5591,7 +5592,7 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
     edge_count = meta.get("edge_count", 0)
     case_count = meta.get("case_count", 0)
     statute_count = meta.get("statute_count", 0)
-    hierarchy_payload = json.dumps(hierarchy_html, ensure_ascii=False)
+    hierarchy_payload = json.dumps(base64.b64encode(hierarchy_html.encode("utf-8")).decode("ascii"))
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -6027,7 +6028,9 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
   </main>
 
   <script>
-    const hierarchyHtml = {hierarchy_payload};
+    const hierarchyHtml = new TextDecoder().decode(
+      Uint8Array.from(atob({hierarchy_payload}), (char) => char.charCodeAt(0))
+    );
     const hierarchyMount = document.getElementById("hierarchyMount");
     hierarchyMount.innerHTML = hierarchyHtml;
 

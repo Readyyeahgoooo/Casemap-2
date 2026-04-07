@@ -128,6 +128,16 @@ class DeterminatorLogicTests(unittest.TestCase):
         self.assertEqual(len(added), 1)
         sync_mock.assert_called_once()
 
+    def test_determinator_page_safely_embeds_hierarchy_html(self) -> None:
+        from casemap.viewer import render_determinator_page
+
+        html = render_determinator_page(
+            _minimal_bundle(),
+            "<html><body><script>window.bad = true;</script><div>Hierarchy</div></body></html>",
+        )
+        self.assertIn("atob(", html)
+        self.assertNotIn("const hierarchyHtml = \"<html><body><script>", html)
+
 
 if __name__ == "__main__":
     unittest.main()
