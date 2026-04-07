@@ -8,10 +8,12 @@ import math
 import os
 import re
 from urllib import error as urllib_error
+from urllib import parse as urllib_parse
 from urllib import request as urllib_request
 
 from .case_enrichment_data import CURATED_CASE_ENRICHMENTS
 from .criminal_enrichment_data import CURATED_CRIMINAL_CASE_ENRICHMENTS
+from .embeddings import create_embedding_backend
 from .graphrag import normalize_scores, slugify, tokenize
 from .hklii_crawler import HKLIICrawler
 from .relationship_graph import export_public_relationship_payload
@@ -1886,3 +1888,581 @@ class HybridGraphStore:
             },
             "legal_domain": legal_domain,
         }
+
+
+# ---------------------------------------------------------------------------
+# Determinator Pipeline
+# ---------------------------------------------------------------------------
+
+DEEPSEEK_API_ENDPOINT = "https://api.deepseek.com/v1/chat/completions"
+DEEPSEEK_DEFAULT_MODEL = "deepseek-chat"
+
+DETERMINATOR_SYSTEM_PROMPT = """You are an HK criminal law assistant. Apply this 8-step framework strictly:
+
+Step 0 – Classify: Is this a criminal law / procedure question? If yes, which area: offence elements | defences | sentencing | pre-trial procedure | trial rights | post-conviction.
+
+Step 1 – Offence & Ordinance: Map the described conduct to the correct HK ordinance and section. Examples: violence → Cap. 212; theft → Cap. 210; drugs → Cap. 134; animal cruelty → Cap. 169; tax evasion → Cap. 112 s.82. If unclear, list top 2-3 possible offences and ask for clarification.
+
+Step 2 – Elements: State actus reus and mens rea for the identified offence. Note: some offences are strict liability (no mens rea required). Check each element against the user's stated facts — note which are present, missing, or ambiguous.
+
+Step 3 – Defences: List only defences legally available for this specific offence in HK (e.g. duress, self-defence, intoxication if negates MR, mental disorder under CPO s.75, lawful authority). For each applicable defence, cite 1-2 relevant HK cases.
+
+Step 4 – Procedure & Rights: Identify relevant procedural issues: police powers (Cap. 232 ss.50-59), right to silence, confession admissibility (voir dire under Cap. 221 s.65), bail (Cap. 221 s.9G), legal representation (Legal Aid Ordinance Cap. 227).
+
+Step 5 – Sentencing: State maximum penalty from the ordinance. Apply HK sentencing principles. List applicable aggravating factors (planning, abuse of trust, vulnerable victim, repeat offending) and mitigating factors (remorse, guilty plea, no record, restitution).
+
+Step 6 – Practical Guidance: Tailor advice: (a) if facing investigation — remain silent, seek lawyer, do not consent to searches without warrant; (b) if charged — duty lawyer, Legal Aid, plea options; (c) if third party/student — general legal education only.
+
+Step 7 – Sources: For each case cited, provide: case name + neutral citation + 1-2 sentence ratio summary + how it applies to the facts + HKLII URL if known. No verbatim quotes longer than 2 sentences.
+
+If you identify a new HK case or principle not in the existing knowledge base, return it in a JSON field "new_knowledge" as an array: [{"type": "Case", "label": "...", "neutral_citation": "...", "ratio": "...", "ordinance": "Cap. XXX", "hklii_url": "https://..."}]
+
+IMPORTANT: Do not return irrelevant cases. Only cite cases directly applicable to the identified offence and the user's facts."""
+
+NON_CRIMINAL_INDICATORS = {
+    "contract", "tort", "negligence", "landlord", "tenant", "divorce",
+    "employment", "company", "shareholder", "copyright", "trademark",
+    "defamation", "nuisance", "trespass", "conveyancing", "probate",
+    "bankruptcy", "winding", "arbitration", "mediation",
+}
+
+OFFENCE_ORDINANCE_RULES = [
+    {
+        "offence_family": "animal_cruelty",
+        "ordinance": "Prevention of Cruelty to Animals Ordinance (Cap. 169)",
+        "section": "s.3",
+        "keywords": {"animal", "dog", "cat", "pet", "cruelty", "torture", "neglect", "abandon"},
+        "phrases": {"animal cruelty", "cruelty to animals", "stab dog", "stab my dog"},
+        "strict_liability_possible": False,
+    },
+    {
+        "offence_family": "tax_evasion",
+        "ordinance": "Inland Revenue Ordinance (Cap. 112)",
+        "section": "s.82(1)",
+        "keywords": {"tax", "ird", "income", "return", "evasion", "evade"},
+        "phrases": {"not pay tax", "tax evasion", "omit from return"},
+        "strict_liability_possible": False,
+    },
+    {
+        "offence_family": "theft",
+        "ordinance": "Theft Ordinance (Cap. 210)",
+        "section": "s.9",
+        "keywords": {"steal", "stole", "theft", "dishonestly", "property", "shoplift"},
+        "phrases": {"take property", "shop theft"},
+        "strict_liability_possible": False,
+    },
+    {
+        "offence_family": "fraud",
+        "ordinance": "Theft Ordinance (Cap. 210)",
+        "section": "s.16A",
+        "keywords": {"fraud", "deceit", "deception", "scam", "obtain"},
+        "phrases": {"deception offence", "obtain by deception"},
+        "strict_liability_possible": False,
+    },
+    {
+        "offence_family": "assault_violence",
+        "ordinance": "Offences against the Person Ordinance (Cap. 212)",
+        "section": "general offences under Cap. 212",
+        "keywords": {"assault", "wound", "wounding", "violence", "stab", "injure", "harm"},
+        "phrases": {"inflict grievous bodily harm", "cause bodily harm"},
+        "strict_liability_possible": False,
+    },
+    {
+        "offence_family": "homicide",
+        "ordinance": "Offences against the Person Ordinance (Cap. 212)",
+        "section": "homicide offences",
+        "keywords": {"murder", "manslaughter", "kill", "killed", "death", "homicide"},
+        "phrases": {"cause death", "unlawful killing"},
+        "strict_liability_possible": False,
+    },
+    {
+        "offence_family": "dangerous_drugs",
+        "ordinance": "Dangerous Drugs Ordinance (Cap. 134)",
+        "section": "drug trafficking and possession offences",
+        "keywords": {"drug", "drugs", "cocaine", "heroin", "ketamine", "meth", "trafficking", "possess"},
+        "phrases": {"dangerous drugs", "drug trafficking"},
+        "strict_liability_possible": False,
+    },
+    {
+        "offence_family": "road_traffic",
+        "ordinance": "Road Traffic Ordinance (Cap. 374)",
+        "section": "road traffic offences",
+        "keywords": {"drive", "driving", "vehicle", "car", "drink", "speed", "traffic"},
+        "phrases": {"dangerous driving", "drink driving"},
+        "strict_liability_possible": True,
+    },
+    {
+        "offence_family": "public_order",
+        "ordinance": "Public Order Ordinance (Cap. 245)",
+        "section": "public order offences",
+        "keywords": {"riot", "assembly", "unlawful", "public", "disorder"},
+        "phrases": {"unlawful assembly", "public order"},
+        "strict_liability_possible": False,
+    },
+    {
+        "offence_family": "bribery",
+        "ordinance": "Prevention of Bribery Ordinance (Cap. 201)",
+        "section": "corruption offences",
+        "keywords": {"bribe", "bribery", "corrupt", "advantage", "icac"},
+        "phrases": {"prevention of bribery", "accept advantage"},
+        "strict_liability_possible": False,
+    },
+    {
+        "offence_family": "money_laundering",
+        "ordinance": "Organized and Serious Crimes Ordinance (Cap. 455)",
+        "section": "money laundering offences",
+        "keywords": {"launder", "laundering", "proceeds", "indictable", "property"},
+        "phrases": {"money laundering", "proceeds of crime"},
+        "strict_liability_possible": False,
+    },
+    {
+        "offence_family": "sexual_offences",
+        "ordinance": "Crimes Ordinance (Cap. 200)",
+        "section": "sexual offences",
+        "keywords": {"rape", "sexual", "indecent", "assault", "intercourse", "minor"},
+        "phrases": {"sexual assault", "indecent assault"},
+        "strict_liability_possible": False,
+    },
+]
+NEUTRAL_CITATION_RE = re.compile(r"\[\d{4}\]\s+[A-Z]{2,8}\s+\d+")
+
+
+class DeterminatorPipeline:
+    """8-step structured RAG pipeline for HK criminal law queries."""
+
+    def _map_offence_candidates(self, question: str) -> list[dict]:
+        tokens = set(tokenize(question))
+        joined = " ".join(tokenize(question))
+        candidates: list[dict] = []
+        for rule in OFFENCE_ORDINANCE_RULES:
+            token_hits = sorted(rule["keywords"] & tokens)
+            phrase_hits = sorted([phrase for phrase in rule.get("phrases", set()) if phrase in joined])
+            score = len(token_hits) + (2 * len(phrase_hits))
+            if score <= 0:
+                continue
+            candidates.append(
+                {
+                    "offence_family": rule["offence_family"],
+                    "ordinance": rule["ordinance"],
+                    "section": rule["section"],
+                    "strict_liability_possible": rule["strict_liability_possible"],
+                    "match_score": score,
+                    "keyword_hits": token_hits,
+                    "phrase_hits": phrase_hits,
+                }
+            )
+        candidates.sort(key=lambda item: (item["match_score"], len(item["keyword_hits"]), len(item["phrase_hits"])), reverse=True)
+        return candidates[:3]
+
+    def _classify(self, question: str) -> dict:
+        tokens = set(tokenize(question))
+        non_criminal_hits = tokens & NON_CRIMINAL_INDICATORS
+        criminal_hits = tokens & set(CRIMINAL_QUERY_HINTS.keys())
+        criminal_keywords = {
+            "crime", "criminal", "offence", "offense", "guilty", "innocent",
+            "arrest", "charge", "prosecution", "defendant", "accused", "police",
+            "court", "magistrate", "sentence", "imprisonment", "fine", "bail",
+            "murder", "theft", "assault", "drug", "fraud", "bribery",
+        }
+        criminal_hits |= tokens & criminal_keywords
+
+        is_criminal = bool(criminal_hits) or (not non_criminal_hits and len(tokens) > 2)
+
+        area = "offence_elements"
+        if any(t in tokens for t in {"sentence", "sentencing", "penalty", "imprisonment", "tariff"}):
+            area = "sentencing"
+        elif any(t in tokens for t in {"defence", "defense", "duress", "self", "insanity", "intoxication"}):
+            area = "defences"
+        elif any(t in tokens for t in {"arrest", "bail", "confession", "police", "warrant", "right", "silence"}):
+            area = "procedure"
+
+        offence_candidates = self._map_offence_candidates(question)
+        return {
+            "is_criminal": is_criminal,
+            "area": area,
+            "criminal_hits": sorted(criminal_hits),
+            "offence_candidates": offence_candidates,
+            "primary_ordinance": offence_candidates[0] if offence_candidates else None,
+        }
+
+    def _llm_query(self, question: str, citations: list[dict], mode: str, model: str, classification: dict) -> dict:
+        evidence_lines = []
+        for citation in citations[:6]:
+            evidence_lines.append(
+                f"[{citation.get('citation_id', 'C?')}] {citation.get('case_name', '')} "
+                f"{citation.get('neutral_citation', '')}\n"
+                f"Paragraph: {citation.get('paragraph_span', 'n/a')}\n"
+                f"Summary: {citation.get('quote', '')[:300]}"
+            )
+
+        ordinance_context = classification.get("primary_ordinance") or {}
+        offence_lines = []
+        for candidate in classification.get("offence_candidates", []):
+            offence_lines.append(
+                f"- {candidate['offence_family']}: {candidate['ordinance']} {candidate['section']} "
+                f"(hits: {', '.join(candidate.get('keyword_hits', []))})"
+            )
+
+        messages = [
+            {"role": "system", "content": DETERMINATOR_SYSTEM_PROMPT},
+            {
+                "role": "user",
+                "content": (
+                    f"Question:\n{question.strip()}\n\n"
+                    + (
+                        "Determined offence / ordinance candidates:\n"
+                        + "\n".join(offence_lines)
+                        + "\n\n"
+                        if offence_lines
+                        else ""
+                    )
+                    + (
+                        f"Primary ordinance candidate: {ordinance_context.get('ordinance', '')} {ordinance_context.get('section', '')}\n\n"
+                        if ordinance_context
+                        else ""
+                    )
+                    + (
+                        "Local knowledge base evidence:\n" + "\n\n".join(evidence_lines)
+                        if evidence_lines
+                        else "No local evidence found — please use your knowledge of HK criminal law."
+                    )
+                    + "\n\nProvide a structured answer following the 8-step framework."
+                ),
+            },
+        ]
+
+        # Try DeepSeek first if key available
+        deepseek_key = os.environ.get("DEEPSEEK_API_KEY", "").strip()
+        openrouter_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
+
+        if deepseek_key and mode != "openrouter":
+            selected_model = model.strip() or DEEPSEEK_DEFAULT_MODEL
+            endpoint = DEEPSEEK_API_ENDPOINT
+            api_key = deepseek_key
+        elif openrouter_key:
+            selected_model = model.strip() or os.environ.get("OPENROUTER_MODEL", "").strip() or OPENROUTER_DEFAULT_MODEL
+            endpoint = OPENROUTER_API_ENDPOINT
+            api_key = openrouter_key
+        else:
+            raise RuntimeError("No LLM API key configured (DEEPSEEK_API_KEY or OPENROUTER_API_KEY)")
+
+        payload = {
+            "model": selected_model,
+            "temperature": 0,
+            "messages": messages,
+        }
+        request = urllib_request.Request(
+            endpoint,
+            data=json.dumps(payload).encode("utf-8"),
+            method="POST",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+        )
+        try:
+            with urllib_request.urlopen(request, timeout=OPENROUTER_TIMEOUT_SECONDS) as response:
+                raw = response.read().decode("utf-8")
+        except urllib_error.HTTPError as exc:
+            body = exc.read().decode("utf-8", errors="ignore") if hasattr(exc, "read") else ""
+            raise RuntimeError(f"LLM HTTP {exc.code}: {body[:240]}") from exc
+        except urllib_error.URLError as exc:
+            raise RuntimeError(f"LLM request failed: {exc.reason}") from exc
+
+        parsed = json.loads(raw)
+        choices = parsed.get("choices", [])
+        if not choices:
+            raise RuntimeError("LLM returned no choices")
+        answer = _extract_openrouter_message_text(choices[0].get("message", {}).get("content", ""))
+
+        # Extract new_knowledge JSON if present
+        new_knowledge: list[dict] = []
+        nk_match = re.search(r'"new_knowledge"\s*:\s*(\[.*?\])', answer, re.DOTALL)
+        if nk_match:
+            try:
+                new_knowledge = json.loads(nk_match.group(1))
+            except (json.JSONDecodeError, ValueError):
+                pass
+
+        return {
+            "answer": answer,
+            "answer_mode": "deepseek_determinator" if deepseek_key and mode != "openrouter" else "openrouter_determinator",
+            "model_used": selected_model,
+            "new_knowledge": new_knowledge,
+        }
+
+    def query(
+        self,
+        question: str,
+        store: "HybridGraphStore",
+        mode: str = "openrouter",
+        model: str = "",
+        max_citations: int = 8,
+    ) -> dict:
+        disclaimer = (
+            "This tool provides legal information for educational purposes only "
+            "and does not constitute legal advice. Always consult a qualified "
+            "Hong Kong lawyer for advice on your specific situation."
+        )
+
+        classification = self._classify(question)
+        if not classification["is_criminal"]:
+            return {
+                "question": question,
+                "is_criminal": False,
+                "answer": (
+                    "This query does not appear to relate to Hong Kong criminal law. "
+                    "Please rephrase your question or consult a general legal resource."
+                ),
+                "answer_mode": "classification_reject",
+                "citations": [],
+                "sources": [],
+                "new_knowledge": [],
+                "offence_candidates": classification["offence_candidates"],
+                "primary_ordinance": classification["primary_ordinance"],
+                "used_fallback": False,
+                "disclaimer": disclaimer,
+            }
+
+        local_result = store.query(question, top_k=5, mode="extractive", max_citations=max_citations)
+        top_score = max((c.get("support_score", 0.0) for c in local_result.get("citations", [])), default=0.0)
+        use_llm = mode in ("openrouter", "deepseek") and (
+            os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("OPENROUTER_API_KEY")
+        )
+        used_fallback = top_score < 0.15 or len(local_result.get("citations", [])) < 2
+
+        llm_answer = ""
+        llm_mode = "extractive"
+        model_used = ""
+        new_knowledge: list[dict] = []
+
+        if use_llm:
+            try:
+                llm_result = self._llm_query(question, local_result.get("citations", []), mode, model, classification)
+                llm_answer = llm_result["answer"]
+                llm_mode = llm_result["answer_mode"]
+                model_used = llm_result["model_used"]
+                new_knowledge = llm_result.get("new_knowledge", [])
+            except Exception as exc:
+                local_result.setdefault("warnings", []).append(f"LLM synthesis skipped: {exc}")
+
+        verifier = KnowledgeGrowthWriter()
+        verified_new_knowledge, rejected_new_knowledge = verifier.verify_items(
+            new_knowledge,
+            legal_domain=_infer_legal_domain(store.bundle.get("meta")),
+        )
+        if rejected_new_knowledge:
+            local_result.setdefault("warnings", []).append(
+                f"Rejected {len(rejected_new_knowledge)} unverified proposed knowledge item(s)."
+            )
+
+        return {
+            **local_result,
+            "is_criminal": True,
+            "classification_area": classification["area"],
+            "offence_candidates": classification["offence_candidates"],
+            "primary_ordinance": classification["primary_ordinance"],
+            "answer": llm_answer or local_result.get("answer", ""),
+            "answer_mode": llm_mode,
+            "model_used": model_used,
+            "new_knowledge": verified_new_knowledge,
+            "rejected_new_knowledge": rejected_new_knowledge,
+            "used_fallback": used_fallback,
+            "disclaimer": disclaimer,
+        }
+
+
+# ---------------------------------------------------------------------------
+# Knowledge Growth Writer
+# ---------------------------------------------------------------------------
+
+class KnowledgeGrowthWriter:
+    """Persists new knowledge items extracted from LLM responses."""
+
+    def _can_sync_supabase(self) -> bool:
+        return bool(
+            os.environ.get("SUPABASE_URL", "").strip()
+            and os.environ.get("SUPABASE_PUBLISHABLE_KEY", "").strip()
+            and os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "").strip()
+        )
+
+    def _append_local_chroma_record(self, graph_path, item: dict, node: dict) -> None:
+        graph_path_obj = Path(graph_path)
+        chroma_path = graph_path_obj.with_name("llm_growth_chroma_records.json")
+        payload = {"collection": "hk_criminal_live_growth", "records": []}
+        if chroma_path.exists():
+            try:
+                payload = json.loads(chroma_path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                payload = {"collection": "hk_criminal_live_growth", "records": []}
+        embedder = create_embedding_backend(backend=os.environ.get("CASEMAP_GROWTH_EMBEDDING_BACKEND", "auto"))
+        text = item.get("ratio", "") or node.get("summary_en", "") or node.get("label", "")
+        vector = embedder.embed_documents([text])[0] if text else []
+        payload.setdefault("collection", "hk_criminal_live_growth")
+        payload.setdefault("embedding_backend", embedder.manifest())
+        payload.setdefault("records", []).append(
+            {
+                "id": node["id"],
+                "document": text,
+                "metadata": {
+                    "label": node.get("label", ""),
+                    "neutral_citation": node.get("neutral_citation", ""),
+                    "ordinance": node.get("ordinance", ""),
+                    "source": "llm_growth",
+                },
+                "embedding": vector,
+            }
+        )
+        chroma_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    def _labels_match(self, proposed_label: str, actual_label: str) -> bool:
+        proposed_tokens = set(tokenize(proposed_label))
+        actual_tokens = set(tokenize(actual_label))
+        if not proposed_tokens or not actual_tokens:
+            return False
+        overlap = len(proposed_tokens & actual_tokens) / max(1, len(proposed_tokens))
+        return overlap >= 0.5
+
+    def verify_items(
+        self,
+        new_knowledge_items: list[dict],
+        *,
+        legal_domain: str = "criminal",
+    ) -> tuple[list[dict], list[dict]]:
+        if not new_knowledge_items:
+            return [], []
+        crawler = HKLIICrawler()
+        verified: list[dict] = []
+        rejected: list[dict] = []
+        for raw_item in new_knowledge_items:
+            item = dict(raw_item)
+            item_type = str(item.get("type", "Case")).strip() or "Case"
+            label = str(item.get("label", "")).strip()
+            if item_type != "Case":
+                rejected.append({"item": item, "reason": "Only Case growth items are persisted at this stage."})
+                continue
+            if not label:
+                rejected.append({"item": item, "reason": "Missing label."})
+                continue
+            if item.get("_verified_case_document") is not None and item.get("verification_status") == "verified_hklii":
+                verified.append(item)
+                continue
+            hklii_url = str(item.get("hklii_url", "")).strip()
+            if not hklii_url:
+                rejected.append({"item": item, "reason": "Missing HKLII URL for verification."})
+                continue
+            parsed = urllib_parse.urlparse(hklii_url)
+            if "hklii.hk" not in parsed.netloc or "/cases/" not in parsed.path:
+                rejected.append({"item": item, "reason": "HKLII URL is missing or not a case page."})
+                continue
+            try:
+                case_doc = crawler.fetch_case_document(parsed.path)
+            except Exception as exc:
+                rejected.append({"item": item, "reason": f"HKLII verification failed: {exc}"})
+                continue
+            provided_citation = str(item.get("neutral_citation", "")).strip()
+            if provided_citation and case_doc.neutral_citation and provided_citation != case_doc.neutral_citation:
+                rejected.append({"item": item, "reason": "Neutral citation did not match HKLII judgment."})
+                continue
+            if not self._labels_match(label, case_doc.case_name):
+                rejected.append({"item": item, "reason": "Case label did not sufficiently match HKLII judgment title."})
+                continue
+            verified_item = {
+                **item,
+                "label": case_doc.case_name,
+                "neutral_citation": case_doc.neutral_citation or provided_citation,
+                "hklii_url": case_doc.public_url,
+                "_verified_source": "hklii",
+                "_verified_case_document": case_doc,
+                "verification_status": "verified_hklii",
+                "legal_domain": legal_domain,
+            }
+            verified.append(verified_item)
+        return verified, rejected
+
+    def _make_node(self, item: dict, legal_domain: str = "criminal") -> dict:
+        label = item.get("label", "Unknown")
+        node_type = item.get("type", "Case")
+        node_id = f"{node_type.lower()}:llm_growth:{slugify(label)[:60]}"
+        return {
+            "id": node_id,
+            "type": node_type,
+            "label": label,
+            "label_en": label,
+            "case_name": label if node_type == "Case" else "",
+            "short_name": _short_case_name(label) if node_type == "Case" else label[:60],
+            "neutral_citation": item.get("neutral_citation", ""),
+            "summary_en": item.get("ratio", ""),
+            "source_links": (
+                [{"label": "HKLII", "url": item["hklii_url"]}]
+                if item.get("hklii_url")
+                else []
+            ),
+            "topic_paths": [],
+            "lineage_ids": [],
+            "authority_score": 0.3,
+            "enrichment_status": "llm_growth",
+            "verification_status": item.get("verification_status", "unverified"),
+            "legal_domain": legal_domain,
+            "domain_tags": [legal_domain],
+            "degree": 0,
+            "ordinance": item.get("ordinance", ""),
+        }
+
+    def persist(
+        self,
+        new_knowledge_items: list[dict],
+        store: "HybridGraphStore",
+        graph_path,
+        legal_domain: str = "criminal",
+    ) -> list[str]:
+        if not new_knowledge_items:
+            return []
+        verified_items, rejected_items = self.verify_items(new_knowledge_items, legal_domain=legal_domain)
+        new_knowledge_items = verified_items
+        store.bundle.setdefault("meta", {})["llm_growth_rejected_count"] = store.bundle.get("meta", {}).get("llm_growth_rejected_count", 0) + len(rejected_items)
+        if not new_knowledge_items:
+            return []
+        added_ids: list[str] = []
+        existing_ids = {n["id"] for n in store.bundle.get("nodes", [])}
+        for item in new_knowledge_items:
+            node = self._make_node(item, legal_domain)
+            if node["id"] in existing_ids:
+                continue
+            store.bundle["nodes"].append(node)
+            store.nodes[node["id"]] = node
+            existing_ids.add(node["id"])
+            added_ids.append(node["id"])
+            try:
+                self._append_local_chroma_record(graph_path, item, node)
+            except Exception:
+                pass
+            case_doc = item.get("_verified_case_document")
+            if case_doc and self._can_sync_supabase():
+                try:
+                    from .supabase_sync import sync_case_document_to_supabase
+                    sync_case_document_to_supabase(
+                        case_doc,
+                        prefix="casemap/hk_criminal/live_growth",
+                        catchwords=item.get("ratio", ""),
+                        legal_principles=[item.get("ratio", "")] if item.get("ratio") else [],
+                        local_path_hint=str(graph_path),
+                        embedding_backend=os.environ.get("CASEMAP_GROWTH_EMBEDDING_BACKEND", "auto"),
+                        embedding_model=os.environ.get("CASEMAP_GROWTH_EMBEDDING_MODEL", ""),
+                    )
+                except Exception:
+                    pass
+
+        if added_ids:
+            store.bundle["meta"]["node_count"] = len(store.bundle["nodes"])
+            try:
+                graph_path_obj = Path(graph_path)
+                graph_path_obj.write_text(
+                    json.dumps(store.bundle, indent=2, ensure_ascii=False),
+                    encoding="utf-8",
+                )
+            except Exception:
+                pass  # Non-fatal — in-memory update still valid
+
+        return added_ids

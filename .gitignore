@@ -2,6 +2,8 @@
 .venv/
 __pycache__/
 *.pyc
+.kiro/
+.vscode/
 .env
 .env.local
 artifacts/*

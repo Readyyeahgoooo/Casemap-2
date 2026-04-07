@@ -5580,3 +5580,552 @@ def render_knowledge_graph(bundle: dict) -> str:
   </script>
 </body>
 </html>"""
+
+
+def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
+    """Render a graph-first criminal-law workspace with a hierarchy backup and determiner search."""
+    meta = bundle.get("meta", {})
+    heading = meta.get("viewer_heading_public") or meta.get("title") or "HK Criminal Law Knowledge Graph"
+    legal_domain = meta.get("legal_domain", "criminal")
+    node_count = meta.get("node_count", 0)
+    edge_count = meta.get("edge_count", 0)
+    case_count = meta.get("case_count", 0)
+    statute_count = meta.get("statute_count", 0)
+    hierarchy_payload = json.dumps(hierarchy_html, ensure_ascii=False)
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Casemap Determinator</title>
+  <style>
+    :root {{
+      --bg: #091017;
+      --panel: rgba(11, 18, 26, 0.92);
+      --panel-2: rgba(17, 27, 39, 0.9);
+      --ink: #f3f7fb;
+      --muted: #99a7b8;
+      --line: rgba(255, 255, 255, 0.12);
+      --accent: #f1a238;
+      --accent-2: #4dc0b5;
+      --danger: #d36b6b;
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+    }}
+    * {{ box-sizing: border-box; }}
+    .hidden {{ display: none !important; }}
+    body {{
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(77, 192, 181, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(241, 162, 56, 0.18), transparent 24%),
+        linear-gradient(180deg, #081018 0%, #0b141f 48%, #081018 100%);
+    }}
+    .shell {{
+      width: min(1480px, calc(100vw - 32px));
+      margin: 16px auto;
+      display: grid;
+      gap: 16px;
+    }}
+    .hero {{
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
+      gap: 16px;
+    }}
+    .panel {{
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }}
+    .hero-copy {{
+      padding: 24px 28px;
+      display: grid;
+      gap: 14px;
+    }}
+    .eyebrow {{
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+    }}
+    h1 {{
+      margin: 0;
+      font-size: clamp(34px, 4vw, 56px);
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      max-width: 12ch;
+    }}
+    .lede {{
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+      max-width: 68ch;
+    }}
+    .stats {{
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }}
+    .stat {{
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 14px 16px;
+    }}
+    .stat strong {{
+      display: block;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }}
+    .stat span {{
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }}
+    .hero-side {{
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }}
+    .mode-switch {{
+      display: inline-flex;
+      gap: 8px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      width: fit-content;
+    }}
+    .mode-switch button,
+    .inline-link {{
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 13px;
+      text-decoration: none;
+    }}
+    .mode-switch button.active {{
+      background: var(--accent);
+      color: #101317;
+      font-weight: 600;
+    }}
+    .helper {{
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }}
+    .workspace {{
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(360px, 0.9fr);
+      gap: 16px;
+      align-items: start;
+    }}
+    .canvas {{
+      overflow: hidden;
+      min-height: 780px;
+    }}
+    .canvas-header {{
+      padding: 18px 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }}
+    .canvas-header h2 {{
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }}
+    .canvas-header .sub {{
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }}
+    .canvas-stage {{
+      padding: 16px;
+      height: 720px;
+    }}
+    .canvas-pane {{
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.18);
+    }}
+    .canvas-pane.hidden {{ display: none; }}
+    iframe {{
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #0b121a;
+    }}
+    .hierarchy-shell {{
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: #f5efe5;
+      color: #111827;
+    }}
+    .search-panel {{
+      padding: 20px;
+      display: grid;
+      gap: 14px;
+    }}
+    .search-panel h2 {{
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+    }}
+    .label {{
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }}
+    .controls {{
+      display: grid;
+      gap: 10px;
+    }}
+    textarea,
+    select {{
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--ink);
+      padding: 14px 16px;
+      font: inherit;
+    }}
+    textarea {{
+      min-height: 132px;
+      resize: vertical;
+      line-height: 1.55;
+    }}
+    .actions {{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }}
+    .primary {{
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 18px;
+      background: linear-gradient(135deg, var(--accent) 0%, #ffd08a 100%);
+      color: #111827;
+      font-weight: 700;
+      cursor: pointer;
+    }}
+    .status {{
+      color: var(--muted);
+      font-size: 13px;
+    }}
+    .result {{
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+      display: grid;
+      gap: 14px;
+    }}
+    .result.hidden {{ display: none; }}
+    .card {{
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel-2);
+      padding: 14px 16px;
+    }}
+    .card h3 {{
+      margin: 0 0 8px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent-2);
+    }}
+    .answer {{
+      white-space: pre-wrap;
+      font-size: 14px;
+      line-height: 1.75;
+    }}
+    .citations {{
+      display: grid;
+      gap: 10px;
+    }}
+    .citation {{
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.03);
+    }}
+    .citation strong {{
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }}
+    .citation .meta {{
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }}
+    .citation p {{
+      margin: 0;
+      color: #dbe5ef;
+      font-size: 13px;
+      line-height: 1.6;
+    }}
+    .warning {{
+      color: #ffd5a6;
+      font-size: 13px;
+      line-height: 1.55;
+    }}
+    .error {{
+      color: #ffd3d3;
+      background: rgba(211, 107, 107, 0.12);
+      border: 1px solid rgba(211, 107, 107, 0.25);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.6;
+    }}
+    @media (max-width: 1160px) {{
+      .hero,
+      .workspace {{
+        grid-template-columns: 1fr;
+      }}
+      .canvas {{
+        min-height: 640px;
+      }}
+      .canvas-stage {{
+        height: 580px;
+      }}
+    }}
+    @media (max-width: 760px) {{
+      .shell {{
+        width: min(100vw - 16px, 100%);
+        margin: 8px auto 16px;
+      }}
+      .hero-copy,
+      .hero-side,
+      .search-panel {{
+        padding: 18px;
+      }}
+      .stats {{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }}
+      .canvas-stage {{
+        padding: 10px;
+        height: 500px;
+      }}
+    }}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="panel hero-copy">
+        <div class="eyebrow">{legal_domain} graph rag workspace</div>
+        <h1>{heading}</h1>
+        <p class="lede">Default mode is the zoomable graph workspace. Backup mode keeps the hierarchy view separate so retrieval stays clear, domain-specific, and easy to inspect before asking the determiner for a grounded answer.</p>
+        <p class="lede">Doctrinal Relationship Map stays visible through the graph workspace, while the backup hierarchy remains a distinct switchable mode rather than an overlapping view.</p>
+        <div class="stats">
+          <div class="stat"><strong>{node_count}</strong><span>Nodes</span></div>
+          <div class="stat"><strong>{edge_count}</strong><span>Edges</span></div>
+          <div class="stat"><strong>{case_count}</strong><span>Cases</span></div>
+          <div class="stat"><strong>{statute_count}</strong><span>Statutes</span></div>
+        </div>
+      </div>
+      <aside class="panel hero-side">
+        <div class="label">View Mode</div>
+        <div class="mode-switch" role="tablist" aria-label="View mode switch">
+          <button id="graphModeBtn" class="active" type="button">Graph Default</button>
+          <button id="hierarchyModeBtn" type="button">Hierarchy Backup</button>
+        </div>
+        <p class="helper">The graph stays primary. The hierarchy stays available as a distinct backup mode rather than competing with the node view. Use the force graph for navigation, then ask the determiner below for a structured answer.</p>
+        <div class="actions">
+          <a class="inline-link" href="/graph">Open Full Graph</a>
+          <a class="inline-link" href="/tree">Open Full Hierarchy</a>
+        </div>
+      </aside>
+    </section>
+
+    <section class="workspace">
+      <section class="panel canvas">
+        <div class="canvas-header">
+          <div>
+            <div class="sub">Knowledge Map</div>
+            <h2 id="canvasTitle">Graph Workspace</h2>
+          </div>
+        </div>
+        <div class="canvas-stage">
+          <div id="graphPane" class="canvas-pane">
+            <iframe src="/graph" title="Casemap graph workspace"></iframe>
+          </div>
+          <div id="hierarchyPane" class="canvas-pane hidden">
+            <div class="hierarchy-shell" id="hierarchyMount"></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel search-panel">
+        <div class="label">Determinator</div>
+        <h2>Structured Criminal RAG</h2>
+        <p class="helper">This panel queries the existing graph and embeddings first, then uses the determiner pipeline to synthesize a tighter answer. When available, fallback LLM synthesis stays grounded against the local citations.</p>
+        <div class="controls">
+          <label class="label" for="question">Question</label>
+          <textarea id="question" placeholder="Ask about offences, defences, procedure, evidence, sentencing, or a specific Hong Kong criminal-law topic."></textarea>
+          <label class="label" for="mode">Model Path</label>
+          <select id="mode">
+            <option value="openrouter">OpenRouter</option>
+            <option value="deepseek">DeepSeek</option>
+          </select>
+          <div class="actions">
+            <button id="runBtn" class="primary" type="button">Run Determinator</button>
+            <span id="status" class="status">Ready.</span>
+          </div>
+        </div>
+
+        <section id="result" class="result hidden">
+          <div class="card">
+            <h3>Grounded Answer</h3>
+            <div id="answer" class="answer"></div>
+          </div>
+          <div class="card">
+            <h3>Mode</h3>
+            <div id="meta" class="answer"></div>
+          </div>
+          <div class="card">
+            <h3>Disclaimer</h3>
+            <div id="disclaimer" class="answer"></div>
+          </div>
+          <div class="card">
+            <h3>Supporting Citations</h3>
+            <div id="citations" class="citations"></div>
+          </div>
+          <div id="warningsCard" class="card hidden">
+            <h3>Warnings</h3>
+            <div id="warnings" class="warning"></div>
+          </div>
+        </section>
+
+        <div id="errorBox" class="error hidden"></div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const hierarchyHtml = {hierarchy_payload};
+    const hierarchyMount = document.getElementById("hierarchyMount");
+    hierarchyMount.innerHTML = hierarchyHtml;
+
+    const graphPane = document.getElementById("graphPane");
+    const hierarchyPane = document.getElementById("hierarchyPane");
+    const graphModeBtn = document.getElementById("graphModeBtn");
+    const hierarchyModeBtn = document.getElementById("hierarchyModeBtn");
+    const canvasTitle = document.getElementById("canvasTitle");
+    const resultEl = document.getElementById("result");
+    const answerEl = document.getElementById("answer");
+    const metaEl = document.getElementById("meta");
+    const disclaimerEl = document.getElementById("disclaimer");
+    const citationsEl = document.getElementById("citations");
+    const warningsCard = document.getElementById("warningsCard");
+    const warningsEl = document.getElementById("warnings");
+    const errorBox = document.getElementById("errorBox");
+    const statusEl = document.getElementById("status");
+
+    function switchMode(mode) {{
+      const showGraph = mode === "graph";
+      graphPane.classList.toggle("hidden", !showGraph);
+      hierarchyPane.classList.toggle("hidden", showGraph);
+      graphModeBtn.classList.toggle("active", showGraph);
+      hierarchyModeBtn.classList.toggle("active", !showGraph);
+      canvasTitle.textContent = showGraph ? "Graph Workspace" : "Hierarchy Backup";
+    }}
+
+    graphModeBtn.addEventListener("click", () => switchMode("graph"));
+    hierarchyModeBtn.addEventListener("click", () => switchMode("hierarchy"));
+
+    function setBusy(isBusy, message) {{
+      document.getElementById("runBtn").disabled = isBusy;
+      statusEl.textContent = message;
+    }}
+
+    function citationMarkup(citation) {{
+      const title = citation.case_name || citation.label || citation.citation_id || "Citation";
+      const meta = [citation.neutral_citation, citation.paragraph_span].filter(Boolean).join(" · ");
+      const quote = citation.quote || citation.summary || "No summary available.";
+      return `
+        <article class="citation">
+          <strong>${{title}}</strong>
+          <div class="meta">${{meta || "Local grounding"}} </div>
+          <p>${{quote}}</p>
+        </article>
+      `;
+    }}
+
+    async function runDeterminator() {{
+      const question = document.getElementById("question").value.trim();
+      const mode = document.getElementById("mode").value;
+      if (!question) {{
+        errorBox.textContent = "Enter a question before running the determiner.";
+        errorBox.classList.remove("hidden");
+        return;
+      }}
+      errorBox.classList.add("hidden");
+      setBusy(true, "Querying graph and determiner pipeline...");
+      try {{
+        const response = await fetch("/api/determinator", {{
+          method: "POST",
+          headers: {{ "Content-Type": "application/json" }},
+          body: JSON.stringify({{ question, mode }})
+        }});
+        const data = await response.json();
+        if (!response.ok) {{
+          throw new Error(data.error || "Determinator request failed.");
+        }}
+        answerEl.textContent = data.answer || "No answer returned.";
+        metaEl.textContent = [
+          data.answer_mode ? `Mode: ${{data.answer_mode}}` : "",
+          data.model_used ? `Model: ${{data.model_used}}` : "",
+          data.classification_area ? `Area: ${{data.classification_area}}` : "",
+          data.used_fallback ? "Fallback used" : "Local grounding only"
+        ].filter(Boolean).join(" · ");
+        disclaimerEl.textContent = data.disclaimer || "";
+        citationsEl.innerHTML = (data.citations || []).length
+          ? data.citations.map(citationMarkup).join("")
+          : "<div class='citation'><strong>No local citations</strong><p>The determiner did not return any supporting local citation blocks for this query.</p></div>";
+        const warnings = data.warnings || [];
+        warningsCard.classList.toggle("hidden", !warnings.length);
+        warningsEl.textContent = warnings.join("\\n");
+        resultEl.classList.remove("hidden");
+        setBusy(false, "Completed.");
+      }} catch (error) {{
+        resultEl.classList.add("hidden");
+        errorBox.textContent = error.message || "Unexpected error while querying the determiner.";
+        errorBox.classList.remove("hidden");
+        setBusy(false, "Failed.");
+      }}
+    }}
+
+    document.getElementById("runBtn").addEventListener("click", runDeterminator);
+    document.getElementById("question").addEventListener("keydown", (event) => {{
+      if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {{
+        runDeterminator();
+      }}
+    }});
+  </script>
+</body>
+</html>"""
