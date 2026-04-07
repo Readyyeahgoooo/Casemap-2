@@ -6219,6 +6219,16 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
           .attr("font-family","'SFMono-Regular',monospace")
           .text(d=>d.label.length>26?d.label.slice(0,24)+"…":d.label);
 
+        // Paint an immediate static frame so the graph is visible
+        // even before force-simulation ticks fire in slower browsers.
+        const initialPos = new Map(GNODES.map(n => [n.id, n]));
+        gLink
+          .attr("x1", d => (initialPos.get(typeof d.source === "string" ? d.source : d.source.id)?.x ?? w / 2))
+          .attr("y1", d => (initialPos.get(typeof d.source === "string" ? d.source : d.source.id)?.y ?? h / 2))
+          .attr("x2", d => (initialPos.get(typeof d.target === "string" ? d.target : d.target.id)?.x ?? w / 2))
+          .attr("y2", d => (initialPos.get(typeof d.target === "string" ? d.target : d.target.id)?.y ?? h / 2));
+        gNode.attr("transform", d => `translate(${{d.x}},${{d.y}})`);
+
         let fitted = false;
         gSim.on("tick",()=>{{
           gLink.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
