@@ -6113,6 +6113,11 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
 
     const gSvg = d3.select("#mainGraph");
     const gZoom = d3.zoom().scaleExtent([0.04,4]).on("zoom",ev=>gG.attr("transform",ev.transform));
+    // Set explicit viewBox so SVG has dimensions before layout
+    const _gEl = gSvg.node();
+    const _gW = (_gEl && _gEl.clientWidth > 0) ? _gEl.clientWidth : 900;
+    const _gH = (_gEl && _gEl.clientHeight > 0) ? _gEl.clientHeight : 700;
+    gSvg.attr("viewBox", `0 0 ${{_gW}} ${{_gH}}`);
     gSvg.call(gZoom);
     const gG = gSvg.append("g");
 
@@ -6172,7 +6177,7 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
     gSim.on("end",()=>{{
       try{{
         const b=gG.node().getBBox();
-        const w=gSvg.node().clientWidth||900,h=gSvg.node().clientHeight||700;
+        const w=gSvg.node().clientWidth||_gW,h=gSvg.node().clientHeight||_gH;
         const s=Math.min(0.85,0.85/Math.max(b.width/w,b.height/h,0.01));
         gSvg.call(gZoom.transform,d3.zoomIdentity
           .translate(w/2-s*(b.x+b.width/2),h/2-s*(b.y+b.height/2)).scale(s));
@@ -6252,15 +6257,38 @@ def render_determinator_page(bundle: dict, hierarchy_html: str) -> str:
       statusEl.textContent = message;
     }}
 
+    // Focus the graph on a node by case_id or case_name match
+    function focusGraphNode(caseId, caseName) {{
+      // Try exact id match first, then label match
+      let target = gIndex.get(caseId);
+      if (!target && caseName) {{
+        const lower = caseName.toLowerCase();
+        target = GNODES.find(n => (n.label||"").toLowerCase().includes(lower) || lower.includes((n.label||"").toLowerCase().slice(0,12)));
+      }}
+      if (!target) return;
+      // Highlight
+      gNode.attr("opacity", n => n.id === target.id || gNeighbours.get(target.id)?.has(n.id) ? 1 : 0.15);
+      gLink.attr("opacity", e => e.source.id === target.id || e.target.id === target.id ? 1 : 0.08);
+      // Zoom to node
+      const w = gSvg.node().clientWidth || _gW;
+      const h = gSvg.node().clientHeight || _gH;
+      gSvg.transition().duration(600).call(gZoom.transform,
+        d3.zoomIdentity.translate(w/2 - target.x * 1.4, h/2 - target.y * 1.4).scale(1.4)
+      );
+    }}
+
     function citationMarkup(citation) {{
       const title = citation.case_name || citation.label || citation.citation_id || "Citation";
       const meta = [citation.neutral_citation, citation.paragraph_span].filter(Boolean).join(" · ");
       const quote = citation.quote || citation.summary || "No summary available.";
+      const caseId = citation.case_id || citation.focus_node_id || "";
+      const hkliiLinks = (citation.links || []).map(l => `<a href="${{l.url}}" target="_blank" rel="noopener">${{l.label || "HKLII"}}</a>`).join(" ");
       return `
-        <article class="citation">
+        <article class="citation" data-case-id="${{caseId}}" data-case-name="${{title}}" style="cursor:pointer" onclick="focusGraphNode('${{caseId}}','${{title.replace(/'/g,"\\'")}}')" title="Click to focus in graph">
           <strong>${{title}}</strong>
-          <div class="meta">${{meta || "Local grounding"}} </div>
+          <div class="meta">${{meta || "Local grounding"}}${{hkliiLinks ? " · " + hkliiLinks : ""}}</div>
           <p>${{quote}}</p>
+          ${{caseId ? `<div class="meta" style="color:var(--accent-2);font-size:11px">▶ Click to focus in graph</div>` : ""}}
         </article>
       `;
     }}
