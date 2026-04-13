@@ -111,6 +111,12 @@ Build artifacts:
 PYTHONPATH=src .venv/bin/python -m casemap build-criminal-graph --output-dir artifacts/hk_criminal_relationship --hybrid-output-dir artifacts/hk_criminal_hybrid --embedding-backend sentence-transformers
 ```
 
+Generic domain graph build:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m casemap build-domain-graph --domain family --tree data/batch/domain_trees/family_tree.json --output-dir artifacts/hk_family_relationship --hybrid-output-dir artifacts/hk_family_hybrid --embedding-backend sentence-transformers
+```
+
 Sync hosted subset:
 
 ```bash

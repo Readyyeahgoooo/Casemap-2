@@ -7,6 +7,7 @@ from pathlib import Path
 from unittest import mock
 
 from casemap.criminal_graph import build_criminal_graph_artifacts
+from casemap.domain_graph import build_domain_graph_artifacts
 from casemap.hklii_crawler import HKLIICaseDocument, HKLIIParagraph, HKLIISearchResult
 from casemap.source_parser import Passage, SourceDocument
 
@@ -125,6 +126,52 @@ class CriminalGraphTests(unittest.TestCase):
                 if node["type"] == "Case"
             }
             self.assertNotIn("Chiu Man On Paul t/a Pacific Power Engineering Co. v Vaford Contracting Co. Ltd.", case_names)
+
+    @mock.patch("casemap.domain_graph.load_source_document", side_effect=_fake_load_source_document)
+    @mock.patch("casemap.domain_graph.HKLIICrawler", _FakeCrawler)
+    def test_build_domain_graph_artifacts_uses_requested_domain(self, mocked_loader) -> None:
+        family_tree = {
+            "label_en": "Hong Kong Family Law",
+            "summary_en": "Family-law authority tree for matrimonial and child-related disputes.",
+            "modules": [
+                {
+                    "id": "children",
+                    "label_en": "Children",
+                    "summary_en": "Children, care, custody, and welfare principles.",
+                    "subgrounds": [
+                        {
+                            "id": "welfare",
+                            "label_en": "Welfare Principle",
+                            "summary_en": "Best interests and welfare of children.",
+                            "topics": [
+                                {
+                                    "id": "best_interests",
+                                    "label_en": "Best Interests",
+                                    "search_queries": ["best interests child hong kong family law"],
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ],
+        }
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            output_dir = Path(tmp_dir) / "relationship"
+            manifest = build_domain_graph_artifacts(
+                domain_id="family",
+                tree=family_tree,
+                source_paths=["/tmp/fake-source.pdf"],
+                relationship_output_dir=output_dir,
+                max_cases=2,
+                embedding_backend="local-hash",
+            )
+
+            self.assertEqual(manifest["legal_domain"], "family")
+            chroma_payload = json.loads((output_dir / "chroma_records.json").read_text(encoding="utf-8"))
+            self.assertEqual(chroma_payload["collection"], "hk_family_cases")
+            graph_payload = json.loads((output_dir / "relationship_graph.json").read_text(encoding="utf-8"))
+            self.assertEqual(graph_payload["meta"]["legal_domain"], "family")
+            self.assertTrue(all(node["legal_domain"] == "family" for node in graph_payload["nodes"]))
 
 
 if __name__ == "__main__":

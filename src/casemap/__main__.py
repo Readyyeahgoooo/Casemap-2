@@ -7,6 +7,7 @@ from pathlib import Path
 from wsgiref.simple_server import make_server
 
 from .criminal_graph import build_criminal_graph_artifacts
+from .domain_graph import build_domain_graph_artifacts
 from .graphrag import RerankedRetriever, build_artifacts
 from .hybrid_graph import HybridGraphStore, build_hybrid_graph_artifacts
 from .relationship_graph import build_relationship_artifacts, export_public_relationship_artifacts
@@ -74,6 +75,25 @@ def build_criminal_graph_command(args: argparse.Namespace) -> int:
         relationship_output_dir=args.output_dir,
         hybrid_output_dir=args.hybrid_output_dir,
         title=args.title,
+        per_query_limit=args.per_query_limit,
+        max_cases=args.max_cases,
+        embedding_backend=args.embedding_backend,
+        embedding_model=args.embedding_model,
+        embedding_dimensions=args.embedding_dimensions,
+    )
+    print(json.dumps(manifest, indent=2, ensure_ascii=False))
+    return 0
+
+
+def build_domain_graph_command(args: argparse.Namespace) -> int:
+    manifest = build_domain_graph_artifacts(
+        domain_id=args.domain,
+        tree_path=args.tree,
+        source_paths=args.source,
+        relationship_output_dir=args.output_dir,
+        hybrid_output_dir=args.hybrid_output_dir,
+        title=args.title or None,
+        candidates_path=args.candidates or None,
         per_query_limit=args.per_query_limit,
         max_cases=args.max_cases,
         embedding_backend=args.embedding_backend,
@@ -220,6 +240,58 @@ def parser() -> argparse.ArgumentParser:
         help="Optional embedding dimension override when supported by the chosen backend",
     )
     criminal_parser.set_defaults(func=build_criminal_graph_command)
+
+    domain_parser = subparsers.add_parser(
+        "build-domain-graph",
+        help="Build a domain-specific Hong Kong legal graph from a domain topic tree plus HKLII primary materials",
+    )
+    domain_parser.add_argument("--domain", required=True, help="Legal domain id, such as criminal, contract, commercial, family, or probate")
+    domain_parser.add_argument(
+        "--tree",
+        default="",
+        help="Optional JSON authority tree path. If omitted, data/batch/domain_trees/{domain}_tree.json is used or generated when DeepSeek is configured.",
+    )
+    domain_parser.add_argument(
+        "--candidates",
+        default="",
+        help="Optional global candidates.json registry path for callers that keep crawl state outside this graph builder.",
+    )
+    domain_parser.add_argument(
+        "--source",
+        action="append",
+        default=[],
+        help="Supplemental domain source path. Repeat for each .pdf or .docx source.",
+    )
+    domain_parser.add_argument("--output-dir", required=True, help="Directory for generated relationship, embedding, and monitor artifacts")
+    domain_parser.add_argument(
+        "--hybrid-output-dir",
+        default="",
+        help="Optional directory for hierarchical graph artifacts. If omitted, only relationship and storage exports are written.",
+    )
+    domain_parser.add_argument(
+        "--title",
+        default="",
+        help="Display title for the generated domain graph. Defaults to the loaded domain tree label.",
+    )
+    domain_parser.add_argument("--per-query-limit", type=int, default=6, help="Maximum HKLII case hits to retain per seeded topic query")
+    domain_parser.add_argument("--max-cases", type=int, default=140, help="Upper bound on HKLII case documents to fetch")
+    domain_parser.add_argument(
+        "--embedding-backend",
+        default="auto",
+        help="Embedding backend to use: auto, local-hash, sentence-transformers, or openai",
+    )
+    domain_parser.add_argument(
+        "--embedding-model",
+        default="",
+        help="Optional model override for the selected embedding backend",
+    )
+    domain_parser.add_argument(
+        "--embedding-dimensions",
+        type=int,
+        default=0,
+        help="Optional embedding dimension override when supported by the chosen backend",
+    )
+    domain_parser.set_defaults(func=build_domain_graph_command)
 
     sync_parser = subparsers.add_parser(
         "sync-criminal-supabase",
