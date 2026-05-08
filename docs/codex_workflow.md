@@ -60,8 +60,10 @@ Example:
 ## Useful Commands
 
 ```bash
-PYTHONPATH=src .venv/bin/python -m unittest tests.test_supabase_sync tests.test_criminal_graph tests.test_embeddings tests.test_app_routes tests.test_hybrid_graph
+PYTHONPATH=src .venv/bin/python -m unittest tests.test_supabase_sync tests.test_criminal_graph tests.test_embeddings tests.test_app_routes tests.test_hybrid_graph tests.test_paragraph_index
 PYTHONPATH=src .venv/bin/python -m casemap build-criminal-graph --output-dir artifacts/hk_criminal_relationship --hybrid-output-dir artifacts/hk_criminal_hybrid --embedding-backend sentence-transformers
 PYTHONPATH=src .venv/bin/python -m casemap build-domain-graph --domain family --tree data/batch/domain_trees/family_tree.json --output-dir artifacts/hk_family_relationship --hybrid-output-dir artifacts/hk_family_hybrid --embedding-backend sentence-transformers
 PYTHONPATH=src .venv/bin/python -m casemap sync-criminal-supabase --max-cases 10 --prefix casemap/hk_criminal/latest
+PYTHONPATH=src .venv/bin/python -m casemap build-paragraph-index --graph artifacts/hk_criminal_relationship/relationship_graph.json --output-dir artifacts/hk_case_paragraph_index --max-cases 50 --embedding-backend sentence-transformers
+PYTHONPATH=src .venv/bin/python -m casemap paragraph-query --index artifacts/hk_case_paragraph_index/paragraph_chroma_records.json --question "mens rea for assault in Hong Kong" --top-k 8 --embedding-backend sentence-transformers
 ```
